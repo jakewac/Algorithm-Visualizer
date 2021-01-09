@@ -2,6 +2,8 @@ import React from 'react';
 import { Container, Row, Col, Button
 } from 'reactstrap';
 
+import './Menu.css';
+
 class Menu extends React.Component {
     constructor(props) {
         super(props);
@@ -14,15 +16,15 @@ class Menu extends React.Component {
                 <Container>
                     <Row>
                         <Col>
-                            Pathfinding Visualizer
-                        </Col>
-                        <Col>
-                            <Button>
+                            <Button color="success">
                                 Visualize
                             </Button>
                         </Col>
+                        <Col className="title">
+                            Pathfinding Visualizer
+                        </Col>
                         <Col>
-                            <Button>
+                            <Button color="danger">
                                 Clear
                             </Button>
                         </Col>

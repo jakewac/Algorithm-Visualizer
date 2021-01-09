@@ -7,14 +7,18 @@ import './PathfindingVisualizer.css';
 import Menu from './Menu';
 import Node from './Node';
 
-const ROW_COUNT = 25;
+const ROW_COUNT = 24;
 const COL_COUNT = 50;
+
+const START_NODE = [12, 10];
+const TARGET_NODE = [12, 40];
 
 class PathfindingVisualizer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             grid: [],
+            mouseIsDown: false,
         };
     }
 
@@ -30,16 +34,46 @@ class PathfindingVisualizer extends React.Component {
         return grid;
     }
 
+    updateGrid = (grid, row, col) => {
+        const newGrid = grid.slice();
+        const node = newGrid[row][col];
+        const newNode = {
+            ...node,
+            isWall: !node.isWall,
+        };
+
+        newGrid[row][col] = newNode;
+        return newGrid;
+    }
+
     createNode = (row, col) => {
         return {
             row,
             col,
+            isStart: row === START_NODE[0] && col === START_NODE[1],
+            isTarget: row === TARGET_NODE[0] && col === TARGET_NODE[1],
+            isWall: false,
         }
     }
 
     componentDidMount () {
         const grid = this.buildGrid();
         this.setState({grid});
+    }
+
+    handleMouseDown(row, col) {
+        const newGrid = this.updateGrid(this.state.grid, row, col);
+        this.setState({grid: newGrid, mouseIsDown: true});
+    }
+
+    handleMouseUp() {
+        this.setState({mouseIsDown: false});
+    }
+
+    handleMouseEnter(row, col) {
+        if (!this.state.mouseIsDown) return;
+        const newGrid = this.updateGrid(this.state.grid, row, col);
+        this.setState({grid: newGrid});
     }
 
     render () {
@@ -57,10 +91,21 @@ class PathfindingVisualizer extends React.Component {
                             {Array.from(this.state.grid).map((row, rowIdx) => {
                                 return (
                                     <div key={rowIdx} className="grid-row">
-                                        {Array.from(row).map(node => {
-                                            const {row, col} = node;
+                                        {Array.from(row).map((node, nodeIdx) => {
+                                            const {row, col, isStart, isTarget, isWall} = node;
                                             return (
-                                                <Node row={row} col={col}></Node>
+                                                <Node
+                                                key={nodeIdx}
+                                                row={row}
+                                                col={col}
+                                                isStart={isStart}
+                                                isTarget={isTarget}
+                                                isWall={isWall}
+                                                mouseIsDown={this.state.mouseIsDown}
+                                                onMouseDown={(row, col) => this.handleMouseDown(row, col)}
+                                                onMouseUp={() => this.handleMouseUp()}
+                                                onMouseEnter={(row, col) => this.handleMouseEnter(row, col)}
+                                                ></Node>
                                             );
                                         })}
                                     </div>

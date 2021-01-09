@@ -6,3 +6,15 @@
     outline: 1px solid rgb(100, 100, 100);
     display: inline-block;
 }
+
+.node-start {
+    background-color: green;
+}
+
+.node-target {
+    background-color: red;
+}
+
+.node-wall {
+    background-color: grey;
+}
