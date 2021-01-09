@@ -56,9 +56,14 @@ class PathfindingVisualizer extends React.Component {
         }
     }
 
+    clearGrid = () => {
+        const newGrid = this.buildGrid();
+        this.setState({grid: newGrid})
+    }
+
     componentDidMount () {
         const grid = this.buildGrid();
-        this.setState({grid});
+        this.setState({grid: grid});
     }
 
     handleMouseDown(row, col) {
@@ -84,7 +89,9 @@ class PathfindingVisualizer extends React.Component {
             <div>
                 <Card>
                     <CardHeader>
-                        <Menu></Menu>
+                        <Menu
+                        clearGrid={this.clearGrid}
+                        ></Menu>
                     </CardHeader>
                     <CardBody>
                         <div className="grid">
