@@ -16,7 +16,7 @@ class Menu extends React.Component {
                 <Container>
                     <Row>
                         <Col>
-                            <Button color="success">
+                            <Button color="success" onClick={() => this.props.visualize()}>
                                 Visualize
                             </Button>
                         </Col>
