@@ -3,6 +3,7 @@ import { Card, CardHeader, CardBody
 } from 'reactstrap';
 
 import './PathfindingVisualizer.css';
+import { dijkstra, getNodesInShortestPathOrder } from '../algorithms/dijkstra';
 
 import Menu from './Menu';
 import Node from './Node';
@@ -50,15 +51,62 @@ class PathfindingVisualizer extends React.Component {
         return {
             row,
             col,
+            distance: Infinity,
             isStart: row === START_NODE[0] && col === START_NODE[1],
             isTarget: row === TARGET_NODE[0] && col === TARGET_NODE[1],
             isWall: false,
+            previousNode: null,
+        }
+    }
+
+    clearGrid = () => {
+        for (let r = 0; r < ROW_COUNT; r++) {
+            for (let c = 0; c < COL_COUNT; c++) {
+                document.getElementById(`node-${r}-${c}`).className = 'node';
+            }
+        }
+
+        const grid = this.buildGrid();
+        this.setState({grid: grid});
+    }
+
+    visualize = () => {
+        const grid = this.state.grid;
+        const start = grid[START_NODE[0]][START_NODE[1]];
+        const target = grid[TARGET_NODE[0]][TARGET_NODE[1]];
+        const visitedNodesInOrder = dijkstra(grid, start, target);
+        const nodesInShortestPathOrder = getNodesInShortestPathOrder(target);
+
+        this.animateSearch(visitedNodesInOrder, nodesInShortestPathOrder);
+    }
+
+    animateSearch = (visitedNodesInOrder, nodesInShortestPathOrder) => {
+        for (let i = 0; i <= visitedNodesInOrder.length; i++) {
+            if (i === visitedNodesInOrder.length) {
+                setTimeout(() => {
+                    this.animatePath(nodesInShortestPathOrder);
+                }, 10 * i);
+                return;
+            }
+            setTimeout(() => {
+                const node = visitedNodesInOrder[i];
+                document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-visited';
+            }, 10 * i);
+        }
+    }
+
+    animatePath = (nodesInShortestPathOrder) => {
+        for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
+            setTimeout(() => {
+                const node = nodesInShortestPathOrder[i];
+                document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-path';
+            }, 50 * i)
         }
     }
 
     componentDidMount () {
         const grid = this.buildGrid();
-        this.setState({grid});
+        this.setState({grid: grid});
     }
 
     handleMouseDown(row, col) {
@@ -84,7 +132,10 @@ class PathfindingVisualizer extends React.Component {
             <div>
                 <Card>
                     <CardHeader>
-                        <Menu></Menu>
+                        <Menu
+                        visualize={this.visualize}
+                        clearGrid={this.clearGrid}
+                        ></Menu>
                     </CardHeader>
                     <CardBody>
                         <div className="grid">

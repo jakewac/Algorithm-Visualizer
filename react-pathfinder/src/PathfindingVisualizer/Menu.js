@@ -12,11 +12,11 @@ class Menu extends React.Component {
  
     render () {
         return (
-            <div>
+            <div className="menu">
                 <Container>
                     <Row>
                         <Col>
-                            <Button color="success">
+                            <Button color="success" onClick={() => this.props.visualize()}>
                                 Visualize
                             </Button>
                         </Col>
@@ -24,7 +24,7 @@ class Menu extends React.Component {
                             Pathfinding Visualizer
                         </Col>
                         <Col>
-                            <Button color="danger">
+                            <Button color="danger" onClick={() => this.props.clearGrid()}>
                                 Clear
                             </Button>
                         </Col>
