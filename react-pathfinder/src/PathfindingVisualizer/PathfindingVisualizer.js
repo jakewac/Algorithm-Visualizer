@@ -3,10 +3,10 @@ import { Card, CardHeader, CardBody
 } from 'reactstrap';
 
 import './PathfindingVisualizer.css';
+import { dijkstra, getNodesInShortestPathOrder } from '../algorithms/dijkstra';
 
 import Menu from './Menu';
 import Node from './Node';
-import { dijkstra, getNodesInShortestPathOrder } from '../algorithms/dijkstra';
 
 const ROW_COUNT = 24;
 const COL_COUNT = 50;
@@ -51,6 +51,7 @@ class PathfindingVisualizer extends React.Component {
         return {
             row,
             col,
+            distance: Infinity,
             isStart: row === START_NODE[0] && col === START_NODE[1],
             isTarget: row === TARGET_NODE[0] && col === TARGET_NODE[1],
             isWall: false,
@@ -73,32 +74,31 @@ class PathfindingVisualizer extends React.Component {
         const grid = this.state.grid;
         const start = grid[START_NODE[0]][START_NODE[1]];
         const target = grid[TARGET_NODE[0]][TARGET_NODE[1]];
+        const visitedNodesInOrder = dijkstra(grid, start, target);
+        const nodesInShortestPathOrder = getNodesInShortestPathOrder(target);
 
-        const visitedNodes = dijkstra(grid, start, target);
-        const shortestPath = getNodesInShortestPathOrder(target);
-
-        this.animateSearch(visitedNodes, shortestPath);
+        this.animateSearch(visitedNodesInOrder, nodesInShortestPathOrder);
     }
 
-    animateSearch = (visitedNodes, shortestPath) => {
-        for (let i = 0; i <= visitedNodes.length; i++) {
-            if (i === visitedNodes.length) {
+    animateSearch = (visitedNodesInOrder, nodesInShortestPathOrder) => {
+        for (let i = 0; i <= visitedNodesInOrder.length; i++) {
+            if (i === visitedNodesInOrder.length) {
                 setTimeout(() => {
-                    this.animatePath(shortestPath);
+                    this.animatePath(nodesInShortestPathOrder);
                 }, 10 * i);
                 return;
             }
             setTimeout(() => {
-                const node = visitedNodes[i];
+                const node = visitedNodesInOrder[i];
                 document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-visited';
             }, 10 * i);
         }
     }
 
-    animatePath = (shortestPath) => {
-        for (let i = 0; i < shortestPath.length; i++) {
+    animatePath = (nodesInShortestPathOrder) => {
+        for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
             setTimeout(() => {
-                const node = shortestPath[i];
+                const node = nodesInShortestPathOrder[i];
                 document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-path';
             }, 50 * i)
         }
