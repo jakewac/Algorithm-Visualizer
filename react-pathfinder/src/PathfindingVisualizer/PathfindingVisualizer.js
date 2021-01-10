@@ -20,6 +20,7 @@ class PathfindingVisualizer extends React.Component {
         this.state = {
             grid: [],
             mouseIsDown: false,
+            drawWall: null,
         };
     }
 
@@ -35,18 +36,6 @@ class PathfindingVisualizer extends React.Component {
         return grid;
     }
 
-    updateGrid = (grid, row, col) => {
-        const newGrid = grid.slice();
-        const node = newGrid[row][col];
-        const newNode = {
-            ...node,
-            isWall: !node.isWall,
-        };
-
-        newGrid[row][col] = newNode;
-        return newGrid;
-    }
-
     createNode = (row, col) => {
         return {
             row,
@@ -59,46 +48,80 @@ class PathfindingVisualizer extends React.Component {
         }
     }
 
-    clearGrid = () => {
-        for (let r = 0; r < ROW_COUNT; r++) {
-            for (let c = 0; c < COL_COUNT; c++) {
-                document.getElementById(`node-${r}-${c}`).className = 'node';
-            }
-        }
-
-        const grid = this.buildGrid();
+    toggleWallNode = (row, col) => {
+        const grid = this.state.grid;
+        const node = this.state.grid[row][col];
+        const newNode = {
+            ...node,
+            isWall: !node.isWall,
+        };
+        grid[row][col] = newNode;
         this.setState({grid: grid});
     }
 
-    visualize = () => {
-        const grid = this.state.grid;
-        const start = grid[START_NODE[0]][START_NODE[1]];
-        const target = grid[TARGET_NODE[0]][TARGET_NODE[1]];
-        const visitedNodesInOrder = dijkstra(grid, start, target);
-        const nodesInShortestPathOrder = getNodesInShortestPathOrder(target);
-
-        this.animateSearch(visitedNodesInOrder, nodesInShortestPathOrder);
-    }
-
-    animateSearch = (visitedNodesInOrder, nodesInShortestPathOrder) => {
-        for (let i = 0; i <= visitedNodesInOrder.length; i++) {
-            if (i === visitedNodesInOrder.length) {
-                setTimeout(() => {
-                    this.animatePath(nodesInShortestPathOrder);
-                }, 10 * i);
-                return;
+    clearPath = () => {
+        for (let r = 0; r < ROW_COUNT; r++) {
+            for (let c = 0; c < COL_COUNT; c++) {
+                const node = document.getElementById(`node-${r}-${c}`);
+                if(node.className === 'node node-visited' || node.className === 'node node-path') {
+                    node.className = 'node';
+                }
             }
-            setTimeout(() => {
-                const node = visitedNodesInOrder[i];
-                document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-visited';
-            }, 10 * i);
         }
     }
 
-    animatePath = (nodesInShortestPathOrder) => {
-        for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
+    clearWalls = () => {
+        const grid = this.state.grid;
+        for (let r = 0; r < ROW_COUNT; r++) {
+            for (let c = 0; c < COL_COUNT; c++) {
+                const node = this.state.grid[r][c];
+                const newNode = {
+                    ...node,
+                    isWall: false,
+                }
+                grid[r][c] = newNode;
+            }
+        }
+        this.setState({grid: grid});
+    }
+
+    clearGrid = () => {
+        this.clearPath();
+        this.clearWalls();
+    }
+
+    visualize = () => {
+        this.clearPath();
+
+        const grid = this.state.grid;
+
+        const start = grid[START_NODE[0]][START_NODE[1]];
+        const target = grid[TARGET_NODE[0]][TARGET_NODE[1]];
+        const visitedNodes = dijkstra(grid, start, target);
+        const shortestPath = getNodesInShortestPathOrder(target);
+
+        this.animateSearch(visitedNodes, shortestPath);
+    }
+
+    animateSearch = (visitedNodes, shortestPath) => {
+        for (let i = 1; i <= visitedNodes.length; i++) {
+            if (i === visitedNodes.length) {
+                setTimeout(() => {
+                    this.animatePath(shortestPath);
+                }, 5 * i);
+                return;
+            }
             setTimeout(() => {
-                const node = nodesInShortestPathOrder[i];
+                const node = visitedNodes[i];
+                if(!node.isTarget) document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-visited';
+            }, 5 * i);
+        }
+    }
+
+    animatePath = (shortestPath) => {
+        for (let i = 1; i < shortestPath.length - 1; i++) {
+            setTimeout(() => {
+                const node = shortestPath[i];
                 document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-path';
             }, 50 * i)
         }
@@ -109,19 +132,25 @@ class PathfindingVisualizer extends React.Component {
         this.setState({grid: grid});
     }
 
-    handleMouseDown(row, col) {
-        const newGrid = this.updateGrid(this.state.grid, row, col);
-        this.setState({grid: newGrid, mouseIsDown: true});
+    handleMouseDown(row, col, isWall) {
+        this.toggleWallNode(row, col);
+        this.setState({
+            mouseIsDown: true,
+            drawWall: isWall,
+        });
     }
 
     handleMouseUp() {
-        this.setState({mouseIsDown: false});
+        this.setState({
+            mouseIsDown: false,
+            drawWall: null,
+        });
     }
 
-    handleMouseEnter(row, col) {
-        if (!this.state.mouseIsDown) return;
-        const newGrid = this.updateGrid(this.state.grid, row, col);
-        this.setState({grid: newGrid});
+    handleMouseEnter(row, col, isWall) {
+        if (this.state.mouseIsDown && (isWall === this.state.drawWall)) {
+            this.toggleWallNode(row, col);
+        }
     }
 
     render () {
@@ -133,12 +162,17 @@ class PathfindingVisualizer extends React.Component {
                 <Card>
                     <CardHeader>
                         <Menu
-                        visualize={this.visualize}
-                        clearGrid={this.clearGrid}
+                        pathfinder={this}
                         ></Menu>
                     </CardHeader>
                     <CardBody>
-                        <div className="grid">
+                        <div 
+                        className="grid" 
+                        onMouseUp={() => this.handleMouseUp()}
+                        onMouseLeave={() => this.handleMouseUp()}
+                        onContextMenu={(e) => e.preventDefault()}
+                        onDragStart={(e) => e.preventDefault()}
+                        >
                             {Array.from(this.state.grid).map((row, rowIdx) => {
                                 return (
                                     <div key={rowIdx} className="grid-row">
@@ -152,10 +186,8 @@ class PathfindingVisualizer extends React.Component {
                                                 isStart={isStart}
                                                 isTarget={isTarget}
                                                 isWall={isWall}
-                                                mouseIsDown={this.state.mouseIsDown}
-                                                onMouseDown={(row, col) => this.handleMouseDown(row, col)}
-                                                onMouseUp={() => this.handleMouseUp()}
-                                                onMouseEnter={(row, col) => this.handleMouseEnter(row, col)}
+                                                mousePressed={(row, col, isWall) => this.handleMouseDown(row, col, isWall)}
+                                                mouseEntered={(row, col, isWall) => this.handleMouseEnter(row, col, isWall)}
                                                 ></Node>
                                             );
                                         })}
