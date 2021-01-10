@@ -74,7 +74,7 @@
 
 .node-path {
     animation-name: shortestPath;
-    animation-duration: 2s;
+    animation-duration: 1s;
     animation-timing-function: ease-out;
     animation-delay: 0;
     animation-direction: alternate;

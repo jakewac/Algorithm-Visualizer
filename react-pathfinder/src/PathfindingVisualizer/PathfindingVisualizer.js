@@ -71,18 +71,7 @@ class PathfindingVisualizer extends React.Component {
     }
 
     clearWalls = () => {
-        const grid = this.state.grid;
-        for (let r = 0; r < ROW_COUNT; r++) {
-            for (let c = 0; c < COL_COUNT; c++) {
-                const node = this.state.grid[r][c];
-                const newNode = {
-                    ...node,
-                    isWall: false,
-                }
-                grid[r][c] = newNode;
-            }
-        }
-        this.setState({grid: grid});
+        this.setState({grid: this.buildGrid()});
     }
 
     clearGrid = () => {
