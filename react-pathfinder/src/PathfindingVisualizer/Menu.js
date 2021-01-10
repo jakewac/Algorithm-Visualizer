@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col, Button
+import { Container, Row, Col, Button, ButtonDropdown, DropdownItem, DropdownToggle, DropdownMenu
 } from 'reactstrap';
 
 import './Menu.css';
@@ -7,7 +7,13 @@ import './Menu.css';
 class Menu extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            dropdownOpen: false,
+        };
+    }
+
+    toggle = () => {
+        this.setState({dropdownOpen: !this.state.dropdownOpen});
     }
  
     render () {
@@ -16,7 +22,7 @@ class Menu extends React.Component {
                 <Container>
                     <Row>
                         <Col>
-                            <Button color="success" onClick={() => this.props.visualize()}>
+                            <Button color="success" onClick={() => this.props.pathfinder.visualize()}>
                                 Visualize
                             </Button>
                         </Col>
@@ -24,9 +30,16 @@ class Menu extends React.Component {
                             Pathfinding Visualizer
                         </Col>
                         <Col>
-                            <Button color="danger" onClick={() => this.props.clearGrid()}>
-                                Clear
-                            </Button>
+                            <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+                                <Button color="danger" onClick={() => this.props.pathfinder.clearGrid()}>Clear</Button>
+                                <DropdownToggle split color="danger" />
+                                <DropdownMenu>
+                                    <DropdownItem onClick={() => this.props.pathfinder.clearGrid()}>Clear All</DropdownItem>
+                                    <DropdownItem divider></DropdownItem>
+                                    <DropdownItem onClick={() => this.props.pathfinder.clearWalls()}>Clear Walls</DropdownItem>
+                                    <DropdownItem onClick={() => this.props.pathfinder.clearPath()}>Clear Path</DropdownItem>
+                                </DropdownMenu>
+                            </ButtonDropdown>
                         </Col>
                     </Row>
                 </Container>
