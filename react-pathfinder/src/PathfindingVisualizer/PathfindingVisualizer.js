@@ -3,7 +3,9 @@ import { Card, CardHeader, CardBody
 } from 'reactstrap';
 
 import './PathfindingVisualizer.css';
-import { dijkstra, getNodesInShortestPathOrder } from '../algorithms/dijkstra';
+
+import { getShortestPathNodes, dijkstra, aStar, breadthFirstSearch, depthFirstSearch 
+} from './SearchAlgorithms';
 
 import Menu from './Menu';
 import Node from './Node';
@@ -24,26 +26,40 @@ class PathfindingVisualizer extends React.Component {
         };
     }
 
-    buildGrid = () => {
+    rebuildGrid = () => {
         const grid = [];
         for (let r = 0; r < ROW_COUNT; r++) {
             const curRow = [];
             for (let c = 0; c < COL_COUNT; c++) {
-                curRow.push(this.createNode(r, c));
+                curRow.push(this.createNode(r, c, false));
             }
             grid.push(curRow);
         }
         return grid;
     }
 
-    createNode = (row, col) => {
+    softRebuildGrid = () => {
+        const oldGrid = this.state.grid;
+        const grid = [];
+        for (let r = 0; r < ROW_COUNT; r++) {
+            const curRow = [];
+            for (let c = 0; c < COL_COUNT; c++) {
+                curRow.push(this.createNode(r, c, oldGrid[r][c].isWall));
+            }
+            grid.push(curRow);
+        }
+        return grid;
+    }
+
+    createNode = (row, col, isWall) => {
         return {
             row,
             col,
             distance: Infinity,
+            rootDistance: Infinity,
             isStart: row === START_NODE[0] && col === START_NODE[1],
             isTarget: row === TARGET_NODE[0] && col === TARGET_NODE[1],
-            isWall: false,
+            isWall: isWall,
             previousNode: null,
         }
     }
@@ -63,15 +79,16 @@ class PathfindingVisualizer extends React.Component {
         for (let r = 0; r < ROW_COUNT; r++) {
             for (let c = 0; c < COL_COUNT; c++) {
                 const node = document.getElementById(`node-${r}-${c}`);
-                if(node.className === 'node node-visited' || node.className === 'node node-path') {
+                if(node.className === 'node node-visited' || node.className === 'node node-path' || node.className === 'node node-visited-instant') {
                     node.className = 'node';
                 }
             }
         }
+        this.setState({grid: this.softRebuildGrid()})
     }
 
     clearWalls = () => {
-        this.setState({grid: this.buildGrid()});
+        this.setState({grid: this.rebuildGrid()});
     }
 
     clearGrid = () => {
@@ -79,7 +96,7 @@ class PathfindingVisualizer extends React.Component {
         this.clearWalls();
     }
 
-    visualize = () => {
+    visualizeDijkstra = () => {
         this.clearPath();
 
         const grid = this.state.grid;
@@ -87,8 +104,43 @@ class PathfindingVisualizer extends React.Component {
         const start = grid[START_NODE[0]][START_NODE[1]];
         const target = grid[TARGET_NODE[0]][TARGET_NODE[1]];
         const visitedNodes = dijkstra(grid, start, target);
-        const shortestPath = getNodesInShortestPathOrder(target);
+        const shortestPath = getShortestPathNodes(target);
+        this.animateSearch(visitedNodes, shortestPath);
+    }
 
+    visualizeAStar = () => {
+        this.clearPath();
+
+        const grid = this.state.grid;
+
+        const start = grid[START_NODE[0]][START_NODE[1]];
+        const target = grid[TARGET_NODE[0]][TARGET_NODE[1]];
+        const visitedNodes = aStar(grid, start, target);
+        const shortestPath = getShortestPathNodes(target);
+        this.animateSearch(visitedNodes, shortestPath);
+    }
+
+    visualizeBFS = () => {
+        this.clearPath();
+
+        const grid = this.state.grid;
+
+        const start = grid[START_NODE[0]][START_NODE[1]];
+        const target = grid[TARGET_NODE[0]][TARGET_NODE[1]];
+        const visitedNodes = breadthFirstSearch(grid, start, target);
+        const shortestPath = getShortestPathNodes(target);
+        this.animateSearch(visitedNodes, shortestPath);
+    }
+
+    visualizeDFS = () => {
+        this.clearPath();
+
+        const grid = this.state.grid;
+
+        const start = grid[START_NODE[0]][START_NODE[1]];
+        const target = grid[TARGET_NODE[0]][TARGET_NODE[1]];
+        const visitedNodes = depthFirstSearch(grid, start, target);
+        const shortestPath = getShortestPathNodes(target);
         this.animateSearch(visitedNodes, shortestPath);
     }
 
@@ -116,8 +168,31 @@ class PathfindingVisualizer extends React.Component {
         }
     }
 
+    instantPath = () => {
+        this.clearPath();
+
+        const grid = this.state.grid;
+
+        const start = grid[START_NODE[0]][START_NODE[1]];
+        const target = grid[TARGET_NODE[0]][TARGET_NODE[1]];
+        const visitedNodes = dijkstra(grid, start, target);
+        const shortestPath = getShortestPathNodes(target);
+
+        for (let i = 1; i <= visitedNodes.length; i++) {
+            if (i === visitedNodes.length) {
+                for (let i = 1; i < shortestPath.length - 1; i++) {
+                    const node = shortestPath[i];
+                    document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-path';
+                }
+                return;
+            }
+            const node = visitedNodes[i];
+            if(!node.isTarget) document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-visited-instant';
+        }
+    }
+
     componentDidMount () {
-        const grid = this.buildGrid();
+        const grid = this.rebuildGrid();
         this.setState({grid: grid});
     }
 
@@ -125,7 +200,7 @@ class PathfindingVisualizer extends React.Component {
         this.toggleWallNode(row, col);
         this.setState({
             mouseIsDown: true,
-            drawWall: isWall,
+            drawWall: !isWall,
         });
     }
 
@@ -137,7 +212,7 @@ class PathfindingVisualizer extends React.Component {
     }
 
     handleMouseEnter(row, col, isWall) {
-        if (this.state.mouseIsDown && (isWall === this.state.drawWall)) {
+        if (this.state.mouseIsDown && (!isWall === this.state.drawWall)) {
             this.toggleWallNode(row, col);
         }
     }
