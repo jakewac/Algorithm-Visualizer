@@ -1,4 +1,11 @@
-import PriorityQueue from "./util";
+import PriorityQueue from "./Utils";
+
+export const algorithms = {
+    DIJKSTRA: "dijkstra",
+    ASTAR: "astar",
+    BFS: "bfs",
+    DFS: "dfs",
+}
 
 export function dijkstra(grid, start, target) {
     const visitedNodes = [];
@@ -85,9 +92,7 @@ export function depthFirstSearch(grid, start, target) {
     const visitedNodes = [];
     const unvisitedNodes = [start];
     start.distance = 0;
-    let i = 0;
     while (!!unvisitedNodes) {
-        console.log(++i);
         const curNode = unvisitedNodes.pop();
 
         if (curNode.isWall) continue;
