@@ -3,57 +3,90 @@ import { Container, Row, Col, Button, ButtonDropdown, DropdownItem, DropdownTogg
 } from 'reactstrap';
 
 import './Menu.css';
+import { algorithms } from './SearchAlgorithms';
 
 class Menu extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             visualizeDropdownOpen: false,
+            mazeDropdownOpen: false,
+            editDropdownOpen: false,
             clearDropdownOpen: false,
+            isInstant: false,
         };
     }
 
-    toggleVisualize = () => {
-        this.setState({visualizeDropdownOpen: !this.state.visualizeDropdownOpen});
-    }
+    toggleVisualize = () => { this.setState({visualizeDropdownOpen: !this.state.visualizeDropdownOpen}); }
 
-    toggleClear = () => {
-        this.setState({clearDropdownOpen: !this.state.clearDropdownOpen});
-    }
+    toggleMaze = () => { this.setState({mazeDropdownOpen: !this.state.mazeDropdownOpen}); }
+
+    toggleEdit = () => { this.setState({editDropdownOpen: !this.state.editDropdownOpen}); }
+
+    toggleClear = () => { this.setState({clearDropdownOpen: !this.state.clearDropdownOpen}); }
+
+    toggleInstant = () => { this.setState({isInstant: !this.state.isInstant}); }
+
+    getIsInstantText = () => { return this.state.isInstant ? "Instant" : "Visualize"; }
  
     render () {
         return (
             <div className="menu">
                 <Container>
                     <Row>
-                        <Col>
-                            <ButtonDropdown isOpen={this.state.visualizeDropdownOpen} toggle={this.toggleVisualize}>
-                                <Button color="success" onClick={this.toggleVisualize}>Visualize</Button>
-                                <DropdownToggle split color="success" />
-                                <DropdownMenu>
-                                    <DropdownItem onClick={() => this.props.pathfinder.visualizeDijkstra()}>Dijkstra</DropdownItem>
-                                    <DropdownItem onClick={() => this.props.pathfinder.visualizeAStar()}>A* (A-Star)</DropdownItem>
-                                    <DropdownItem onClick={() => this.props.pathfinder.visualizeBFS()}>Breadth First Search</DropdownItem>
-                                    <DropdownItem onClick={() => this.props.pathfinder.visualizeDFS()}>Depth First Search</DropdownItem>
-                                    <DropdownItem divider />
-                                    <DropdownItem onClick={() => this.props.pathfinder.instantPath()}>Instant</DropdownItem>
-                                </DropdownMenu>
-                            </ButtonDropdown>
-                        </Col>
                         <Col className="title">
                             Pathfinding Visualizer
                         </Col>
                         <Col>
-                            <ButtonDropdown isOpen={this.state.clearDropdownOpen} toggle={this.toggleClear}>
-                                <Button color="danger" onClick={this.toggleClear}>Clear</Button>
-                                <DropdownToggle split color="danger" />
-                                <DropdownMenu>
-                                    <DropdownItem onClick={() => this.props.pathfinder.clearGrid()}>Clear All</DropdownItem>
-                                    <DropdownItem divider />
-                                    <DropdownItem onClick={() => this.props.pathfinder.clearWalls()}>Clear Walls</DropdownItem>
-                                    <DropdownItem onClick={() => this.props.pathfinder.clearPath()}>Clear Path</DropdownItem>
-                                </DropdownMenu>
-                            </ButtonDropdown>
+                            <Container>
+                                <Row>
+                                    <Col>
+                                        <ButtonDropdown isOpen={this.state.visualizeDropdownOpen} toggle={this.toggleVisualize}>
+                                            <Button color="success" onClick={this.toggleVisualize}>{this.getIsInstantText()}</Button>
+                                            <DropdownToggle split color="success" />
+                                            <DropdownMenu>
+                                                <DropdownItem onClick={this.toggleInstant}>Mode</DropdownItem>
+                                                <DropdownItem divider />
+                                                <DropdownItem onClick={() => this.props.pathfinder.visualizePathfind(algorithms.DIJKSTRA, this.state.isInstant)}>Dijkstra</DropdownItem>
+                                                <DropdownItem onClick={() => this.props.pathfinder.visualizePathfind(algorithms.ASTAR, this.state.isInstant)}>A* (A-Star)</DropdownItem>
+                                                <DropdownItem onClick={() => this.props.pathfinder.visualizePathfind(algorithms.BFS, this.state.isInstant)}>Breadth First Search</DropdownItem>
+                                                <DropdownItem onClick={() => this.props.pathfinder.visualizePathfind(algorithms.DFS, this.state.isInstant)}>Depth First Search</DropdownItem>
+                                            </DropdownMenu>
+                                        </ButtonDropdown>
+                                    </Col>
+                                    <Col>
+                                        <ButtonDropdown isOpen={this.state.mazeDropdownOpen} toggle={this.toggleMaze}>
+                                            <Button color="warning" onClick={this.toggleMaze}>Maze</Button>
+                                            <DropdownToggle split color="warning" />
+                                            <DropdownMenu>
+                                                <DropdownItem onClick={() => this.props.pathfinder.genRecursiveDevision()}>Recursive Devision</DropdownItem>
+                                            </DropdownMenu>
+                                        </ButtonDropdown>
+                                    </Col>
+                                    <Col>
+                                    <ButtonDropdown isOpen={this.state.editDropdownOpen} toggle={this.toggleEdit}>
+                                        <Button color="primary" onClick={this.toggleEdit}>Edit</Button>
+                                        <DropdownToggle split color="primary" />
+                                        <DropdownMenu>
+                                            <DropdownItem onClick={() => this.props.pathfinder.placeStartNode()}>Place Start Node</DropdownItem>
+                                            <DropdownItem onClick={() => this.props.pathfinder.placeTargetNode()}>Place Target Node</DropdownItem>
+                                        </DropdownMenu>
+                                    </ButtonDropdown>
+                                    </Col>
+                                    <Col>
+                                    <ButtonDropdown isOpen={this.state.clearDropdownOpen} toggle={this.toggleClear}>
+                                        <Button color="danger" onClick={this.toggleClear}>Clear</Button>
+                                        <DropdownToggle split color="danger" />
+                                        <DropdownMenu>
+                                            <DropdownItem onClick={() => this.props.pathfinder.clearGrid()}>Clear All</DropdownItem>
+                                            <DropdownItem divider />
+                                            <DropdownItem onClick={() => this.props.pathfinder.clearWalls()}>Clear Walls</DropdownItem>
+                                            <DropdownItem onClick={() => this.props.pathfinder.clearPath()}>Clear Path</DropdownItem>
+                                        </DropdownMenu>
+                                    </ButtonDropdown>
+                                    </Col>
+                                </Row>
+                            </Container>
                         </Col>
                     </Row>
                 </Container>

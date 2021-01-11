@@ -1,4 +1,11 @@
-import PriorityQueue from "./util";
+import PriorityQueue from "./Utils";
+
+export const algorithms = {
+    DIJKSTRA: "dijkstra",
+    ASTAR: "astar",
+    BFS: "bfs",
+    DFS: "dfs",
+}
 
 export function dijkstra(grid, start, target) {
     const visitedNodes = [];
