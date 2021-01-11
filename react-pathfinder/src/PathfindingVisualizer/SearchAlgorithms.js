@@ -92,9 +92,7 @@ export function depthFirstSearch(grid, start, target) {
     const visitedNodes = [];
     const unvisitedNodes = [start];
     start.distance = 0;
-    let i = 0;
     while (!!unvisitedNodes) {
-        console.log(++i);
         const curNode = unvisitedNodes.pop();
 
         if (curNode.isWall) continue;

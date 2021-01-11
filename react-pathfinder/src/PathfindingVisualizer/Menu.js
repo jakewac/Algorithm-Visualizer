@@ -45,7 +45,7 @@ class Menu extends React.Component {
                                             <Button color="success" onClick={this.toggleVisualize}>{this.getIsInstantText()}</Button>
                                             <DropdownToggle split color="success" />
                                             <DropdownMenu>
-                                                <DropdownItem onClick={this.toggleInstant}>Mode</DropdownItem>
+                                                <DropdownItem onClick={this.toggleInstant}>Pathfind Mode</DropdownItem>
                                                 <DropdownItem divider />
                                                 <DropdownItem onClick={() => this.props.pathfinder.visualizePathfind(algorithms.DIJKSTRA, this.state.isInstant)}>Dijkstra</DropdownItem>
                                                 <DropdownItem onClick={() => this.props.pathfinder.visualizePathfind(algorithms.ASTAR, this.state.isInstant)}>A* (A-Star)</DropdownItem>
@@ -68,6 +68,8 @@ class Menu extends React.Component {
                                         <Button color="primary" onClick={this.toggleEdit}>Edit</Button>
                                         <DropdownToggle split color="primary" />
                                         <DropdownMenu>
+                                            <DropdownItem onClick={() => this.props.pathfinder.resetStartTarget()}>Reset Start/Target Nodes</DropdownItem>
+                                            <DropdownItem divider />
                                             <DropdownItem onClick={() => this.props.pathfinder.placeStartNode()}>Place Start Node</DropdownItem>
                                             <DropdownItem onClick={() => this.props.pathfinder.placeTargetNode()}>Place Target Node</DropdownItem>
                                         </DropdownMenu>
