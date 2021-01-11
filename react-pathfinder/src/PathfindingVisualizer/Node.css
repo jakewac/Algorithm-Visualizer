@@ -57,13 +57,13 @@
 @keyframes visitedAnimation {
     0% {
       transform: scale(0.6);
-      background-color: rgb(150, 50, 250);
+      background-color: rgb(255, 255, 0);
       border-radius: 100%;
     }
   
     50% {
       transform: scale(1.2);
-      background-color: rgb(50, 75, 200);
+      background-color: rgb(0, 100, 200);
     }
   
     100% {
@@ -98,4 +98,8 @@
       transform: scale(1);
       background-color: rgb(255, 255, 0);
     }
+}
+
+.node-visited-instant {
+  background-color: rgb(100, 200, 250);
 }
