@@ -8,8 +8,6 @@ class Node extends React.Component {
         this.state = {};
     }
 
-
-
     render () {
         const nodeType = this.props.isStart ? 'node-start' : 
         this.props.isTarget ? 'node-target' : 
@@ -22,7 +20,7 @@ class Node extends React.Component {
             className={`node ${nodeType}`}
             onMouseDown={() => this.props.mousePressed(this.props.row, this.props.col, this.props.isWall)}
             onMouseEnter={() => this.props.mouseEntered(this.props.row, this.props.col, this.props.isWall)}
-            ></div> 
+            /> 
         );
     }
 }

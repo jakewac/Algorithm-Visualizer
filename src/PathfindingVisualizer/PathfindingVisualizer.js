@@ -9,11 +9,11 @@ import { getShortestPathNodes, dijkstra, aStar, breadthFirstSearch, depthFirstSe
 import { recursiveDevision
 } from './MazeAlgorithms';
 
-import Menu from './Menu';
+import PathfindMenu from './PathfindMenu';
 import Node from './Node';
 
-const ROW_COUNT = 24;
-const COL_COUNT = 50;
+const ROW_COUNT = 25;
+const COL_COUNT = 51;
 
 const INIT_START = [12, 10];
 const INIT_TARGET = [12, 40];
@@ -24,7 +24,9 @@ class PathfindingVisualizer extends React.Component {
         this.state = {
             grid: [],
             mouseIsDown: false,
+            drawMode: 0,
             drawWall: null,
+            drawWeight: null,
             placingStart: false,
             placingTarget: false,
             startNode: INIT_START,
@@ -37,7 +39,7 @@ class PathfindingVisualizer extends React.Component {
         for (let r = 0; r < ROW_COUNT; r++) {
             const curRow = [];
             for (let c = 0; c < COL_COUNT; c++) {
-                curRow.push(this.createNode(r, c, false));
+                curRow.push(this.createNode(r, c, 1, false));
             }
             grid.push(curRow);
         }
@@ -50,17 +52,18 @@ class PathfindingVisualizer extends React.Component {
         for (let r = 0; r < ROW_COUNT; r++) {
             const curRow = [];
             for (let c = 0; c < COL_COUNT; c++) {
-                curRow.push(this.createNode(r, c, oldGrid[r][c].isWall));
+                curRow.push(this.createNode(r, c, oldGrid[r][c].cost, oldGrid[r][c].isWall));
             }
             grid.push(curRow);
         }
         return grid;
     }
 
-    createNode = (row, col, isWall) => {
+    createNode = (row, col, cost, isWall) => {
         return {
-            row,
-            col,
+            row: row,
+            col: col,
+            cost: cost,
             distance: Infinity,
             rootDistance: Infinity,
             isStart: row === this.state.startNode[0] && col === this.state.startNode[1],
@@ -68,6 +71,24 @@ class PathfindingVisualizer extends React.Component {
             isWall: isWall,
             previousNode: null,
         }
+    }
+
+    setNodeCost = (row, col, cost) => {
+        const grid = this.state.grid;
+        const node = grid[row][col];
+
+        if (node.isWall || node.isStart || node.isTarget) return;
+
+        if (cost === 1) document.getElementById(`node-${row}-${col}`).className = 'node';
+        else document.getElementById(`node-${row}-${col}`).className = 'node node-weight';
+
+        const newNode = {
+            ...node,
+            cost: cost,
+        };
+        grid[row][col] = newNode;
+        
+        this.setState({grid: grid});
     }
 
     placeStartNode = () => { this.setState({placingStart: true}); }
@@ -126,6 +147,8 @@ class PathfindingVisualizer extends React.Component {
 
     setWallNode = (row, col, wall) => {
         const grid = this.state.grid;
+        if (grid[row][col].isStart || grid[row][col].isTarget) return;
+
         const node = this.state.grid[row][col];
         const newNode = {
             ...node,
@@ -140,22 +163,56 @@ class PathfindingVisualizer extends React.Component {
         for (let r = 0; r < ROW_COUNT; r++) {
             for (let c = 0; c < COL_COUNT; c++) {
                 const node = document.getElementById(`node-${r}-${c}`);
-                if(node.className === 'node node-visited' || node.className === 'node node-path' || node.className === 'node node-visited-instant') {
+                if (node.className === 'node node-visited' || node.className === 'node node-path' || node.className === 'node node-visited-instant') {
                     node.className = 'node';
+                }
+                else if (node.className === 'node node-visited-weight' || node.className === 'node node-path-weight') {
+                    node.className = 'node node-weight';
                 }
             }
         }
         this.setState({grid: this.softRebuildGrid()})
     }
 
-    clearWalls = () => {
-        this.setState({grid: this.rebuildGrid()});
+    clearWalls = () => { 
+        const grid = this.state.grid;
+        for (const row of grid) {
+            for (const node of row) {
+                if (node.isWall) {
+                    const element = document.getElementById(`node-${node.row}-${node.col}`);
+                    element.className = 'node';
+                    node.isWall = false;
+                }
+            }
+        }
+        this.setState({grid: grid});
+    }
+
+    clearWeights = () => {
+        const grid = this.state.grid;
+        for (const row of grid) {
+            for (const node of row) {
+                if (node.cost !== 1) {
+                    const element = document.getElementById(`node-${node.row}-${node.col}`);
+                    element.className = 'node';
+                    node.cost = 1;
+                }
+            }
+        }
+        this.setState({grid: grid});
     }
 
     clearGrid = () => {
         this.clearPath();
+        this.clearWeights();
         this.clearWalls();
     }
+
+    drawStop = () => { this.setState({drawMode: 0}); }
+
+    drawWalls = () => { this.setState({drawMode: 1}); }
+
+    drawWeights = () => { this.setState({drawMode: 2}); }
 
     resetStartTarget = () => {
         this.setStartNode(INIT_START[0], INIT_START[1]);
@@ -197,12 +254,24 @@ class PathfindingVisualizer extends React.Component {
                 if (i === visitedNodes.length) {
                     for (let i = 1; i < shortestPath.length - 1; i++) {
                         const node = shortestPath[i];
-                        if(!node.isStart && !node.isTarget) document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-path';
+                        if (!node.isStart && !node.isTarget) {
+                            if (node.cost !== 1) {
+                                document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-path-weight';
+                            } else {
+                                document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-path';
+                            }
+                        }
                     }
                     return;
                 }
                 const node = visitedNodes[i];
-                if(!node.isStart && !node.isTarget) document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-visited-instant';
+                if(!node.isStart && !node.isTarget) {
+                    if (node.cost !== 1) {
+                        document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-visited-weight-instant';
+                    } else {
+                        document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-visited-instant';
+                    }
+                }
             }
         } else {
             for (let i = 0; i <= visitedNodes.length; i++) {
@@ -214,7 +283,13 @@ class PathfindingVisualizer extends React.Component {
                 }
                 setTimeout(() => {
                     const node = visitedNodes[i];
-                    if(!node.isStart && !node.isTarget) document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-visited';
+                    if(!node.isStart && !node.isTarget) { 
+                        if (node.cost !== 1) {
+                            document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-visited-weight';
+                        } else {
+                            document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-visited';
+                        }
+                    }
                 }, 5 * i);
             }
         }
@@ -224,7 +299,13 @@ class PathfindingVisualizer extends React.Component {
         for (let i = 0; i < shortestPath.length; i++) {
             setTimeout(() => {
                 const node = shortestPath[i];
-                if (!node.isStart && !node.isTarget) document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-path';
+                if (!node.isStart && !node.isTarget) {
+                    if (node.cost !== 1) {
+                        document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-path-weight';
+                    } else {
+                        document.getElementById(`node-${node.row}-${node.col}`).className = 'node node-path';
+                    }
+                }
             }, 50 * i);
         }
     }
@@ -232,13 +313,12 @@ class PathfindingVisualizer extends React.Component {
     genRecursiveDevision = () => {
         this.clearWalls();
         const maze = recursiveDevision(ROW_COUNT, COL_COUNT);
-        console.log(maze);
 
         for (let r = 0; r < maze.length; r++) {
             for (let c = 0; c < maze[0].length; c++) {
                 setTimeout(() => {
                     if (maze[r][c]) this.setWallNode(r, c, maze[r][c]);
-                }, 5 * c);
+                }, 500 * c);
             }
         }
     }
@@ -248,7 +328,7 @@ class PathfindingVisualizer extends React.Component {
         this.setState({grid: grid});
     }
 
-    handleMouseDown(row, col, isWall) {
+    handleMouseDown(row, col) {
         if (this.state.placingStart) {
             this.setStartNode(row, col);
             return;
@@ -259,37 +339,59 @@ class PathfindingVisualizer extends React.Component {
             return;
         }
 
-        this.setWallNode(row, col, !isWall);
-        this.setState({
-            mouseIsDown: true,
-            drawWall: !isWall,
-        });
+        switch (this.state.drawMode) {
+            case 1:
+                const isWall = this.state.grid[row][col].isWall;
+                this.setWallNode(row, col, !isWall);
+                this.setState({drawWall: !isWall});
+                break;
+            case 2:
+                if (this.state.grid[row][col].cost === 1) {
+                    this.setNodeCost(row, col, 5);
+                    this.setState({drawWeight: true});
+                } else {
+                    this.setNodeCost(row, col, 1);
+                    this.setState({drawWeight: false});
+                }
+                break;
+            default:
+                break;
+        }
+        this.setState({mouseIsDown: true});
     }
 
     handleMouseUp() {
         this.setState({
             mouseIsDown: false,
             drawWall: null,
+            drawWeight: null,
         });
     }
 
-    handleMouseEnter(row, col, isWall) {
-        if (this.state.mouseIsDown && (!isWall === this.state.drawWall)) {
-            this.setWallNode(row, col, !isWall);
+    handleMouseEnter(row, col) {
+        if (!this.state.mouseIsDown) return;
+        switch (this.state.drawMode) {
+            case 1:
+                const isWall = this.state.grid[row][col].isWall;
+                if (isWall !== this.state.drawWall) this.setWallNode(row, col, !isWall);
+                break;
+            case 2:
+                if (this.state.drawWeight) this.setNodeCost(row, col, 5);
+                if (!this.state.drawWeight) this.setNodeCost(row, col, 1);
+                break;
+            default:
+                break;
         }
     }
 
     render () {
-        const grid = this.state;
-        console.log(grid);
+        console.log(this.state.grid);
 
         return (
             <div>
                 <Card>
                     <CardHeader>
-                        <Menu
-                        pathfinder={this}
-                        ></Menu>
+                        <PathfindMenu pathfinder={this} />
                     </CardHeader>
                     <CardBody>
                         <div 
@@ -305,16 +407,16 @@ class PathfindingVisualizer extends React.Component {
                                         {Array.from(row).map((node, nodeIdx) => {
                                             const {row, col, isStart, isTarget, isWall} = node;
                                             return (
-                                                <Node className="grid-node"
+                                                <Node
                                                 key={nodeIdx}
                                                 row={row}
                                                 col={col}
                                                 isStart={isStart}
                                                 isTarget={isTarget}
                                                 isWall={isWall}
-                                                mousePressed={(row, col, isWall) => this.handleMouseDown(row, col, isWall)}
-                                                mouseEntered={(row, col, isWall) => this.handleMouseEnter(row, col, isWall)}
-                                                ></Node>
+                                                mousePressed={(row, col) => this.handleMouseDown(row, col)}
+                                                mouseEntered={(row, col) => this.handleMouseEnter(row, col)}
+                                                />
                                             );
                                         })}
                                     </div>

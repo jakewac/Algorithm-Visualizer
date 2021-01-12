@@ -2,16 +2,16 @@ import React from 'react';
 import { Container, Row, Col, Button, ButtonDropdown, DropdownItem, DropdownToggle, DropdownMenu
 } from 'reactstrap';
 
-import './Menu.css';
+import './PathfindMenu.css';
 import { algorithms } from './SearchAlgorithms';
 
-class Menu extends React.Component {
+class PathfindMenu extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             visualizeDropdownOpen: false,
-            mazeDropdownOpen: false,
             editDropdownOpen: false,
+            mazeDropdownOpen: false,
             clearDropdownOpen: false,
             isInstant: false,
         };
@@ -19,9 +19,9 @@ class Menu extends React.Component {
 
     toggleVisualize = () => { this.setState({visualizeDropdownOpen: !this.state.visualizeDropdownOpen}); }
 
-    toggleMaze = () => { this.setState({mazeDropdownOpen: !this.state.mazeDropdownOpen}); }
-
     toggleEdit = () => { this.setState({editDropdownOpen: !this.state.editDropdownOpen}); }
+
+    toggleMaze = () => { this.setState({mazeDropdownOpen: !this.state.mazeDropdownOpen}); }
 
     toggleClear = () => { this.setState({clearDropdownOpen: !this.state.clearDropdownOpen}); }
 
@@ -31,7 +31,7 @@ class Menu extends React.Component {
  
     render () {
         return (
-            <div className="menu">
+            <div className="pathfind-menu">
                 <Container>
                     <Row>
                         <Col className="title">
@@ -55,6 +55,23 @@ class Menu extends React.Component {
                                         </ButtonDropdown>
                                     </Col>
                                     <Col>
+                                        <ButtonDropdown isOpen={this.state.editDropdownOpen} toggle={this.toggleEdit}>
+                                            <Button color="info" onClick={this.toggleEdit}>Edit</Button>
+                                            <DropdownToggle split color="info" />
+                                            <DropdownMenu>
+                                                <DropdownItem onClick={() => this.props.pathfinder.drawStop()}>Stop Drawing</DropdownItem>
+                                                <DropdownItem divider />
+                                                <DropdownItem onClick={() => this.props.pathfinder.drawWalls()}>Draw Walls</DropdownItem>
+                                                <DropdownItem onClick={() => this.props.pathfinder.drawWeights()}>Draw Weights</DropdownItem>
+                                                <DropdownItem divider />
+                                                <DropdownItem onClick={() => this.props.pathfinder.resetStartTarget()}>Reset Start/Target Nodes</DropdownItem>
+                                                <DropdownItem divider />
+                                                <DropdownItem onClick={() => this.props.pathfinder.placeStartNode()}>Place Start Node</DropdownItem>
+                                                <DropdownItem onClick={() => this.props.pathfinder.placeTargetNode()}>Place Target Node</DropdownItem>
+                                            </DropdownMenu>
+                                        </ButtonDropdown>
+                                    </Col>
+                                    <Col>
                                         <ButtonDropdown isOpen={this.state.mazeDropdownOpen} toggle={this.toggleMaze}>
                                             <Button color="warning" onClick={this.toggleMaze}>Maze</Button>
                                             <DropdownToggle split color="warning" />
@@ -64,28 +81,17 @@ class Menu extends React.Component {
                                         </ButtonDropdown>
                                     </Col>
                                     <Col>
-                                    <ButtonDropdown isOpen={this.state.editDropdownOpen} toggle={this.toggleEdit}>
-                                        <Button color="primary" onClick={this.toggleEdit}>Edit</Button>
-                                        <DropdownToggle split color="primary" />
-                                        <DropdownMenu>
-                                            <DropdownItem onClick={() => this.props.pathfinder.resetStartTarget()}>Reset Start/Target Nodes</DropdownItem>
-                                            <DropdownItem divider />
-                                            <DropdownItem onClick={() => this.props.pathfinder.placeStartNode()}>Place Start Node</DropdownItem>
-                                            <DropdownItem onClick={() => this.props.pathfinder.placeTargetNode()}>Place Target Node</DropdownItem>
-                                        </DropdownMenu>
-                                    </ButtonDropdown>
-                                    </Col>
-                                    <Col>
-                                    <ButtonDropdown isOpen={this.state.clearDropdownOpen} toggle={this.toggleClear}>
-                                        <Button color="danger" onClick={this.toggleClear}>Clear</Button>
-                                        <DropdownToggle split color="danger" />
-                                        <DropdownMenu>
-                                            <DropdownItem onClick={() => this.props.pathfinder.clearGrid()}>Clear All</DropdownItem>
-                                            <DropdownItem divider />
-                                            <DropdownItem onClick={() => this.props.pathfinder.clearWalls()}>Clear Walls</DropdownItem>
-                                            <DropdownItem onClick={() => this.props.pathfinder.clearPath()}>Clear Path</DropdownItem>
-                                        </DropdownMenu>
-                                    </ButtonDropdown>
+                                        <ButtonDropdown isOpen={this.state.clearDropdownOpen} toggle={this.toggleClear}>
+                                            <Button color="danger" onClick={this.toggleClear}>Clear</Button>
+                                            <DropdownToggle split color="danger" />
+                                            <DropdownMenu>
+                                                <DropdownItem onClick={() => this.props.pathfinder.clearGrid()}>Clear All</DropdownItem>
+                                                <DropdownItem divider />
+                                                <DropdownItem onClick={() => this.props.pathfinder.clearWeights()}>Clear Weights</DropdownItem>
+                                                <DropdownItem onClick={() => this.props.pathfinder.clearWalls()}>Clear Walls</DropdownItem>
+                                                <DropdownItem onClick={() => this.props.pathfinder.clearPath()}>Clear Path</DropdownItem>
+                                            </DropdownMenu>
+                                        </ButtonDropdown>
                                     </Col>
                                 </Row>
                             </Container>
@@ -97,4 +103,4 @@ class Menu extends React.Component {
     }
 }
 
-export default Menu;
+export default PathfindMenu;

@@ -1,4 +1,4 @@
-import PriorityQueue from "./Utils";
+import PriorityQueue from "../Utils";
 
 export const algorithms = {
     DIJKSTRA: "dijkstra",
@@ -11,10 +11,11 @@ export function dijkstra(grid, start, target) {
     const visitedNodes = [];
     const unvisitedNodes = getAllNodes(grid);
     start.distance = 0;
-    while (!! unvisitedNodes) {
+    while (unvisitedNodes.length !== 0) {
         unvisitedNodes.sort((a, b) => a.distance - b.distance);
         const curNode = unvisitedNodes.shift();
         
+        if (!curNode) break;
         if (curNode.isWall) continue;
         if (curNode.distance === Infinity) return visitedNodes;
 
@@ -25,10 +26,11 @@ export function dijkstra(grid, start, target) {
 
         const unvisitedNeighbors = getUnvisitedNeighbors(curNode, grid);
         for (const neighbor of unvisitedNeighbors) {
-            neighbor.distance = curNode.distance + 1;
+            neighbor.distance = curNode.distance + neighbor.cost;
             neighbor.previousNode = curNode;
         }
     }
+    return visitedNodes;
 }
 
 export function aStar(grid, start, target) {
@@ -61,13 +63,14 @@ export function aStar(grid, start, target) {
             if (!unvisitedNodes.contains(neighbor)) unvisitedNodes.enqueue(neighbor, neighbor.distance);
         }
     }
+    return visitedNodes;
 }
 
 export function breadthFirstSearch(grid, start, target) {
     const visitedNodes = [];
     const unvisitedNodes = [start];
     start.distance = 0;
-    while (!!unvisitedNodes) {
+    while (unvisitedNodes.length !== 0) {
         const curNode = unvisitedNodes.shift();
 
         if (curNode.isWall) continue;
@@ -86,13 +89,14 @@ export function breadthFirstSearch(grid, start, target) {
             neighbor.previousNode = curNode;
         }
     }
+    return visitedNodes;
 }
 
 export function depthFirstSearch(grid, start, target) {
     const visitedNodes = [];
     const unvisitedNodes = [start];
     start.distance = 0;
-    while (!!unvisitedNodes) {
+    while (unvisitedNodes.length !== 0) {
         const curNode = unvisitedNodes.pop();
 
         if (curNode.isWall) continue;
@@ -111,6 +115,7 @@ export function depthFirstSearch(grid, start, target) {
             neighbor.previousNode = curNode;
         }
     }
+    return visitedNodes;
 }
 
 function getAllNodes(grid) {
