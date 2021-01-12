@@ -1,10 +1,10 @@
 import './App.css';
-import PathfindingVisualizer from './PathfindingVisualizer/PathfindingVisualizer';
+import NavBar from './NavBar';
 
 function App() {
   return (
     <div className="App">
-      <PathfindingVisualizer></PathfindingVisualizer>
+      <NavBar></NavBar>
     </div>
   );
 }

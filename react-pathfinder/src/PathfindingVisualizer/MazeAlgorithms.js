@@ -1,3 +1,5 @@
+import { random } from '../Utils';
+
 export function recursiveDevision(rows, cols) {
     var grid = [];
     for (var r = 0; r < rows; r++) {
@@ -25,27 +27,27 @@ function buildWalls(grid) {
         }
     }
 
-    grid = innerWalls(grid, true, 1, grid.length-2, 1, grid[0].length-2);
+    grid = innerWalls(grid, true, 1, grid[0].length-2, 1, grid.length-2);
     return grid;
 }
 
-function innerWalls(grid, h, minR, maxR, minC, maxC) {
+function innerWalls(grid, h, minC, maxC, minR, maxR) {
     if (h) {
-        if (maxC - minC <= 2) { return grid; }
+        if (maxC - minC <= 1) { return grid; }
 
         var y = Math.floor(random(minR, maxR)/2)*2;
         grid = addHWall(grid, minC, maxC, y);
 
-        //grid = innerWalls(grid, !h, minR, maxR, minC, y-1);
-        //grid = innerWalls(grid, !h, minR, maxR, y+1, maxC);
+        grid = innerWalls(grid, !h, minC, maxC, minR, y-1);
+        grid = innerWalls(grid, !h, minC, maxC, y+1, maxR);
     } else {
-        if (maxR - minR <= 2) { return grid; }
+        if (maxR - minR <= 1) { return grid; }
 
         var x = Math.floor(random(minC, maxC)/2)*2;
         grid = addVWall(grid, minR, maxR, x);
 
-        //grid = innerWalls(grid, !h, minR, x-1, minC, maxC);
-        //grid = innerWalls(grid, !h, x+1, maxR, minC, maxC);
+        grid = innerWalls(grid, !h, minC, x-1, minR, maxR);
+        grid = innerWalls(grid, !h, x+1, maxC, minR, maxR);
     }
     return grid;
 }
@@ -67,5 +69,3 @@ function addVWall(grid, minR, maxR, c) {
     }
     return grid;
 }
-
-function random(min, max) { return Math.floor(Math.random() * (max - min + 1) + min); }
