@@ -53,7 +53,7 @@ export function aStar(grid, start, target) {
         const unvisitedNeighbors = getUnvisitedNeighbors(curNode, grid);
         for (const neighbor of unvisitedNeighbors) {
             const manhattanD = 2 * (Math.abs(target.row - neighbor.row) + (Math.abs(target.col - neighbor.col)));
-            neighbor.rootDistance = Math.min(neighbor.rootDistance, curNode.rootDistance + 1);
+            neighbor.rootDistance = Math.min(neighbor.rootDistance, curNode.rootDistance + neighbor.cost);
             const minDistance = Math.min(neighbor.distance, neighbor.rootDistance + manhattanD);
             if (minDistance !== neighbor.distance) {
                 neighbor.distance = minDistance;
