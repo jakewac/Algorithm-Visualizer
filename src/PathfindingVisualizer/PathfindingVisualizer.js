@@ -13,10 +13,10 @@ import PathfindMenu from './PathfindMenu';
 import Node from './Node';
 
 const ROW_COUNT = 25;
-const COL_COUNT = 51;
+const COL_COUNT = 63;
 
 const INIT_START = [12, 10];
-const INIT_TARGET = [12, 40];
+const INIT_TARGET = [12, 52];
 
 class PathfindingVisualizer extends React.Component {
     constructor(props) {
@@ -314,12 +314,13 @@ class PathfindingVisualizer extends React.Component {
         this.clearWalls();
         const maze = recursiveDevision(ROW_COUNT, COL_COUNT);
 
-        for (let r = 0; r < maze.length; r++) {
-            for (let c = 0; c < maze[0].length; c++) {
-                setTimeout(() => {
-                    if (maze[r][c]) this.setWallNode(r, c, maze[r][c]);
-                }, 500 * c);
-            }
+        for (let i = 0; i < maze.length; i++) {
+            setTimeout(() => {
+                console.log(maze[i]);
+                console.log(maze[i][0]);
+                console.log(maze[i][1]);
+                this.setWallNode(maze[i][0], maze[i][1], true);
+            }, 100 * i);
         }
     }
 
