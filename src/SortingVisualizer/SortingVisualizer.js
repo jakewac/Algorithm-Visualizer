@@ -3,20 +3,20 @@ import React from 'react';
 import { Card, CardHeader, CardBody
 } from 'reactstrap'
 
-import Bar from './Bar';
-
 import { random } from '../Utils';
 import SortMenu from './SortMenu';
 
-const ARRAY_SIZE = 100;
-const MAX_VALUE = 100;
+import './SortingVisualizer.css';
 
-const barTypes = {
-    BAR: "bar",
-    COMPARE: "bar bar-compare",
-    SORTED: "bar bar-sorted",
-    MINIMUM: "bar bar-minimum",
-};
+const ARRAY_SIZE = 50;
+const MIN_VALUE = 5;
+const MAX_VALUE = 500;
+
+const UNSORTED = "pink";
+const COMPARE = "red";
+const SORTED = "green";
+const SWAP = "orange";
+const MIN = "purple";
 
 class SortingVisualizer extends React.Component {
     constructor(props) {
@@ -26,66 +26,65 @@ class SortingVisualizer extends React.Component {
         };
     }
 
-    rebuildArray = (size, max) => {
+    rebuildArray = (size, min, max) => {
         const array = [];
-        for (let i = 0; i < size; i++) { array.push(this.createBar(i, max)); }
+        for (let i = 0; i < size; i++) { array.push(this.createBar(min, max)); }
         return array;
     }
 
-    createBar = (pos, max) => {
-        const value = random(1, max);
-        return {
-            position: pos,
-            value: value,
-        }
+    createBar = (min, max) => {
+        const value = random(min, max);
+        return value;
     }
 
     reGenerateArray = () => { 
         var array = this.state.array;
-        array = this.rebuildArray(ARRAY_SIZE, MAX_VALUE);
-        for (let i = 0; i < array.length; i++) { document.getElementById(`bar-${array[i].position}`).className = 'bar'; }
+        array = this.rebuildArray(ARRAY_SIZE, MIN_VALUE, MAX_VALUE);
+        const bars = document.getElementsByClassName("bar");
+        for (let i = 0; i < array.length; i++) { bars[i].style.backgroundColor = UNSORTED; }
         this.setState({array: array}); 
     }
 
     selectionSort = () => {
         const array = this.state.array;
-        const updateQ = [];
+        const animations = [];
 
         for (let i = 0; i < array.length; i++) {
-            setTimeout(() => {
-                var min = i;
-                for (let k = i + 1; k < array.length; k++) {
-                    updateQ.push([barTypes.COMPARE, [array[min].position, array[min]], [array[k].position, array[k]]]);
-                    if (array[min].value > array[k].value) min = k;
-                    updateQ.push([barTypes.BAR, [array[k].position, array[k]]]);
+            var min = i;
+            for (let k = i + 1; k < array.length; k++) {
+                animations.push([[MIN, min], [COMPARE, k]]);
+                if (array[min] > array[k]) {
+                    animations.push([[UNSORTED, min]]);
+                    min = k;
                 }
-                updateQ.push([barTypes.MINIMUM, [array[min].position, array[min]]]);
+                else animations.push([[UNSORTED, k]]);
+            }
 
-                if (min !== i) {
-                    updateQ.push([barTypes.COMPARE, [array[i].position, array[i]]]);
-                    
-                    var temp = array[i];
-                    array[min].position = i;
-                    array[i] = array[min];
-                    temp.position = min;
-                    array[min] = temp;
-                }
-
-                updateQ.push([barTypes.SORTED, [array[i].position, array[i]]]);
-                if (min <= i) updateQ.push([barTypes.SORTED, [array[min].position, array[min]]]);
-                else updateQ.push([barTypes.BAR, [array[min].position, array[min]]]);
-            }, 1000 * i);
+            if (min !== i) {
+                animations.push([[SWAP, min, i], [null, min, array[i]], [null, i, array[min]]]);
+                animations.push([[UNSORTED, min], [SORTED, i]]);
+                var temp = array[i];
+                array[i] = array[min];
+                array[min] = temp;
+            } else animations.push([[SORTED, i]]);
         }
-        console.log(updateQ)
-        this.animateSort(updateQ);
+
+        this.animateSort(animations);
     }
 
-    animateSort = (updateQ) => {
+    animateSort = (animations) => {
+        const bars = document.getElementsByClassName("bar");
         var i = 0
-        for (const element of updateQ) {
+        for (const step of animations) {
             setTimeout(() => {
-                for (let i = 0; i < element.length; i++) {
-                    if (i !== 0) document.getElementById(`bar-${this.state.array[i].position}`).className = element[0];
+                for (const action of step) { 
+                    if (action[0] === null) {
+                        bars[action[1]].style.height = `${action[2]}px`;
+                    } else {
+                        for (let k = 1; k < action.length; k++) {
+                            bars[action[k]].style.backgroundColor = action[0]; 
+                        }
+                    }
                 }
             }, 100 * i);
             i++;
@@ -93,7 +92,7 @@ class SortingVisualizer extends React.Component {
     }
 
     componentDidMount () {
-        const array = this.rebuildArray(ARRAY_SIZE, MAX_VALUE);
+        const array = this.rebuildArray(ARRAY_SIZE, MIN_VALUE, MAX_VALUE);
         this.setState({array: array});
     }
 
@@ -109,13 +108,13 @@ class SortingVisualizer extends React.Component {
                     <CardBody>
                         <div className="bar-array">
                             {Array.from(this.state.array).map((bar, barIdx) => {
-                                const {position, value} = bar;
                                 return (
-                                    <Bar
+                                    <div className="bar"
                                     key={barIdx}
-                                    position={position}
-                                    value={value}
-                                    />
+                                    style={{
+                                      backgroundColor: UNSORTED,
+                                      height: `${bar}px`,
+                                    }}/>
                                 );
                             })}
                         </div>
