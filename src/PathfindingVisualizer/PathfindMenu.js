@@ -3,7 +3,7 @@ import { Container, Row, Col, Button, ButtonDropdown, DropdownItem, DropdownTogg
 } from 'reactstrap';
 
 import './PathfindMenu.css';
-import { algorithms } from './SearchAlgorithms';
+import { pathfindAlgorithms } from './PathfindAlgorithms';
 
 class PathfindMenu extends React.Component {
     constructor(props) {
@@ -47,10 +47,10 @@ class PathfindMenu extends React.Component {
                                             <DropdownMenu>
                                                 <DropdownItem onClick={this.toggleInstant}>Pathfind Mode</DropdownItem>
                                                 <DropdownItem divider />
-                                                <DropdownItem onClick={() => this.props.pathfinder.visualizePathfind(algorithms.DIJKSTRA, this.state.isInstant)}>Dijkstra</DropdownItem>
-                                                <DropdownItem onClick={() => this.props.pathfinder.visualizePathfind(algorithms.ASTAR, this.state.isInstant)}>A* (A-Star)</DropdownItem>
-                                                <DropdownItem onClick={() => this.props.pathfinder.visualizePathfind(algorithms.BFS, this.state.isInstant)}>Breadth First Search</DropdownItem>
-                                                <DropdownItem onClick={() => this.props.pathfinder.visualizePathfind(algorithms.DFS, this.state.isInstant)}>Depth First Search</DropdownItem>
+                                                <DropdownItem onClick={() => this.props.pathfinder.visualizePathfind(pathfindAlgorithms.DIJKSTRA, this.state.isInstant)}>Dijkstra</DropdownItem>
+                                                <DropdownItem onClick={() => this.props.pathfinder.visualizePathfind(pathfindAlgorithms.ASTAR, this.state.isInstant)}>A* (A-Star)</DropdownItem>
+                                                <DropdownItem onClick={() => this.props.pathfinder.visualizePathfind(pathfindAlgorithms.BFS, this.state.isInstant)}>Breadth First Search</DropdownItem>
+                                                <DropdownItem onClick={() => this.props.pathfinder.visualizePathfind(pathfindAlgorithms.DFS, this.state.isInstant)}>Depth First Search</DropdownItem>
                                             </DropdownMenu>
                                         </ButtonDropdown>
                                     </Col>

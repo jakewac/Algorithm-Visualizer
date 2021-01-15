@@ -5,18 +5,16 @@ import { Card, CardHeader, CardBody
 
 import { random } from '../Utils';
 import SortMenu from './SortMenu';
+import { selectionSort, insertionSort, mergeSort, sortAlgorithms } from './SortAlgorithms';
 
 import './SortingVisualizer.css';
 
 const ARRAY_SIZE = 50;
 const MIN_VALUE = 5;
 const MAX_VALUE = 500;
+const SPEED = 100;
 
 const UNSORTED = "pink";
-const COMPARE = "red";
-const SORTED = "green";
-const SWAP = "orange";
-const MIN = "purple";
 
 class SortingVisualizer extends React.Component {
     constructor(props) {
@@ -45,28 +43,22 @@ class SortingVisualizer extends React.Component {
         this.setState({array: array}); 
     }
 
-    selectionSort = () => {
+    visualizeSort = (algorithm) => {
         const array = this.state.array;
-        const animations = [];
+        var animations = [];
 
-        for (let i = 0; i < array.length; i++) {
-            var min = i;
-            for (let k = i + 1; k < array.length; k++) {
-                animations.push([[MIN, min], [COMPARE, k]]);
-                if (array[min] > array[k]) {
-                    animations.push([[UNSORTED, min]]);
-                    min = k;
-                }
-                else animations.push([[UNSORTED, k]]);
-            }
-
-            if (min !== i) {
-                animations.push([[SWAP, min, i], [null, min, array[i]], [null, i, array[min]]]);
-                animations.push([[UNSORTED, min], [SORTED, i]]);
-                var temp = array[i];
-                array[i] = array[min];
-                array[min] = temp;
-            } else animations.push([[SORTED, i]]);
+        switch (algorithm) {
+            case sortAlgorithms.SELECTION:
+                animations = selectionSort(array);
+                break;
+            case sortAlgorithms.INSERTION:
+                animations = insertionSort(array);
+                break;
+            case sortAlgorithms.MERGE:
+                animations = mergeSort(array);
+                break;
+            default:
+                break;
         }
 
         this.animateSort(animations);
@@ -82,12 +74,12 @@ class SortingVisualizer extends React.Component {
                         bars[action[1]].style.height = `${action[2]}px`;
                     } else {
                         for (let k = 1; k < action.length; k++) {
+                            console.log(action);
                             bars[action[k]].style.backgroundColor = action[0]; 
                         }
                     }
                 }
-            }, 100 * i);
-            i++;
+            }, SPEED * i++);
         }
     }
 

@@ -1,6 +1,6 @@
 import PriorityQueue from "../Utils";
 
-export const algorithms = {
+export const pathfindAlgorithms = {
     DIJKSTRA: "dijkstra",
     ASTAR: "astar",
     BFS: "bfs",

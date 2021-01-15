@@ -12,7 +12,7 @@ class NavBar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            activeTab: "home"
+            activeTab: "sort"
         };
     }
 
