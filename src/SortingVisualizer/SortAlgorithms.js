@@ -1,15 +1,28 @@
+// Unsorted bar color
 const UNSORTED = "pink";
+// Comparing bar color
 const COMPARE = "red";
+// Sorted bar color
 const SORTED = "green";
+// Swapping bar color
 const SWAP = "orange";
+// Minimum bar color
 const MIN = "purple";
 
+// Sorting algorithms
 export const sortAlgorithms = {
     SELECTION: "selection",
     INSERTION: "insertion",
     MERGE: "merge",
 }
 
+/**
+ * Executes a Selection Sort on an array.
+ * 
+ * @param {Array} array array of values
+ * 
+ * @returns an array of animations
+ */
 export function selectionSort(array) {
     const animations = [];
 
@@ -41,6 +54,13 @@ export function selectionSort(array) {
     return animations;
 }
 
+/**
+ * Executes a Insertion Sort on an array.
+ * 
+ * @param {Array} array array of values
+ * 
+ * @returns an array of animations
+ */
 export function insertionSort(array) {
     const animations = [];
 
@@ -69,20 +89,44 @@ export function insertionSort(array) {
     return animations;
 }
 
+/**
+ * Executes a Merge Sort on an array.
+ * 
+ * @param {Array} array array of values
+ * 
+ * @returns an array of animations
+ */
 export function mergeSort(array) {
     const animations = [];
     array = doMergeSort(animations, array);
     return animations;
 }
 
+/**
+ * Actual recursive Merge Sort function.
+ * 
+ * @param {Array} animations array of animations
+ * @param {Array} array array of values 
+ * 
+ * @returns sorted array
+ */
 function doMergeSort(animations, array) {
     const middle = array.length / 2;
     if (array.length < 2) return array;
     const left = array.splice(0, middle);
-    return merge(animations, doMergeSort(animations, left), doMergeSort(animations, array), middle);
+    return merge(animations, doMergeSort(animations, left), doMergeSort(animations, array));
 }
 
-function merge (animations, left, right, middle) {
+/**
+ * Merge Sort helper function.
+ * 
+ * @param {Array} animations array of animations
+ * @param {Array} left left array
+ * @param {Array} right right array
+ * 
+ * @returns merged array
+ */
+function merge (animations, left, right) {
     var array = [];
 
     while (left.length && right.length) {
