@@ -49,8 +49,8 @@ class SortingVisualizer extends React.Component {
     /**
      * Creates a new bar with a random value.
      * 
-     * @param {*} min lower bound of value
-     * @param {*} max upper bound of value
+     * @param {int} min lower bound of value
+     * @param {int} max upper bound of value
      * 
      * @returns the created bar
      */
