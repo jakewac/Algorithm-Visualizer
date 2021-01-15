@@ -2,8 +2,6 @@ import React from 'react';
 import { Container, Row, Col, Button, ButtonDropdown, DropdownItem, DropdownToggle, DropdownMenu
 } from 'reactstrap';
 
-import './PathfindMenu.css';
-
 import { pathfindAlgorithms } from './PathfindAlgorithms';
 
 /**
@@ -110,7 +108,7 @@ class PathfindMenu extends React.Component {
                                             <Button color="warning" onClick={() => this.toggleMaze()}>Maze</Button>
                                             <DropdownToggle split color="warning" />
                                             <DropdownMenu>
-                                                <DropdownItem onClick={() => this.props.pathfinder.genRecursiveDevision()}>Recursive Devision</DropdownItem>
+                                                <DropdownItem onClick={() => this.props.pathfinder.animateMaze()}>Recursive Devision</DropdownItem>
                                             </DropdownMenu>
                                         </ButtonDropdown>
                                     </Col>

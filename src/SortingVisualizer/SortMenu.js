@@ -2,8 +2,6 @@ import React from 'react';
 import { Container, Row, Col, Button, ButtonDropdown, DropdownItem, DropdownToggle, DropdownMenu
 } from 'reactstrap';
 
-import './SortMenu.css';
-
 import { sortAlgorithms } from './SortAlgorithms';
 
 /**

@@ -12,15 +12,15 @@ import PathfindMenu from './PathfindMenu';
 import Node from './Node';
 
 // Number of rows in the grid
-const ROW_COUNT = 25;
+const ROW_COUNT = 29;
 // Number of columns in the grid
-const COL_COUNT = 63;
+const COL_COUNT = 75;
 // Initial cost of weighted nodes
 const INIT_COST = 15;
 // Initial coordinates of the start node [row, col]
-const INIT_START = [12, 10];
+const INIT_START = [14, 10];
 // Initial coordinates of the target noe [row, col]
-const INIT_TARGET = [12, 52];
+const INIT_TARGET = [14, 64];
 // Speed between visited node animations in miliseconds
 const SPEED = 5;
 
@@ -433,9 +433,6 @@ class PathfindingVisualizer extends React.Component {
 
         for (let i = 0; i < maze.length; i++) {
             setTimeout(() => {
-                console.log(maze[i]);
-                console.log(maze[i][0]);
-                console.log(maze[i][1]);
                 this.setWallNode(maze[i][0], maze[i][1], true);
             }, 100 * i);
         }
@@ -540,10 +537,10 @@ class PathfindingVisualizer extends React.Component {
      * @returns a <div> element representing the component
      */
     render () {
-        console.log(this.state.grid);
+        //console.log(this.state.grid);
 
         return (
-            <div>
+            <div className="pathfind-vis">
                 <Card>
                     <CardHeader>
                         <PathfindMenu pathfinder={this} />

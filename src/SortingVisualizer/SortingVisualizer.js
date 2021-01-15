@@ -10,13 +10,13 @@ import SortMenu from './SortMenu';
 import { selectionSort, insertionSort, mergeSort, sortAlgorithms } from './SortAlgorithms';
 
 // Size of array
-const ARRAY_SIZE = 25;
+const ARRAY_SIZE = 115;
 // Minimum value in array
 const MIN_VALUE = 5;
 // Maximum value in array
 const MAX_VALUE = 500;
 // Speed between animations in miliseconds
-const SPEED = 250;
+const SPEED = 10;
 
 // Unsorted bar color
 const UNSORTED = "pink";
@@ -109,7 +109,6 @@ class SortingVisualizer extends React.Component {
                         bars[action[1]].style.height = `${action[2]}px`;
                     } else {
                         for (let k = 1; k < action.length; k++) {
-                            console.log(action);
                             bars[action[k]].style.backgroundColor = action[0]; 
                         }
                     }
@@ -132,16 +131,16 @@ class SortingVisualizer extends React.Component {
      * @returns a <div> element representing the component
      */
     render () {
-        console.log(this.state.array);
+        //console.log(this.state.array);
 
         return (
-            <div>
+            <div className="sort-vis">
                 <Card>
                     <CardHeader>
                         <SortMenu sorter={this}/>
                     </CardHeader>
                     <CardBody>
-                        <div className="bar-array">
+                        <div className="array">
                             {Array.from(this.state.array).map((bar, barIdx) => {
                                 return (
                                     <div className="bar"

@@ -1,8 +1,7 @@
 .grid {
-    caret-color: transparent;
-    margin: 25px;
+    margin: -5px;
 }
 
 .grid-row {
-    margin: -3px;
+    display: flex;
 }
