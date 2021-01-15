@@ -1,5 +1,6 @@
 import PriorityQueue from "../Utils";
 
+// Pathfinding algorithms
 export const pathfindAlgorithms = {
     DIJKSTRA: "dijkstra",
     ASTAR: "astar",
@@ -7,6 +8,15 @@ export const pathfindAlgorithms = {
     DFS: "dfs",
 }
 
+/**
+ * Executes a Dijkstra's algorithm search.
+ * 
+ * @param {Array} grid grid of nodes
+ * @param {Node} start start node
+ * @param {Node} target target node
+ * 
+ * @returns an array of visited nodes in order
+ */
 export function dijkstra(grid, start, target) {
     const visitedNodes = [];
     const unvisitedNodes = getAllNodes(grid);
@@ -33,6 +43,15 @@ export function dijkstra(grid, start, target) {
     return visitedNodes;
 }
 
+/**
+ * Executes an A* (A-Star) algorithm search.
+ * 
+ * @param {Array} grid grid of nodes
+ * @param {Node} start start node
+ * @param {Node} target target node
+ * 
+ * @returns an array of visited nodes in order
+ */
 export function aStar(grid, start, target) {
     const visitedNodes = [];
     const unvisitedNodes = new PriorityQueue();
@@ -66,6 +85,15 @@ export function aStar(grid, start, target) {
     return visitedNodes;
 }
 
+/**
+ * Executes Breadth First Search (BFS) algorithm search.
+ * 
+ * @param {Array} grid grid of nodes
+ * @param {Node} start start node
+ * @param {Node} target target node
+ * 
+ * @returns an array of visited nodes in order
+ */
 export function breadthFirstSearch(grid, start, target) {
     const visitedNodes = [];
     const unvisitedNodes = [start];
@@ -92,6 +120,15 @@ export function breadthFirstSearch(grid, start, target) {
     return visitedNodes;
 }
 
+/**
+ * Executes a Depth First Search (DFS) algorithm search.
+ * 
+ * @param {Array} grid grid of nodes
+ * @param {Node} start start node
+ * @param {Node} target target node
+ * 
+ * @returns an array of visited nodes in order
+ */
 export function depthFirstSearch(grid, start, target) {
     const visitedNodes = [];
     const unvisitedNodes = [start];
@@ -118,16 +155,29 @@ export function depthFirstSearch(grid, start, target) {
     return visitedNodes;
 }
 
+/**
+ * Gets all of the nodes in the grid.
+ * 
+ * @param {Array} grid grid of nodes
+ * 
+ * @returns an array containing all of the nodes
+ */
 function getAllNodes(grid) {
     const nodes = [];
     for (const row of grid) {
-        for (const node of row) {
-        nodes.push(node);
-        }
+        for (const node of row) nodes.push(node);
     }
     return nodes;
-    }
+}
 
+/**
+ * Gets the shortest path of nodes from the target node to 
+ * the start node.
+ * 
+ * @param {Node} targetNode target node
+ * 
+ * @returns an array of shortest path nodes in order
+ */
 export function getShortestPathNodes(targetNode) {
     const nodesInShortestPath = [];
     let currentNode = targetNode;
@@ -138,6 +188,14 @@ export function getShortestPathNodes(targetNode) {
     return nodesInShortestPath;
 }
 
+/**
+ * Gets all unvisited neighbors of a given node.
+ * 
+ * @param {Node} node node
+ * @param {Array} grid grid of nodes
+ * 
+ * @returns an array containing all unvisited neighbors
+ */
 function getUnvisitedNeighbors(node, grid) {
     const neighbors = [];
     const {row, col} = node;

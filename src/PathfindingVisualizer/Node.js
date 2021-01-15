@@ -2,16 +2,28 @@ import React from 'react';
 
 import './Node.css';
 
+/**
+ * Represents a grid node on the screen. Extra class names
+ * can be applied to change the appearance of the node.
+ * 
+ * @author Jake Waclawski
+ */
 class Node extends React.Component {
-    constructor(props) {
+    constructor (props) {
         super(props);
         this.state = {};
     }
 
+    /**
+     * Renders the node.
+     * 
+     * @returns a <div> element representing the node
+     */
     render () {
         const nodeType = this.props.isStart ? 'node-start' : 
         this.props.isTarget ? 'node-target' : 
         this.props.isWall ? 'node-wall' :
+        this.props.cost > 1 ? 'node-weight' :
         '';
 
         return (

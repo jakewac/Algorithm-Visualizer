@@ -3,32 +3,66 @@ import { Container, Row, Col, Button, ButtonDropdown, DropdownItem, DropdownTogg
 } from 'reactstrap';
 
 import './PathfindMenu.css';
+
 import { pathfindAlgorithms } from './PathfindAlgorithms';
 
+/**
+ * Represents the top menu of the pathfinding visualizer component.
+ * 
+ * @author Jake Waclawski
+ */
 class PathfindMenu extends React.Component {
-    constructor(props) {
+    constructor (props) {
         super(props);
         this.state = {
+            // Visualize button dropdown status
             visualizeDropdownOpen: false,
+            // Edit button dropdown status
             editDropdownOpen: false,
+            // Maze button dropdown status
             mazeDropdownOpen: false,
+            // Clear button dropdown status
             clearDropdownOpen: false,
+            // Display path instantly?
             isInstant: false,
         };
     }
 
-    toggleVisualize = () => { this.setState({visualizeDropdownOpen: !this.state.visualizeDropdownOpen}); }
+    /**
+     * Toggles the visualize button dropdown.
+     */
+    toggleVisualize () { this.setState({visualizeDropdownOpen: !this.state.visualizeDropdownOpen}); }
 
-    toggleEdit = () => { this.setState({editDropdownOpen: !this.state.editDropdownOpen}); }
+    /**
+     * Toggles the edit button dropdown.
+     */
+    toggleEdit () { this.setState({editDropdownOpen: !this.state.editDropdownOpen}); }
 
-    toggleMaze = () => { this.setState({mazeDropdownOpen: !this.state.mazeDropdownOpen}); }
+    /**
+     * Toggles the maze button dropdown.
+     */
+    toggleMaze () { this.setState({mazeDropdownOpen: !this.state.mazeDropdownOpen}); }
 
-    toggleClear = () => { this.setState({clearDropdownOpen: !this.state.clearDropdownOpen}); }
+    /**
+     * Toggles the clear button dropdown.
+     */
+    toggleClear () { this.setState({clearDropdownOpen: !this.state.clearDropdownOpen}); }
 
-    toggleInstant = () => { this.setState({isInstant: !this.state.isInstant}); }
+    /**
+     * Toggles if the path should be displayed instantly.
+     */
+    toggleInstant () { this.setState({isInstant: !this.state.isInstant}); }
 
-    getIsInstantText = () => { return this.state.isInstant ? "Instant" : "Visualize"; }
+    /**
+     * Get the current text of the visualize button.
+     */
+    getIsInstantText () { return this.state.isInstant ? "Instant" : "Visualize"; }
  
+    /**
+     * Renders the menu component.
+     * 
+     * @returns a <div> element representing the menu
+     */
     render () {
         return (
             <div className="pathfind-menu">
@@ -41,11 +75,11 @@ class PathfindMenu extends React.Component {
                             <Container>
                                 <Row>
                                     <Col>
-                                        <ButtonDropdown isOpen={this.state.visualizeDropdownOpen} toggle={this.toggleVisualize}>
-                                            <Button color="success" onClick={this.toggleVisualize}>{this.getIsInstantText()}</Button>
+                                        <ButtonDropdown isOpen={this.state.visualizeDropdownOpen} toggle={() => this.toggleVisualize()}>
+                                            <Button color="success" onClick={() => this.toggleVisualize()}>{this.getIsInstantText()}</Button>
                                             <DropdownToggle split color="success" />
                                             <DropdownMenu>
-                                                <DropdownItem onClick={this.toggleInstant}>Pathfind Mode</DropdownItem>
+                                                <DropdownItem onClick={() => this.toggleInstant()}>Pathfind Mode</DropdownItem>
                                                 <DropdownItem divider />
                                                 <DropdownItem onClick={() => this.props.pathfinder.visualizePathfind(pathfindAlgorithms.DIJKSTRA, this.state.isInstant)}>Dijkstra</DropdownItem>
                                                 <DropdownItem onClick={() => this.props.pathfinder.visualizePathfind(pathfindAlgorithms.ASTAR, this.state.isInstant)}>A* (A-Star)</DropdownItem>
@@ -55,14 +89,14 @@ class PathfindMenu extends React.Component {
                                         </ButtonDropdown>
                                     </Col>
                                     <Col>
-                                        <ButtonDropdown isOpen={this.state.editDropdownOpen} toggle={this.toggleEdit}>
-                                            <Button color="info" onClick={this.toggleEdit}>Edit</Button>
+                                        <ButtonDropdown isOpen={this.state.editDropdownOpen} toggle={() => this.toggleEdit()}>
+                                            <Button color="info" onClick={() => this.toggleEdit()}>Edit</Button>
                                             <DropdownToggle split color="info" />
                                             <DropdownMenu>
-                                                <DropdownItem onClick={() => this.props.pathfinder.drawStop()}>Stop Drawing</DropdownItem>
+                                                <DropdownItem onClick={() => this.props.pathfinder.setDrawMode(0)}>Stop Drawing</DropdownItem>
                                                 <DropdownItem divider />
-                                                <DropdownItem onClick={() => this.props.pathfinder.drawWalls()}>Draw Walls</DropdownItem>
-                                                <DropdownItem onClick={() => this.props.pathfinder.drawWeights()}>Draw Weights</DropdownItem>
+                                                <DropdownItem onClick={() => this.props.pathfinder.setDrawMode(1)}>Draw Walls</DropdownItem>
+                                                <DropdownItem onClick={() => this.props.pathfinder.setDrawMode(2)}>Draw Weights</DropdownItem>
                                                 <DropdownItem divider />
                                                 <DropdownItem onClick={() => this.props.pathfinder.resetStartTarget()}>Reset Start/Target Nodes</DropdownItem>
                                                 <DropdownItem divider />
@@ -72,8 +106,8 @@ class PathfindMenu extends React.Component {
                                         </ButtonDropdown>
                                     </Col>
                                     <Col>
-                                        <ButtonDropdown isOpen={this.state.mazeDropdownOpen} toggle={this.toggleMaze}>
-                                            <Button color="warning" onClick={this.toggleMaze}>Maze</Button>
+                                        <ButtonDropdown isOpen={this.state.mazeDropdownOpen} toggle={() => this.toggleMaze()}>
+                                            <Button color="warning" onClick={() => this.toggleMaze()}>Maze</Button>
                                             <DropdownToggle split color="warning" />
                                             <DropdownMenu>
                                                 <DropdownItem onClick={() => this.props.pathfinder.genRecursiveDevision()}>Recursive Devision</DropdownItem>
@@ -81,8 +115,8 @@ class PathfindMenu extends React.Component {
                                         </ButtonDropdown>
                                     </Col>
                                     <Col>
-                                        <ButtonDropdown isOpen={this.state.clearDropdownOpen} toggle={this.toggleClear}>
-                                            <Button color="danger" onClick={this.toggleClear}>Clear</Button>
+                                        <ButtonDropdown isOpen={this.state.clearDropdownOpen} toggle={() => this.toggleClear()}>
+                                            <Button color="danger" onClick={() => this.toggleClear()}>Clear</Button>
                                             <DropdownToggle split color="danger" />
                                             <DropdownMenu>
                                                 <DropdownItem onClick={() => this.props.pathfinder.clearGrid()}>Clear All</DropdownItem>

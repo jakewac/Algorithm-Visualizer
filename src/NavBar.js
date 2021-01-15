@@ -1,19 +1,26 @@
 import React from 'react';
+import { Card, CardHeader, CardBody, NavItem, NavLink, Nav, TabContent, TabPane
+} from 'reactstrap'
 import classnames from 'classnames';
 
 import './NavBar.css';
 
-import { Card, CardHeader, CardBody, NavItem, NavLink, Nav, TabContent, TabPane
-} from 'reactstrap'
 import PathfindingVisualizer from './PathfindingVisualizer/PathfindingVisualizer';
 import SortingVisualizer from './SortingVisualizer/SortingVisualizer';
 
+// Default tab to display on page load
+const DEFAULT_TAB = "home";
+
+/**
+ * Represents the navigation bar at the top of the page. Each tab
+ * contains one component of the project.
+ * 
+ * @author Jake Waclawski
+ */
 class NavBar extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            activeTab: "sort"
-        };
+        this.state = { activeTab: DEFAULT_TAB };
     }
 
     render () {
