@@ -360,8 +360,8 @@ class PathfindingVisualizer extends React.Component {
      * @param {boolean} isInstant true if displaying instantly
      */
     visualizePathfind (algorithm, isInstant) {
-        this.clearPaths();
         this.updateGrid();
+        this.clearPaths();
 
         const grid = this.state.grid;
         const start = grid[this.state.startNode[0]][this.state.startNode[1]];
@@ -472,7 +472,7 @@ class PathfindingVisualizer extends React.Component {
         for (let i = 0; i < maze.length; i++) {
             setTimeout(() => {
                 this.drawWallNode(maze[i][0], maze[i][1], true);
-            }, 25 * i);
+            }, 10 * i);
         }
     }
 

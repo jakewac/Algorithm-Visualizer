@@ -121,7 +121,7 @@ class PathfindMenu extends React.Component {
                                                 <DropdownItem divider />
                                                 <DropdownItem onClick={() => this.props.pathfinder.clearWeights()}>Clear Weights</DropdownItem>
                                                 <DropdownItem onClick={() => this.props.pathfinder.clearWalls()}>Clear Walls</DropdownItem>
-                                                <DropdownItem onClick={() => this.props.pathfinder.clearPath()}>Clear Path</DropdownItem>
+                                                <DropdownItem onClick={() => this.props.pathfinder.clearPaths()}>Clear Path</DropdownItem>
                                             </DropdownMenu>
                                         </ButtonDropdown>
                                     </Col>
