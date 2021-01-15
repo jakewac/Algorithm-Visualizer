@@ -4,8 +4,8 @@ import { Card, CardHeader, CardBody
 
 import './PathfindingVisualizer.css';
 
-import { getShortestPathNodes, dijkstra, aStar, breadthFirstSearch, depthFirstSearch, algorithms 
-} from './SearchAlgorithms';
+import { getShortestPathNodes, dijkstra, aStar, breadthFirstSearch, depthFirstSearch, pathfindAlgorithms
+} from './PathfindAlgorithms';
 import { recursiveDevision
 } from './MazeAlgorithms';
 
@@ -226,18 +226,18 @@ class PathfindingVisualizer extends React.Component {
         const start = grid[this.state.startNode[0]][this.state.startNode[1]];
         const target = grid[this.state.targetNode[0]][this.state.targetNode[1]];
 
-        var visitedNodes = null;
+        var visitedNodes = [];
         switch (algorithm) {
-            case algorithms.DIJKSTRA:
+            case pathfindAlgorithms.DIJKSTRA:
                 visitedNodes = dijkstra(grid, start, target);
                 break;
-            case algorithms.ASTAR:
+            case pathfindAlgorithms.ASTAR:
                 visitedNodes = aStar(grid, start, target);
                 break;
-            case algorithms.BFS:
+            case pathfindAlgorithms.BFS:
                 visitedNodes = breadthFirstSearch(grid, start, target);
                 break;
-            case algorithms.DFS:
+            case pathfindAlgorithms.DFS:
                 visitedNodes = depthFirstSearch(grid, start, target);
                 break;
             default:

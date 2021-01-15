@@ -2,6 +2,8 @@ import React from 'react';
 import { Container, Row, Col, Button, ButtonDropdown, DropdownItem, DropdownToggle, DropdownMenu
 } from 'reactstrap';
 
+import { sortAlgorithms } from './SortAlgorithms';
+
 import './SortMenu.css';
 
 class SortMenu extends React.Component {
@@ -30,7 +32,9 @@ class SortMenu extends React.Component {
                                             <Button color="success" onClick={this.toggleVisualize}>Visualize</Button>
                                             <DropdownToggle split color="success" />
                                             <DropdownMenu>
-                                                <DropdownItem onClick={this.props.sorter.selectionSort}>Selection Sort</DropdownItem>
+                                                <DropdownItem onClick={() => this.props.sorter.visualizeSort(sortAlgorithms.SELECTION)}>Selection Sort</DropdownItem>
+                                                <DropdownItem onClick={() => this.props.sorter.visualizeSort(sortAlgorithms.INSERTION)}>Insertion Sort</DropdownItem>
+                                                <DropdownItem onClick={() => this.props.sorter.visualizeSort(sortAlgorithms.MERGE)}>Merge Sort</DropdownItem>
                                             </DropdownMenu>
                                         </ButtonDropdown>
                                     </Col>
