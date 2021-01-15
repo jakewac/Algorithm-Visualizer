@@ -18,11 +18,17 @@ const DEFAULT_TAB = "home";
  * @author Jake Waclawski
  */
 class NavBar extends React.Component {
-    constructor(props) {
+    constructor (props) {
         super(props);
+        // Current active tab
         this.state = { activeTab: DEFAULT_TAB };
     }
 
+    /**
+     * Renders the navigation bar.
+     * 
+     * @returns a <div> element representing the navigation bar
+     */
     render () {
         return (
             <div>
