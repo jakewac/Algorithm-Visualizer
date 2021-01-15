@@ -1,13 +1,13 @@
 .node {
-    width: 24px;
-    height: 24px;
+    width: 25px;
+    height: 25px;
     margin: 0.5px;
     outline: 1px solid rgb(150, 150, 150);
     display: flex;
     background-color: white;
 }
 
-.node-weight {
+.weight {
   animation-name: weightAnimation;
   animation-duration: 0.5s;
   animation-timing-function: ease-out;
@@ -35,7 +35,7 @@
   }
 }
 
-.node-start {
+.start {
     animation-name: startAnimation;
     animation-duration: 0.5s;
     animation-timing-function: ease-out;
@@ -63,7 +63,7 @@
     }
 }
 
-.node-target {
+.target {
     animation-name: targetAnimation;
     animation-duration: 0.5s;
     animation-timing-function: ease-out;
@@ -90,7 +90,7 @@
     }
 }
 
-.node-wall {
+.wall {
     animation-name: wallAnimation;
     animation-duration: 0.5s;
     animation-timing-function: ease-out;
@@ -118,7 +118,7 @@
     }
 }
 
-.node-visited {
+.visited {
     animation-name: visitedAnimation;
     animation-duration: 1s;
     animation-timing-function: ease-out;
@@ -147,11 +147,11 @@
     }
 }
 
-.node-visited-instant {
+.visited-instant {
   background-color: rgb(100, 200, 250);
 }
 
-.node-visited-weight {
+.visited-weight {
   animation-name: visitedWeightAnimation;
   animation-duration: 1s;
   animation-timing-function: ease-out;
@@ -180,11 +180,11 @@
   }
 }
 
-.node-visited-weight-instant {
+.visited-weight-instant {
     background-color: rgb(50, 150, 250);
 }
 
-.node-path {
+.path {
     animation-name: shortestPath;
     animation-duration: 1s;
     animation-timing-function: ease-out;
@@ -212,7 +212,7 @@
     }
 }
 
-.node-path-weight {
+.path-weight {
   animation-name: shortestPathWeight;
   animation-duration: 1s;
   animation-timing-function: ease-out;

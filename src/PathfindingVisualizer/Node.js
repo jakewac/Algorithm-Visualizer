@@ -20,10 +20,10 @@ class Node extends React.Component {
      * @returns a <div> element representing the node
      */
     render () {
-        const nodeType = this.props.isStart ? 'node-start' : 
-        this.props.isTarget ? 'node-target' : 
-        this.props.isWall ? 'node-wall' :
-        this.props.cost > 1 ? 'node-weight' :
+        const nodeType = this.props.isStart ? 'start' : 
+        this.props.isTarget ? 'target' : 
+        this.props.isWall ? 'wall' :
+        this.props.cost > 1 ? 'weight' :
         '';
 
         return (

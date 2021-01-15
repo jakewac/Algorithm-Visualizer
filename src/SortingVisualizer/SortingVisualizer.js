@@ -1,8 +1,5 @@
 import React from 'react';
 
-import { Card, CardHeader, CardBody
-} from 'reactstrap'
-
 import './SortingVisualizer.css';
 
 import { random } from '../Utils';
@@ -10,7 +7,7 @@ import SortMenu from './SortMenu';
 import { selectionSort, insertionSort, mergeSort, sortAlgorithms } from './SortAlgorithms';
 
 // Size of array
-const ARRAY_SIZE = 115;
+const ARRAY_SIZE = 100;
 // Minimum value in array
 const MIN_VALUE = 5;
 // Maximum value in array
@@ -135,25 +132,21 @@ class SortingVisualizer extends React.Component {
 
         return (
             <div className="sort-vis">
-                <Card>
-                    <CardHeader>
-                        <SortMenu sorter={this}/>
-                    </CardHeader>
-                    <CardBody>
-                        <div className="array">
-                            {Array.from(this.state.array).map((bar, barIdx) => {
-                                return (
-                                    <div className="bar"
-                                    key={barIdx}
-                                    style={{
-                                      backgroundColor: UNSORTED,
-                                      height: `${bar}px`,
-                                    }}/>
-                                );
-                            })}
-                        </div>
-                    </CardBody>
-                </Card>
+                <div className="sort-menu">
+                    <SortMenu sorter={this}/>
+                </div>
+                <div className="array">
+                    {Array.from(this.state.array).map((bar, barIdx) => {
+                        return (
+                            <div className="bar"
+                            key={barIdx}
+                            style={{
+                                backgroundColor: UNSORTED,
+                                height: `${bar}px`,
+                            }}/>
+                        );
+                    })}
+                </div>
             </div>
         );
     }

@@ -1,7 +1,15 @@
 .grid {
-    margin: -5px;
+    justify-content: center;
 }
 
 .grid-row {
     display: flex;
+    justify-content: center;
 }
+
+.pathfind-menu {
+    padding-bottom: 10px;
+    font-size: large;
+    font-weight: bold;
+}
+  
