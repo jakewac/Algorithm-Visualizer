@@ -31,7 +31,7 @@ class Node extends React.Component {
             className={`node ${nodeType}`}
             onMouseDown={() => this.props.mousePressed(this.props.row, this.props.col, this.props.isWall)}
             onMouseEnter={() => this.props.mouseEntered(this.props.row, this.props.col, this.props.isWall)}
-            onAnimationEnd={() => this.props.animationEnded()}
+            onAnimationEnd={() => this.props.animationEnded(nodeType)}
             /> 
         );
     }

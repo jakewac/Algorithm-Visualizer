@@ -63,6 +63,8 @@ class PathfindingVisualizer extends React.Component {
             weightCost: INIT_COST,
             // Is the mouse down?
             mouseIsDown: false,
+            // Are we allowed to draw currently?
+            canDraw: true,
             // Current draw mode (0: none, 1: walls, 2: weights)
             drawMode: 0,
             // Are we erasing or drawing walls (null if neither)?
@@ -368,7 +370,7 @@ class PathfindingVisualizer extends React.Component {
                     type === nodeTypes.PATH_WEIGHT ||
                     type === nodeTypes.PATH_WEIGHT_INSTANT) {
                 
-                        this.updateVisualNode(node, nodeTypes.WEIGHT_INSTANT);
+                    this.updateVisualNode(node, nodeTypes.WEIGHT_INSTANT);
                 }
             }
         }
@@ -394,12 +396,24 @@ class PathfindingVisualizer extends React.Component {
     /**
      * Updates the state, we are now placing the start node.
      */
-    placeStartNode () { this.setState({placingStart: true}); }
+    placeStartNode () { 
+        this.setState({
+            placingStart: !this.state.placingStart,
+            placingTarget: false,
+            drawMode: 0,
+        });    
+    }
     
     /**
      * Updates the state, we are now placing the target node.
      */
-    placeTargetNode () { this.setState({placingTarget: true}); }
+    placeTargetNode () { 
+        this.setState({
+            placingStart: false,
+            placingTarget: !this.state.placingTarget,
+            drawMode: 0,
+        }); 
+    }
 
     /**
      * Sets the current draw mode.
@@ -409,7 +423,14 @@ class PathfindingVisualizer extends React.Component {
      * 
      * @param {int} mode new draw mode
      */
-    setDrawMode (mode) { this.setState({drawMode: mode}); }
+    setDrawMode (mode) { 
+        if (this.state.drawMode === mode) mode = 0;
+        this.setState({
+            placingStart: false,
+            placingTarget: false,
+            drawMode: mode
+        }); 
+    }
 
     /**
      * Visualizes a given pathfinding algorithm. Uses the current state of
@@ -478,6 +499,8 @@ class PathfindingVisualizer extends React.Component {
                 else this.updateVisualNode(node, nodeTypes.VISITED_INSTANT);
             }
         } else {
+            this.setState({canDraw: false});
+
             for (let i = 0; i <= visitedNodes.length; i++) {
                 if (i === visitedNodes.length) {
                     setTimeout(() => {
@@ -513,12 +536,16 @@ class PathfindingVisualizer extends React.Component {
                 else this.updateVisualNode(node, nodeTypes.PATH);
             }, PATH_SPEED * i);
         }
+        setTimeout(() => {
+            this.setState({canDraw: true});
+        }, PATH_SPEED * shortestPath.length);
     }
 
     /**
      * Animates a generated maze.
      */
     animateMaze () {
+        this.setState({canDraw: false});
         this.clearWalls();
         const maze = recursiveDevision(ROW_COUNT, COL_COUNT);
 
@@ -529,6 +556,7 @@ class PathfindingVisualizer extends React.Component {
         }
         setTimeout(() => {
             this.updateGrid();
+            this.setState({canDraw: true});
         }, MAZE_SPEED * maze.length);
     }
 
@@ -552,11 +580,12 @@ class PathfindingVisualizer extends React.Component {
      * @param {int} col column of node on grid
      */
     handleMouseDown (row, col) {
+        if (!this.state.canDraw) return;
+
         if (this.state.placingStart) {
             this.setStartNode(row, col);
             return;
         }
-
         if (this.state.placingTarget) {
             this.setTargetNode(row, col);
             return;
