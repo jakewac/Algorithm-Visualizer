@@ -20,10 +20,9 @@ class Node extends React.Component {
      * @returns a <div> element representing the node
      */
     render () {
-        const nodeType = this.props.isStart ? 'start' : 
+        const nodeType = this.props.type ? this.props.type :
+        this.props.isStart ? 'start' : 
         this.props.isTarget ? 'target' : 
-        this.props.isWall ? 'wall' :
-        this.props.cost > 1 ? 'weight' :
         '';
 
         return (
@@ -32,6 +31,7 @@ class Node extends React.Component {
             className={`node ${nodeType}`}
             onMouseDown={() => this.props.mousePressed(this.props.row, this.props.col, this.props.isWall)}
             onMouseEnter={() => this.props.mouseEntered(this.props.row, this.props.col, this.props.isWall)}
+            onAnimationEnd={() => this.props.animationEnded()}
             /> 
         );
     }

@@ -4,7 +4,34 @@
     margin: 0.5px;
     outline: 1px solid rgb(150, 150, 150);
     display: flex;
-    background-color: white;
+    background-color: rgb(255, 255, 255);
+}
+
+.node-animated {
+  animation-name: nodeAnimation;
+  animation-duration: 0.5s;
+  animation-timing-function: ease-out;
+  animation-delay: 0s;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
+@keyframes nodeAnimation {
+  0% {
+    transform: scale(0.2);
+    border-radius: 100%;
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
+    background-color: rgb(255, 255, 255);
+  }
 }
 
 .weight {
@@ -35,6 +62,42 @@
   }
 }
 
+.weight-instant {
+  background-color: rgb(255, 150, 0);
+}
+
+.wall {
+  animation-name: wallAnimation;
+  animation-duration: 0.5s;
+  animation-timing-function: ease-out;
+  animation-delay: 0s;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
+@keyframes wallAnimation {
+  0% {
+    transform: scale(0.6);
+    background-color: rgb(150, 150, 150);
+  }
+
+  50% {
+    transform: scale(1.2);
+    background-color: rgb(100, 100, 100);
+  }
+
+  100% {
+    transform: scale(1);
+    background-color: rgb(50, 50, 50);
+  }
+}
+
+.wall-instant {
+  background-color: rgb(50, 50, 50);
+}
+
 .start {
     animation-name: startAnimation;
     animation-duration: 0.5s;
@@ -61,6 +124,10 @@
       transform: scale(1);
       background-color: rgb(0, 200, 0);
     }
+}
+
+.start-instant {
+  background-color: rgb(0, 200, 0);
 }
 
 .target {
@@ -90,32 +157,8 @@
     }
 }
 
-.wall {
-    animation-name: wallAnimation;
-    animation-duration: 0.5s;
-    animation-timing-function: ease-out;
-    animation-delay: 0s;
-    animation-direction: alternate;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards;
-    animation-play-state: running;
-}
-
-@keyframes wallAnimation {
-    0% {
-      transform: scale(0.6);
-      background-color: rgb(150, 150, 150);
-    }
-
-    50% {
-      transform: scale(1.2);
-      background-color: rgb(100, 100, 100);
-    }
-  
-    100% {
-      transform: scale(1);
-      background-color: rgb(50, 50, 50);
-    }
+.target-instant {
+  background-color: rgb(255, 100, 100);
 }
 
 .visited {
@@ -212,6 +255,10 @@
     }
 }
 
+.path-instant {
+  background-color: rgb(255, 255, 0);
+}
+
 .path-weight {
   animation-name: shortestPathWeight;
   animation-duration: 1s;
@@ -238,4 +285,8 @@
     transform: scale(1);
     background-color: rgb(200, 200, 0);
   }
+}
+
+.path-weight-instant {
+  background-color: rgb(200, 200, 0);
 }

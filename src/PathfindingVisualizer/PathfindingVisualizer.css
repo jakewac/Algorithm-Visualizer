@@ -8,8 +8,29 @@
 }
 
 .pathfind-menu {
-    padding-bottom: 10px;
     font-size: large;
     font-weight: bold;
 }
-  
+
+.visualizer-info {
+    justify-content: center;
+    display: flex;
+    padding: 10px;
+}
+
+.key-item {
+    margin-left: 50px;
+    margin-right: 50px;
+    display: flex;
+}
+
+.key-node {
+    margin-left: 1.5px;
+    margin-right: 1.5px;
+}
+
+.key-text {
+    color: rgb(50, 50, 50);
+    font-size: medium;
+    margin-left: 5px;
+}
