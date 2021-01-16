@@ -32,8 +32,10 @@ const nodeTypes = {
     NODE_ANIMATED: 'node node-animated',
     WALL: 'node wall',
     WALL_INSTANT: 'node wall-instant',
+    WALL_PREVIEW: 'node wall-preview',
     WEIGHT: 'node weight',
     WEIGHT_INSTANT: 'node weight-instant',
+    WEIGHT_PREVIEW: 'node weight-preview',
     START: 'node start',
     START_INSTANT: 'node start-instant',
     TARGET: 'node target',
@@ -150,9 +152,10 @@ class PathfindingVisualizer extends React.Component {
      * 
      * @param {int} row row of node on grid
      * @param {int} col column of node on grid
-     * @param {int} isWeight is new type weight node
+     * @param {boolean} isWeight is new type weight node
+     * @param {boolean} isPreview are we drawing a preview
      */
-    drawWeightNode (row, col, isWeight) {
+    drawWeightNode (row, col, isWeight, isPreview) {
         const node = this.state.grid[row][col];
 
         if (node.isWall || node.isStart || node.isTarget) return;
@@ -161,7 +164,8 @@ class PathfindingVisualizer extends React.Component {
             if (this.getVisualType(node) === nodeTypes.NODE) return; 
             this.updateVisualNode(node, nodeTypes.NODE_ANIMATED);
         } else if (this.getVisualType(node) !== nodeTypes.WEIGHT_INSTANT) {
-            this.updateVisualNode(node, nodeTypes.WEIGHT);
+            if (isPreview) this.updateVisualNode(node, nodeTypes.WEIGHT_PREVIEW);
+            else this.updateVisualNode(node, nodeTypes.WEIGHT);
         }
     }
 
@@ -171,8 +175,9 @@ class PathfindingVisualizer extends React.Component {
      * @param {int} row row of node on grid
      * @param {int} col column of node on grid
      * @param {boolean} isWall is new type wall node
+     * @param {boolean} isPreview are we drawing a preview
      */
-    drawWallNode (row, col, isWall) {
+    drawWallNode (row, col, isWall, isPreview) {
         const node = this.state.grid[row][col];
 
         if (node.cost !== 1 || node.isStart || node.isTarget) return;
@@ -181,7 +186,8 @@ class PathfindingVisualizer extends React.Component {
             if (this.getVisualType(node) === nodeTypes.NODE) return; 
             this.updateVisualNode(node, nodeTypes.NODE_ANIMATED)
         } else if (this.getVisualType(node) !== nodeTypes.WALL_INSTANT) {
-            this.updateVisualNode(node, nodeTypes.WALL);
+            if (isPreview) this.updateVisualNode(node, nodeTypes.WALL_PREVIEW);
+            else this.updateVisualNode(node, nodeTypes.WALL);
         }
     }
 
@@ -546,7 +552,7 @@ class PathfindingVisualizer extends React.Component {
      */
     animateMaze () {
         this.setState({canDraw: false});
-        this.clearWalls();
+        this.clearGrid();
         const maze = recursiveDevision(ROW_COUNT, COL_COUNT);
 
         for (let i = 0; i < maze.length; i++) {
@@ -640,24 +646,58 @@ class PathfindingVisualizer extends React.Component {
      * @param {int} col column of node on grid
      */
     handleMouseEnter (row, col) {
-        if (!this.state.mouseIsDown) return;
+        if (!this.state.canDraw) return;
 
         const grid = this.state.grid;
+        const node = grid[row][col];
 
-        switch (this.state.drawMode) {
-            case 0: 
-                break;
-            case 1:
-                const isWall = grid[row][col].isWall;
-                if (isWall !== this.state.drawWall) this.drawWallNode(row, col, !isWall);
-                break;
-            case 2:
-                const isWeight = grid[row][col].cost !== 1;
-                if (isWeight !== this.state.drawWeight) this.drawWeightNode(row, col, !isWeight);
-                break;
-            default:
-                break;
+        if (!this.state.mouseIsDown) {
+            switch (this.state.drawMode) {
+                case 0:
+                    break;
+                case 1:
+                    if (node.isWall || node.cost !== 1 || node.isStart || node.isTarget) return;
+                    this.updateVisualNode(node, nodeTypes.WALL_PREVIEW);
+                    break;
+                case 2:
+                    if (node.isWall || node.cost !== 1 || node.isStart || node.isTarget) return;
+                    this.updateVisualNode(node, nodeTypes.WEIGHT_PREVIEW);
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            switch (this.state.drawMode) {
+                case 0: 
+                    break;
+                case 1:
+                    const isWall = node.isWall;
+                    if (node.isWall !== this.state.drawWall) this.drawWallNode(row, col, !isWall);
+                    break;
+                case 2:
+                    const isWeight = node.cost !== 1;
+                    if (isWeight !== this.state.drawWeight) this.drawWeightNode(row, col, !isWeight);
+                    break;
+                default:
+                    break;
+            }
         }
+    }
+
+    /**
+     * Handles a mouse leave event from a node.
+     * 
+     * @param {int} row row of node on grid
+     * @param {int} col column of node on grid
+     */
+    handleMouseLeft (row, col) {
+        if (this.state.mouseIsDown || this.state.drawMode === 0 || !this.state.canDraw) return;
+        
+        const node = this.state.grid[row][col];
+
+        if (node.isWall || node.cost !== 1 || node.isStart || node.isTarget) return;
+
+        this.updateVisualNode(node, nodeTypes.NODE);
     }
 
     /**
@@ -732,6 +772,7 @@ class PathfindingVisualizer extends React.Component {
                                         isTarget={isTarget}
                                         mousePressed={(row, col) => this.handleMouseDown(row, col)}
                                         mouseEntered={(row, col) => this.handleMouseEnter(row, col)}
+                                        mouseLeft={(row, col) => this.handleMouseLeft(row, col)}
                                         animationEnded={() => this.handleAnimationEnd(node)}
                                         />
                                     );

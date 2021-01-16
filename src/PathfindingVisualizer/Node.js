@@ -29,8 +29,9 @@ class Node extends React.Component {
             <div 
             id={`node-${this.props.row}-${this.props.col}`} 
             className={`node ${nodeType}`}
-            onMouseDown={() => this.props.mousePressed(this.props.row, this.props.col, this.props.isWall)}
-            onMouseEnter={() => this.props.mouseEntered(this.props.row, this.props.col, this.props.isWall)}
+            onMouseDown={() => this.props.mousePressed(this.props.row, this.props.col)}
+            onMouseEnter={() => this.props.mouseEntered(this.props.row, this.props.col)}
+            onMouseLeave={() => this.props.mouseLeft(this.props.row, this.props.col)}
             onAnimationEnd={() => this.props.animationEnded(nodeType)}
             /> 
         );

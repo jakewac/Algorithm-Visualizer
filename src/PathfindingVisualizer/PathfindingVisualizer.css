@@ -14,23 +14,26 @@
 
 .visualizer-info {
     justify-content: center;
-    display: flex;
-    padding: 10px;
+    display: inline-flex;
+    padding: 5px;
 }
 
 .key-item {
-    margin-left: 50px;
-    margin-right: 50px;
+    margin: 10px;
     display: flex;
+    outline: 1px solid rgb(200, 200, 200);
+    background-color: rgba(150, 150, 150, 0.1);
 }
 
 .key-node {
-    margin-left: 1.5px;
-    margin-right: 1.5px;
+    padding: 3px;
+    align-self: center;
 }
 
 .key-text {
+    padding: 3px;
+    align-self: center;
     color: rgb(50, 50, 50);
     font-size: medium;
-    margin-left: 5px;
+    font-weight: 500;
 }

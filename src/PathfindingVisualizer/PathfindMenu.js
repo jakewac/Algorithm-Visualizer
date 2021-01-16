@@ -64,24 +64,48 @@ class PathfindMenu extends React.Component {
      */
     keyAnimationEnded (type) { document.getElementById(`node-${type}`).className = `node ${type}`; }
 
+    /**
+     * Animates the start node key.
+     * 
+     * @param {int} row row value of key node
+     * @param {int} col column value of key node
+     */
     startNodeKey (row, col) {
         document.getElementById(`node-${row}-${col}`).className = `node ${row}`;
-        this.props.pathfinder.placeStartNode()
+        this.props.pathfinder.placeStartNode();
     }
 
+    /**
+     * Animates the target node key.
+     * 
+     * @param {int} row row value of key node
+     * @param {int} col column value of key node
+     */
     targetNodeKey (row, col) {
         document.getElementById(`node-${row}-${col}`).className = `node ${row}`;
-        this.props.pathfinder.placeTargetNode()
+        this.props.pathfinder.placeTargetNode();
     }
 
+    /**
+     * Animates the weight node key.
+     * 
+     * @param {int} row row value of key node
+     * @param {int} col column value of key node
+     */
     weightNodeKey (row, col) {
         document.getElementById(`node-${row}-${col}`).className = `node ${row}`;
-        this.props.pathfinder.setDrawMode(2)
+        this.props.pathfinder.setDrawMode(2);
     }
 
+    /**
+     * Animates the wall node key.
+     * 
+     * @param {int} row row value of key node
+     * @param {int} col column value of key node
+     */
     wallNodeKey (row, col) {
         document.getElementById(`node-${row}-${col}`).className = `node ${row}`;
-        this.props.pathfinder.setDrawMode(1)
+        this.props.pathfinder.setDrawMode(1);
     }
     
     /**
@@ -159,9 +183,10 @@ class PathfindMenu extends React.Component {
                             mousePressed={(row, col) => this.startNodeKey(row, col)}
                             animationEnded={(key) => this.keyAnimationEnded(key)}
                             mouseEntered={() => null}
+                            mouseLeft={() => null}
                             />
                         </div>
-                        <div className="key-text">Start Node</div>
+                        <div id='start-text' className="key-text">Start Node</div>
                     </div>
                     <div className="key-item">
                         <div className="key-node">
@@ -171,6 +196,7 @@ class PathfindMenu extends React.Component {
                             mousePressed={(row, col) => this.targetNodeKey(row, col)}
                             animationEnded={(key) => this.keyAnimationEnded(key)}
                             mouseEntered={() => null}
+                            mouseLeft={() => null}
                             />
                         </div>
                         <div className="key-text">Target Node</div>
@@ -183,6 +209,7 @@ class PathfindMenu extends React.Component {
                             mousePressed={(row, col) => this.weightNodeKey(row, col)}
                             animationEnded={(key) => this.keyAnimationEnded(key)}
                             mouseEntered={() => null}
+                            mouseLeft={() => null}
                             />
                         </div>
                         <div className="key-text">Weighted Node</div>
@@ -195,6 +222,7 @@ class PathfindMenu extends React.Component {
                             mousePressed={(row, col) => this.wallNodeKey(row, col)}
                             animationEnded={(key) => this.keyAnimationEnded(key)}
                             mouseEntered={() => null}
+                            mouseLeft={() => null}
                             />
                         </div>
                         <div className="key-text">Wall Node</div>
@@ -204,6 +232,7 @@ class PathfindMenu extends React.Component {
                             <Node type={""}
                             mousePressed={() => null}
                             mouseEntered={() => null}
+                            mouseLeft={() => null}
                             />
                         </div>
                         <div className="key-text">Unvisited Node</div>
@@ -213,12 +242,14 @@ class PathfindMenu extends React.Component {
                             <Node type={"visited-instant"}
                             mousePressed={() => null}
                             mouseEntered={() => null}
+                            mouseLeft={() => null}
                             />
                         </div>
                         <div className="key-node">
                             <Node type={"visited-weight-instant"}
                             mousePressed={() => null}
                             mouseEntered={() => null}
+                            mouseLeft={() => null}
                             />
                         </div>
                         <div className="key-text">Visited Nodes</div>
@@ -228,12 +259,14 @@ class PathfindMenu extends React.Component {
                             <Node type={"path-instant"}
                             mousePressed={() => null}
                             mouseEntered={() => null}
+                            mouseLeft={() => null}
                             />
                         </div>
                         <div className="key-node">
                             <Node type={"path-weight-instant"}
                             mousePressed={() => null}
                             mouseEntered={() => null}
+                            mouseLeft={() => null}
                             />
                         </div>
                         <div className="key-text">Path Nodes</div>
