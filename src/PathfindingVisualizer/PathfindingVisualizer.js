@@ -185,6 +185,12 @@ class PathfindingVisualizer extends React.Component {
                     case nodeTypes.WEIGHT:
                         node.cost = this.state.weightCost;
                         break;
+                    case nodeTypes.VISITED:
+                        nodeElement.className = nodeTypes.VISITED_INSTANT;
+                        break;
+                    case nodeTypes.VISITED_WEIGHT:
+                        nodeElement.className = nodeTypes.VISITED_WEIGHT_INSTANT;
+                        break;
                     default:
                         break;
                 }
@@ -308,7 +314,7 @@ class PathfindingVisualizer extends React.Component {
                 if (nodeElement.className === nodeTypes.VISITED || nodeElement.className === nodeTypes.PATH || nodeElement.className === nodeTypes.VISITED_INSTANT) {
                     nodeElement.className = nodeTypes.NODE;
                 }
-                else if (nodeElement.className === nodeTypes.VISITED_WEIGHT || nodeElement.className === nodeTypes.PATH_WEIGHT) {
+                else if (nodeElement.className === nodeTypes.VISITED_WEIGHT || nodeElement.className === nodeTypes.VISITED_WEIGHT_INSTANT || nodeElement.className === nodeTypes.PATH_WEIGHT) {
                     nodeElement.className = nodeTypes.WEIGHT;
                 }
             }
@@ -460,6 +466,9 @@ class PathfindingVisualizer extends React.Component {
                 }
             }, 50 * i);
         }
+        setTimeout(() => {
+            this.updateGrid();
+        }, 50 * shortestPath.length);
     }
 
     /**
@@ -474,6 +483,9 @@ class PathfindingVisualizer extends React.Component {
                 this.drawWallNode(maze[i][0], maze[i][1], true);
             }, 10 * i);
         }
+        setTimeout(() => {
+            this.updateGrid();
+        }, 10 * maze.length);
     }
 
     /**
