@@ -365,7 +365,8 @@ class PathfindingVisualizer extends React.Component {
                 }
                 else if (type === nodeTypes.VISITED_WEIGHT || 
                     type === nodeTypes.VISITED_WEIGHT_INSTANT || 
-                    type === nodeTypes.PATH_WEIGHT) {
+                    type === nodeTypes.PATH_WEIGHT ||
+                    type === nodeTypes.PATH_WEIGHT_INSTANT) {
                 
                         this.updateVisualNode(node, nodeTypes.WEIGHT_INSTANT);
                 }
