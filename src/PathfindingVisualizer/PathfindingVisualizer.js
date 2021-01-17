@@ -236,7 +236,7 @@ class PathfindingVisualizer extends React.Component {
 
         if (node.isStart || node.isTarget) return;
 
-        this.updateNodeVisual(curStart, nodeTypes.NODE);
+        this.updateNodeVisual(curStart, nodeTypes.NODE_ANIMATED);
         this.updateNodeVisual(node, nodeTypes.START);
     }
 
@@ -251,7 +251,7 @@ class PathfindingVisualizer extends React.Component {
 
         if (node.isStart || node.isTarget) return;
 
-        this.updateNodeVisual(curTarget, nodeTypes.NODE);
+        this.updateNodeVisual(curTarget, nodeTypes.NODE_ANIMATED);
         this.updateNodeVisual(node, nodeTypes.TARGET);
     }
 
@@ -286,6 +286,46 @@ class PathfindingVisualizer extends React.Component {
             this.updateNodeVisual(node, nodeTypes.NODE_ANIMATED);
         } else if (this.getNodeVisual(node) !== nodeTypes.WEIGHT_INSTANT) {
             this.updateNodeVisual(node, nodeTypes.WEIGHT);
+        }
+    }
+
+    /**
+     * Updates the visual visited state of a given node.
+     * 
+     * @param {Object} node node on grid
+     * @param {boolean} isInstant true if drawing instantly
+     */
+    drawVisitedNode (node, isInstant) {
+        if (node.isWall || node.isStart || node.isTarget) return;
+
+        const isWeight = node.cost !== 1;
+
+        if (isInstant) {
+            if (isWeight) this.updateNodeVisual(node, nodeTypes.VISITED_WEIGHT_INSTANT);
+            else this.updateNodeVisual(node, nodeTypes.VISITED_INSTANT);
+        } else {
+            if (isWeight) this.updateNodeVisual(node, nodeTypes.VISITED_WEIGHT);
+            else this.updateNodeVisual(node, nodeTypes.VISITED);
+        }
+    }
+
+    /**
+     * Updates the visual path state of a given node.
+     * 
+     * @param {Object} node node on grid
+     * @param {boolean} isInstant true if drawing instantly
+     */
+    drawPathNode (node, isInstant) {
+        if (node.isWall || node.isStart || node.isTarget) return;
+
+        const isWeight = node.cost !== 1;
+
+        if (isInstant) {
+            if (isWeight) this.updateNodeVisual(node, nodeTypes.PATH_WEIGHT_INSTANT);
+            else this.updateNodeVisual(node, nodeTypes.PATH_INSTANT);
+        } else {
+            if (isWeight) this.updateNodeVisual(node, nodeTypes.PATH_WEIGHT);
+            else this.updateNodeVisual(node, nodeTypes.PATH);
         }
     }
 
@@ -402,7 +442,7 @@ class PathfindingVisualizer extends React.Component {
      * the grid of nodes.
      * 
      * @param {pathfindAlgorithms} algorithm pathfinding algorithm
-     * @param {boolean} isInstant true if displaying instantly
+     * @param {boolean} isInstant true if drawing instantly
      */
     visualizePathfind (algorithm, isInstant) {
         this.clearPaths();
@@ -441,46 +481,25 @@ class PathfindingVisualizer extends React.Component {
      * 
      * @param {Array} visitedNodes array of visited nodes in order
      * @param {Array} shortestPath array of shortest path nodes in order
-     * @param {boolean} isInstant true if displaying instantly
+     * @param {boolean} isInstant true if drawing instantly
      */
     animateSearch (visitedNodes, shortestPath, isInstant) {
         if (isInstant) {
-            for (let i = 0; i <= visitedNodes.length; i++) {
-                if (i === visitedNodes.length) {
-                    for (let i = 1; i < shortestPath.length; i++) {
-                        const node = shortestPath[i];
-
-                        if (node.isStart || node.isTarget) continue;
-
-                        if (node.cost !== 1) this.updateNodeVisual(node, nodeTypes.PATH_WEIGHT_INSTANT);
-                        else this.updateNodeVisual(node, nodeTypes.PATH_INSTANT);
-                    }
-                    setTimeout(() => { this.updateGridState() }, 1);
-                    return;
-                }
+            for (let i = 0; i < visitedNodes.length; i++) {
                 const node = visitedNodes[i];
-                if (node.isStart || node.isTarget) continue;
-                
-                if (node.cost !== 1) this.updateNodeVisual(node, nodeTypes.VISITED_WEIGHT_INSTANT);
-                else this.updateNodeVisual(node, nodeTypes.VISITED_INSTANT);
+                this.drawVisitedNode(node, isInstant);
             }
+            this.animatePath(shortestPath, isInstant);
         } else {
             this.setState({canDraw: false});
 
-            for (let i = 0; i <= visitedNodes.length; i++) {
-                if (i === visitedNodes.length) {
-                    setTimeout(() => { this.animatePath(shortestPath); }, VISITED_SPEED * i);
-                    return;
-                }
-
-                const node = visitedNodes[i];
-                if (node.isStart || node.isTarget) continue;
-
+            for (let i = 0; i < visitedNodes.length; i++) {
                 setTimeout(() => {
-                    if (node.cost !== 1) this.updateNodeVisual(node, nodeTypes.VISITED_WEIGHT);
-                    else this.updateNodeVisual(node, nodeTypes.VISITED);
+                    const node = visitedNodes[i];
+                    this.drawVisitedNode(node, isInstant);
                 }, VISITED_SPEED * i);
             }
+            setTimeout(() => { this.animatePath(shortestPath, isInstant); }, VISITED_SPEED * visitedNodes.length);
         }
     }
 
@@ -489,21 +508,27 @@ class PathfindingVisualizer extends React.Component {
      * Updates the class names of the nodes to change their appearance.
      * 
      * @param {Array} shortestPath array of shortest path nodes in order 
+     * @param {boolean} isInstant true if drawing instantly
      */
-    animatePath (shortestPath) {
-        for (let i = 0; i < shortestPath.length; i++) {
-            const node = shortestPath[i];
-            if (node.isStart || node.isTarget) continue;
-
-            setTimeout(() => {
-                if (node.cost !== 1) this.updateNodeVisual(node, nodeTypes.PATH_WEIGHT);
-                else this.updateNodeVisual(node, nodeTypes.PATH);
-            }, PATH_SPEED * i);
+    animatePath (shortestPath, isInstant) {
+        if (isInstant) {
+            for (let i = 1; i < shortestPath.length; i++) {
+                const node = shortestPath[i];
+                this.drawPathNode(node, isInstant);
+            }
+            setTimeout(() => { this.updateGridState() }, 0);
+        } else {
+            for (let i = 0; i < shortestPath.length; i++) {
+                setTimeout(() => {
+                    const node = shortestPath[i];
+                    this.drawPathNode(node, isInstant)
+                }, PATH_SPEED * i);
+            }
+            setTimeout(() => { 
+                this.updateGridState();
+                this.setState({canDraw: true});
+            }, PATH_SPEED * shortestPath.length);
         }
-        setTimeout(() => { 
-            this.updateGridState();
-            this.setState({canDraw: true});
-        }, PATH_SPEED * shortestPath.length);
     }
 
     /**
@@ -559,10 +584,12 @@ class PathfindingVisualizer extends React.Component {
                 this.setState({drawWeight: !isWeight});
                 break;
             case 3: // Start
+                this.clearPaths();
                 this.drawStartNode(node);
                 this.setState({drawMode: 0});
                 break;
             case 4: // Target
+                this.clearPaths();
                 this.drawTargetNode(node);
                 this.setState({drawMode: 0});
                 break;

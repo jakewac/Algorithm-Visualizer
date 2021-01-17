@@ -14,7 +14,7 @@
 
 .visualizer-info {
     justify-content: center;
-    display: inline-flex;
+    display: flex;
     padding: 5px;
 }
 

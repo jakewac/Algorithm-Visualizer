@@ -9,7 +9,7 @@
 
 .node-animated {
   animation-name: nodeAnimation;
-  animation-duration: 0.25s;
+  animation-duration: 0.5s;
   animation-timing-function: ease-out;
   animation-delay: 0s;
   animation-direction: alternate;

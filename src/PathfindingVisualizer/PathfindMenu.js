@@ -65,7 +65,7 @@ class PathfindMenu extends React.Component {
     keyAnimationEnded (type) { document.getElementById(`node-${type}`).className = `node ${type}`; }
 
     /**
-     * Animates the start node key and sets draw mode.
+     * Animates the start node key and sets draw mode to start node.
      * 
      * @param {int} row row value of key node
      * @param {int} col column value of key node
@@ -76,7 +76,7 @@ class PathfindMenu extends React.Component {
     }
 
     /**
-     * Animates the target node key and sets draw mode.
+     * Animates the target node key and sets draw mode to target node.
      * 
      * @param {int} row row value of key node
      * @param {int} col column value of key node
@@ -87,7 +87,7 @@ class PathfindMenu extends React.Component {
     }
 
     /**
-     * Animates the weight node key and sets draw mode.
+     * Animates the weight node key and sets draw mode to weight nodes.
      * 
      * @param {int} row row value of key node
      * @param {int} col column value of key node
@@ -98,7 +98,7 @@ class PathfindMenu extends React.Component {
     }
 
     /**
-     * Animates the wall node key and sets draw mode.
+     * Animates the wall node key and sets draw mode to wall nodes.
      * 
      * @param {int} row row value of key node
      * @param {int} col column value of key node
