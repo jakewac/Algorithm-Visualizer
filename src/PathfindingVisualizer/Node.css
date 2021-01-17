@@ -138,6 +138,10 @@
   background-color: rgb(0, 200, 0);
 }
 
+.start-preview {
+  background-color: rgba(0, 200, 0, 0.5);
+}
+
 .target {
     animation-name: targetAnimation;
     animation-duration: 0.5s;
@@ -167,6 +171,10 @@
 
 .target-instant {
   background-color: rgb(255, 100, 100);
+}
+
+.target-preview {
+  background-color: rgba(255, 100, 100, 0.5);
 }
 
 .visited {
