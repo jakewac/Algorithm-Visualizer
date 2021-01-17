@@ -58,7 +58,7 @@ function innerWalls(walls, h, minC, maxC, minR, maxR) {
     if (h) {
         if (maxC - minC <= 1) { return walls; }
 
-        var r = Math.floor(random(minR, maxR)/2)*2;
+        var r = Math.floor(random(minR+1, maxR-1)/2)*2;
         walls = addHWall(walls, minC, maxC, r);
 
         walls = innerWalls(walls, !h, minC, maxC, minR, r-1);
@@ -66,7 +66,7 @@ function innerWalls(walls, h, minC, maxC, minR, maxR) {
     } else {
         if (maxR - minR <= 1) { return walls; }
 
-        var c = Math.floor(random(minC, maxC)/2)*2;
+        var c = Math.floor(random(minC+1, maxC-1)/2)*2;
         walls = addVWall(walls, minR, maxR, c);
 
         walls = innerWalls(walls, !h, minC, c-1, minR, maxR);

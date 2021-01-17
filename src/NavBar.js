@@ -3,8 +3,7 @@ import { Card, CardHeader, CardBody, NavItem, NavLink, Nav, TabContent, TabPane
 } from 'reactstrap'
 import classnames from 'classnames';
 
-import './NavBar.css';
-
+import Home from './Home';
 import PathfindingVisualizer from './PathfindingVisualizer/PathfindingVisualizer';
 import SortingVisualizer from './SortingVisualizer/SortingVisualizer';
 
@@ -31,8 +30,8 @@ class NavBar extends React.Component {
      */
     render () {
         return (
-            <div>
-                <Card className="nav-bar">
+            <div className="nav-bar">
+                <Card>
                     <CardHeader>
                         <Nav tabs>
                             <NavItem>
@@ -58,8 +57,7 @@ class NavBar extends React.Component {
                     <CardBody>
                         <TabContent activeTab={this.state.activeTab}>
                             <TabPane tabId="home">
-                                Jake Waclawski<br></br>
-                                <a href="https://github.com/jmw3638/Pathfinder">GitHub</a>
+                                <Home />
                             </TabPane>
                             <TabPane tabId="pathfind">
                                 <PathfindingVisualizer />

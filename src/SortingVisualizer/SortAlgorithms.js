@@ -80,7 +80,8 @@ export function insertionSort(array) {
             array[j + 1] = array[j];
             j--;
         }
-        animations.push([[UNSORTED, j + 1, j + 2]]);
+        if (j + 2 >= array.length) animations.push([[UNSORTED, j + 1]]);
+        else animations.push([[UNSORTED, j + 1, j + 2]]);
         animations.push([[null, j + 1, cur]]);
         array[j+1] = cur;
     }

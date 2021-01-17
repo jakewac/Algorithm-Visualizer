@@ -1,8 +1,5 @@
 import React from 'react';
 
-import { Card, CardHeader, CardBody
-} from 'reactstrap'
-
 import './SortingVisualizer.css';
 
 import { random } from '../Utils';
@@ -10,13 +7,13 @@ import SortMenu from './SortMenu';
 import { selectionSort, insertionSort, mergeSort, sortAlgorithms } from './SortAlgorithms';
 
 // Size of array
-const ARRAY_SIZE = 25;
+const ARRAY_SIZE = 100;
 // Minimum value in array
 const MIN_VALUE = 5;
 // Maximum value in array
 const MAX_VALUE = 500;
 // Speed between animations in miliseconds
-const SPEED = 250;
+const SPEED = 10;
 
 // Unsorted bar color
 const UNSORTED = "pink";
@@ -49,8 +46,8 @@ class SortingVisualizer extends React.Component {
     /**
      * Creates a new bar with a random value.
      * 
-     * @param {*} min lower bound of value
-     * @param {*} max upper bound of value
+     * @param {int} min lower bound of value
+     * @param {int} max upper bound of value
      * 
      * @returns the created bar
      */
@@ -109,7 +106,6 @@ class SortingVisualizer extends React.Component {
                         bars[action[1]].style.height = `${action[2]}px`;
                     } else {
                         for (let k = 1; k < action.length; k++) {
-                            console.log(action);
                             bars[action[k]].style.backgroundColor = action[0]; 
                         }
                     }
@@ -132,29 +128,25 @@ class SortingVisualizer extends React.Component {
      * @returns a <div> element representing the component
      */
     render () {
-        console.log(this.state.array);
+        //console.log(this.state.array);
 
         return (
-            <div>
-                <Card>
-                    <CardHeader>
-                        <SortMenu sorter={this}/>
-                    </CardHeader>
-                    <CardBody>
-                        <div className="bar-array">
-                            {Array.from(this.state.array).map((bar, barIdx) => {
-                                return (
-                                    <div className="bar"
-                                    key={barIdx}
-                                    style={{
-                                      backgroundColor: UNSORTED,
-                                      height: `${bar}px`,
-                                    }}/>
-                                );
-                            })}
-                        </div>
-                    </CardBody>
-                </Card>
+            <div className="sort-vis">
+                <div className="sort-menu">
+                    <SortMenu sorter={this}/>
+                </div>
+                <div className="array">
+                    {Array.from(this.state.array).map((bar, barIdx) => {
+                        return (
+                            <div className="bar"
+                            key={barIdx}
+                            style={{
+                                backgroundColor: UNSORTED,
+                                height: `${bar}px`,
+                            }}/>
+                        );
+                    })}
+                </div>
             </div>
         );
     }

@@ -2,8 +2,7 @@ import React from 'react';
 import { Container, Row, Col, Button, ButtonDropdown, DropdownItem, DropdownToggle, DropdownMenu
 } from 'reactstrap';
 
-import './PathfindMenu.css';
-
+import Node from './Node';
 import { pathfindAlgorithms } from './PathfindAlgorithms';
 
 /**
@@ -57,7 +56,58 @@ class PathfindMenu extends React.Component {
      * Get the current text of the visualize button.
      */
     getIsInstantText () { return this.state.isInstant ? "Instant" : "Visualize"; }
- 
+
+    /**
+     * Reverts the node state to the instant version.
+     * 
+     * @param {string} type node key type
+     */
+    keyAnimationEnded (type) { document.getElementById(`node-${type}`).className = `node ${type}`; }
+
+    /**
+     * Animates the start node key and sets draw mode to start node.
+     * 
+     * @param {int} row row value of key node
+     * @param {int} col column value of key node
+     */
+    startNodeKey (row, col) {
+        document.getElementById(`node-${row}-${col}`).className = `node ${row}`;
+        this.props.pathfinder.setDrawMode(3);
+    }
+
+    /**
+     * Animates the target node key and sets draw mode to target node.
+     * 
+     * @param {int} row row value of key node
+     * @param {int} col column value of key node
+     */
+    targetNodeKey (row, col) {
+        document.getElementById(`node-${row}-${col}`).className = `node ${row}`;
+        this.props.pathfinder.setDrawMode(4);
+    }
+
+    /**
+     * Animates the weight node key and sets draw mode to weight nodes.
+     * 
+     * @param {int} row row value of key node
+     * @param {int} col column value of key node
+     */
+    weightNodeKey (row, col) {
+        document.getElementById(`node-${row}-${col}`).className = `node ${row}`;
+        this.props.pathfinder.setDrawMode(2);
+    }
+
+    /**
+     * Animates the wall node key and sets draw mode to wall nodes.
+     * 
+     * @param {int} row row value of key node
+     * @param {int} col column value of key node
+     */
+    wallNodeKey (row, col) {
+        document.getElementById(`node-${row}-${col}`).className = `node ${row}`;
+        this.props.pathfinder.setDrawMode(1);
+    }
+    
     /**
      * Renders the menu component.
      * 
@@ -93,15 +143,7 @@ class PathfindMenu extends React.Component {
                                             <Button color="info" onClick={() => this.toggleEdit()}>Edit</Button>
                                             <DropdownToggle split color="info" />
                                             <DropdownMenu>
-                                                <DropdownItem onClick={() => this.props.pathfinder.setDrawMode(0)}>Stop Drawing</DropdownItem>
-                                                <DropdownItem divider />
-                                                <DropdownItem onClick={() => this.props.pathfinder.setDrawMode(1)}>Draw Walls</DropdownItem>
-                                                <DropdownItem onClick={() => this.props.pathfinder.setDrawMode(2)}>Draw Weights</DropdownItem>
-                                                <DropdownItem divider />
                                                 <DropdownItem onClick={() => this.props.pathfinder.resetStartTarget()}>Reset Start/Target Nodes</DropdownItem>
-                                                <DropdownItem divider />
-                                                <DropdownItem onClick={() => this.props.pathfinder.placeStartNode()}>Place Start Node</DropdownItem>
-                                                <DropdownItem onClick={() => this.props.pathfinder.placeTargetNode()}>Place Target Node</DropdownItem>
                                             </DropdownMenu>
                                         </ButtonDropdown>
                                     </Col>
@@ -110,7 +152,7 @@ class PathfindMenu extends React.Component {
                                             <Button color="warning" onClick={() => this.toggleMaze()}>Maze</Button>
                                             <DropdownToggle split color="warning" />
                                             <DropdownMenu>
-                                                <DropdownItem onClick={() => this.props.pathfinder.genRecursiveDevision()}>Recursive Devision</DropdownItem>
+                                                <DropdownItem onClick={() => this.props.pathfinder.animateMaze()}>Recursive Devision</DropdownItem>
                                             </DropdownMenu>
                                         </ButtonDropdown>
                                     </Col>
@@ -123,7 +165,7 @@ class PathfindMenu extends React.Component {
                                                 <DropdownItem divider />
                                                 <DropdownItem onClick={() => this.props.pathfinder.clearWeights()}>Clear Weights</DropdownItem>
                                                 <DropdownItem onClick={() => this.props.pathfinder.clearWalls()}>Clear Walls</DropdownItem>
-                                                <DropdownItem onClick={() => this.props.pathfinder.clearPath()}>Clear Path</DropdownItem>
+                                                <DropdownItem onClick={() => this.props.pathfinder.clearPaths()}>Clear Path</DropdownItem>
                                             </DropdownMenu>
                                         </ButtonDropdown>
                                     </Col>
@@ -132,6 +174,104 @@ class PathfindMenu extends React.Component {
                         </Col>
                     </Row>
                 </Container>
+                <div className="visualizer-info">
+                    <div className="key-item">
+                        <div className="key-node">
+                            <Node type={"start-instant"}
+                            row={"start"}
+                            col={"instant"}
+                            mousePressed={(row, col) => this.startNodeKey(row, col)}
+                            animationEnded={(key) => this.keyAnimationEnded(key)}
+                            mouseEntered={() => null}
+                            mouseLeft={() => null}
+                            />
+                        </div>
+                        <div id='start-text' className="key-text">Start Node</div>
+                    </div>
+                    <div className="key-item">
+                        <div className="key-node">
+                            <Node type={"target-instant"}
+                            row={"target"}
+                            col={"instant"}
+                            mousePressed={(row, col) => this.targetNodeKey(row, col)}
+                            animationEnded={(key) => this.keyAnimationEnded(key)}
+                            mouseEntered={() => null}
+                            mouseLeft={() => null}
+                            />
+                        </div>
+                        <div className="key-text">Target Node</div>
+                    </div>
+                    <div className="key-item">
+                        <div className="key-node">
+                            <Node type={"weight-instant"}
+                            row={"weight"}
+                            col={"instant"}
+                            mousePressed={(row, col) => this.weightNodeKey(row, col)}
+                            animationEnded={(key) => this.keyAnimationEnded(key)}
+                            mouseEntered={() => null}
+                            mouseLeft={() => null}
+                            />
+                        </div>
+                        <div className="key-text">Weighted Node</div>
+                    </div>
+                    <div className="key-item">
+                        <div className="key-node">
+                            <Node type={"wall-instant"}
+                            row={"wall"}
+                            col={"instant"}
+                            mousePressed={(row, col) => this.wallNodeKey(row, col)}
+                            animationEnded={(key) => this.keyAnimationEnded(key)}
+                            mouseEntered={() => null}
+                            mouseLeft={() => null}
+                            />
+                        </div>
+                        <div className="key-text">Wall Node</div>
+                    </div>
+                    <div className="key-item">
+                        <div className="key-node">
+                            <Node type={""}
+                            mousePressed={() => null}
+                            mouseEntered={() => null}
+                            mouseLeft={() => null}
+                            />
+                        </div>
+                        <div className="key-text">Unvisited Node</div>
+                    </div>
+                    <div className="key-item">
+                        <div className="key-node">
+                            <Node type={"visited-instant"}
+                            mousePressed={() => null}
+                            mouseEntered={() => null}
+                            mouseLeft={() => null}
+                            />
+                        </div>
+                        <div className="key-node">
+                            <Node type={"visited-weight-instant"}
+                            mousePressed={() => null}
+                            mouseEntered={() => null}
+                            mouseLeft={() => null}
+                            />
+                        </div>
+                        <div className="key-text">Visited Nodes</div>
+                    </div>
+                    <div className="key-item">
+                        <div className="key-node">
+                            <Node type={"path-instant"}
+                            mousePressed={() => null}
+                            mouseEntered={() => null}
+                            mouseLeft={() => null}
+                            />
+                        </div>
+                        <div className="key-node">
+                            <Node type={"path-weight-instant"}
+                            mousePressed={() => null}
+                            mouseEntered={() => null}
+                            mouseLeft={() => null}
+                            />
+                        </div>
+                        <div className="key-text">Path Nodes</div>
+                    </div>
+                </div>
             </div>
         );
     }

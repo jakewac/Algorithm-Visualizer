@@ -2,8 +2,6 @@ import React from 'react';
 import { Container, Row, Col, Button, ButtonDropdown, DropdownItem, DropdownToggle, DropdownMenu
 } from 'reactstrap';
 
-import './SortMenu.css';
-
 import { sortAlgorithms } from './SortAlgorithms';
 
 /**
@@ -51,7 +49,7 @@ class SortMenu extends React.Component {
                                         </ButtonDropdown>
                                     </Col>
                                     <Col>
-                                        <Button color="warning" onClick={this.props.sorter.reGenerateArray}>Randomize</Button>
+                                        <Button color="warning" onClick={() => this.props.sorter.reGenerateArray()}>Randomize</Button>
                                     </Col>
                                 </Row>
                             </Container>

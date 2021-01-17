@@ -1,8 +1,39 @@
 .grid {
-    caret-color: transparent;
-    margin: 25px;
+    justify-content: center;
 }
 
 .grid-row {
-    margin: -3px;
+    display: flex;
+    justify-content: center;
+}
+
+.pathfind-menu {
+    font-size: large;
+    font-weight: bold;
+}
+
+.visualizer-info {
+    justify-content: center;
+    display: flex;
+    padding: 5px;
+}
+
+.key-item {
+    margin: 10px;
+    display: flex;
+    outline: 1px solid rgb(200, 200, 200);
+    background-color: rgba(150, 150, 150, 0.1);
+}
+
+.key-node {
+    padding: 3px;
+    align-self: center;
+}
+
+.key-text {
+    padding: 3px;
+    align-self: center;
+    color: rgb(50, 50, 50);
+    font-size: medium;
+    font-weight: 500;
 }
