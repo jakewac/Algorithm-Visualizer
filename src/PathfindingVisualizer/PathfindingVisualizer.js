@@ -81,6 +81,8 @@ class PathfindingVisualizer extends React.Component {
             startNode: INIT_START,
             // Current target node position
             targetNode: INIT_TARGET,
+            // Currently visualized pathfind algorithm
+            curAlgorithm: null,
         };
     }
 
@@ -202,11 +204,28 @@ class PathfindingVisualizer extends React.Component {
             for (let c = 0; c < grid[0].length; c++) {
                 const node = grid[r][c];
                 const type = this.getVisualType(node);
+
+                node.isStart = false;
+                node.isTarget = false;
+                node.isWall = false;
+                node.cost = 1;
                 
                 switch (type) {
-                    case nodeTypes.NODE:
-                        node.isWall = false;
-                        node.cost = 1;
+                    case nodeTypes.START:
+                        node.isStart = true;
+                        this.setState({startNode: [node.row, node.col]});
+                        break;
+                    case nodeTypes.START_INSTANT:
+                        node.isStart = true;
+                        this.setState({startNode: [node.row, node.col]});
+                        break;
+                    case nodeTypes.TARGET:
+                        node.isTarget = true;
+                        this.setState({targetNode: [node.row, node.col]});
+                        break;
+                    case nodeTypes.TARGET_INSTANT:
+                        node.isTarget = true;
+                        this.setState({targetNode: [node.row, node.col]});
                         break;
                     case nodeTypes.WALL:
                         node.isWall = true;
@@ -255,27 +274,37 @@ class PathfindingVisualizer extends React.Component {
      */
     setStartNode (row, col) { 
         const grid = this.state.grid;
-        const curStart = this.state.grid[this.state.startNode[0]][this.state.startNode[1]];
-        const curStartNew = {
-            ...curStart,
-            isStart: false,
-        }
-        grid[this.state.startNode[0]][this.state.startNode[1]] = curStartNew;
+        const node = grid[row][col];
+        const curStart = grid[this.state.startNode[0]][this.state.startNode[1]];
 
-        this.setState({startNode: [row, col]}); 
+        if (node.isStart || node.isTarget) return;
+
+        this.updateVisualNode(curStart, nodeTypes.NODE);
+        this.updateVisualNode(node, nodeTypes.START);
+
+        // const grid = this.state.grid;
+        // const curStart = this.state.grid[this.state.startNode[0]][this.state.startNode[1]];
+        // const curStartNew = {
+        //     ...curStart,
+        //     isStart: false,
+        // }
+        // grid[this.state.startNode[0]][this.state.startNode[1]] = curStartNew;
+
+        // this.setState({startNode: [row, col]}); 
         
-        const node = this.state.grid[row][col];
-        const newNode = {
-            ...node,
-            isWall: false,
-            isStart: true,
-        }
-        grid[row][col] = newNode;
+        // const node = this.state.grid[row][col];
+        // const newNode = {
+        //     ...node,
+        //     isWall: false,
+        //     cost: 1,
+        //     isStart: true,
+        // }
+        // grid[row][col] = newNode;
 
-        this.setState({
-            grid: grid,
-            placingStart: false,
-        });
+        // this.setState({
+        //     grid: grid,
+        //     placingStart: false,
+        // });
     }
 
     /**
@@ -287,27 +316,37 @@ class PathfindingVisualizer extends React.Component {
      */
     setTargetNode (row, col) { 
         const grid = this.state.grid;
-        const curTarget = this.state.grid[this.state.targetNode[0]][this.state.targetNode[1]];
-        const curTargetNew = {
-            ...curTarget,
-            isTarget: false,
-        }
-        grid[this.state.targetNode[0]][this.state.targetNode[1]] = curTargetNew;
+        const node = grid[row][col];
+        const curTarget = grid[this.state.targetNode[0]][this.state.targetNode[1]];
 
-        this.setState({targetNode: [row, col]}); 
+        if (node.isStart || node.isTarget) return;
+
+        this.updateVisualNode(curTarget, nodeTypes.NODE);
+        this.updateVisualNode(node, nodeTypes.TARGET);
+
+        // const grid = this.state.grid;
+        // const curTarget = this.state.grid[this.state.targetNode[0]][this.state.targetNode[1]];
+        // const curTargetNew = {
+        //     ...curTarget,
+        //     isTarget: false,
+        // }
+        // grid[this.state.targetNode[0]][this.state.targetNode[1]] = curTargetNew;
+
+        // this.setState({targetNode: [row, col]}); 
     
-        const node = this.state.grid[row][col];
-        const newNode = {
-            ...node,
-            isWall: false,
-            isTarget: true,
-        }
-        grid[row][col] = newNode;
+        // const node = this.state.grid[row][col];
+        // const newNode = {
+        //     ...node,
+        //     isWall: false,
+        //     cost: 1,
+        //     isTarget: true,
+        // }
+        // grid[row][col] = newNode;
         
-        this.setState({
-            grid: grid,
-            placingTarget: false,
-        });
+        // this.setState({
+        //     grid: grid,
+        //     placingTarget: false,
+        // });
     }
 
     /**
@@ -317,6 +356,7 @@ class PathfindingVisualizer extends React.Component {
         this.clearWeights();
         this.clearWalls();
         this.clearPaths();
+        this.updateGrid();
     }
 
     /**
@@ -380,8 +420,11 @@ class PathfindingVisualizer extends React.Component {
                 }
             }
         }
-
-        this.setState({grid: this.softRebuildGrid()})
+        if (this.state.curAlgorithm !== null) 
+        this.setState({
+            grid: this.softRebuildGrid(),
+            curAlgorithm: null,
+        })
     }
 
     /**
@@ -390,6 +433,7 @@ class PathfindingVisualizer extends React.Component {
     resetStartTarget () {
         this.setStartNode(INIT_START[0], INIT_START[1]);
         this.setTargetNode(INIT_TARGET[0], INIT_TARGET[1]);
+        this.updateGrid();
     }
 
     /**
@@ -446,9 +490,8 @@ class PathfindingVisualizer extends React.Component {
      * @param {boolean} isInstant true if displaying instantly
      */
     visualizePathfind (algorithm, isInstant) {
-        this.updateGrid();
         this.clearPaths();
-
+        
         const grid = this.state.grid;
         const start = grid[this.state.startNode[0]][this.state.startNode[1]];
         const target = grid[this.state.targetNode[0]][this.state.targetNode[1]];
@@ -474,6 +517,8 @@ class PathfindingVisualizer extends React.Component {
         const shortestPath = getShortestPathNodes(target);
 
         this.animateSearch(visitedNodes, shortestPath, isInstant);
+
+        this.setState({curAlgorithm: algorithm});
     }
 
     /**
@@ -587,36 +632,41 @@ class PathfindingVisualizer extends React.Component {
      */
     handleMouseDown (row, col) {
         if (!this.state.canDraw) return;
+        this.setState({mouseIsDown: true});
 
         if (this.state.placingStart) {
             this.setStartNode(row, col);
+            this.setState({placingStart: false});
+            if (this.state.curAlgorithm !== null) this.visualizePathfind(this.state.curAlgorithm, true);
             return;
         }
         if (this.state.placingTarget) {
             this.setTargetNode(row, col);
+            this.setState({placingTarget: false});
+            if (this.state.curAlgorithm !== null) this.visualizePathfind(this.state.curAlgorithm, true);
             return;
         }
 
         const grid = this.state.grid;
-        if (grid[row][col].isStart || grid[row][col].isTarget) return;
+        const node = grid[row][col];
+        if (node.isStart || node.isTarget) return;
 
         switch (this.state.drawMode) {
             case 0:
                 break;
             case 1:
-                const isWall = grid[row][col].isWall;
+                const isWall = node.isWall;
                 this.drawWallNode(row, col, !isWall);
                 this.setState({drawWall: !isWall});
                 break;
             case 2:
-                const isWeight = grid[row][col].cost !== 1;
+                const isWeight = node.cost !== 1;
                 this.drawWeightNode(row, col, !isWeight);
                 this.setState({drawWeight: !isWeight});
                 break;
             default:
                 break;
         }
-        this.setState({mouseIsDown: true});
     }
 
     /**
@@ -651,36 +701,26 @@ class PathfindingVisualizer extends React.Component {
         const grid = this.state.grid;
         const node = grid[row][col];
 
-        if (!this.state.mouseIsDown) {
-            switch (this.state.drawMode) {
-                case 0:
-                    break;
-                case 1:
-                    if (node.isWall || node.cost !== 1 || node.isStart || node.isTarget) return;
+        switch (this.state.drawMode) {
+            case 0:
+                break;
+            case 1:
+                if (this.state.mouseIsDown && node.isWall !== this.state.drawWall) {
+                    this.drawWallNode(row, col, !node.isWall);
+                } else if (!node.isWall && node.cost === 1 && !node.isStart && !node.isTarget) {
                     this.updateVisualNode(node, nodeTypes.WALL_PREVIEW);
-                    break;
-                case 2:
-                    if (node.isWall || node.cost !== 1 || node.isStart || node.isTarget) return;
+                }
+                break;
+            case 2:
+                const isWeight = node.cost !== 1;
+                if (this.state.mouseIsDown && isWeight !== this.state.drawWeight) {
+                    this.drawWeightNode(row, col, !isWeight);
+                } else if (!node.isWall && !isWeight && !node.isStart && !node.isTarget) {
                     this.updateVisualNode(node, nodeTypes.WEIGHT_PREVIEW);
-                    break;
-                default:
-                    break;
-            }
-        } else {
-            switch (this.state.drawMode) {
-                case 0: 
-                    break;
-                case 1:
-                    const isWall = node.isWall;
-                    if (node.isWall !== this.state.drawWall) this.drawWallNode(row, col, !isWall);
-                    break;
-                case 2:
-                    const isWeight = node.cost !== 1;
-                    if (isWeight !== this.state.drawWeight) this.drawWeightNode(row, col, !isWeight);
-                    break;
-                default:
-                    break;
-            }
+                }
+                break; 
+            default:
+                break;
         }
     }
 
