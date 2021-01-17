@@ -336,7 +336,6 @@ class PathfindingVisualizer extends React.Component {
         this.clearWeights();
         this.clearWalls();
         this.clearPaths();
-        this.updateGridState();
     }
 
     /**
@@ -353,6 +352,7 @@ class PathfindingVisualizer extends React.Component {
             }
         }
         this.setState({grid: grid});
+        this.updateGridState();
     }
 
     /**
@@ -370,8 +370,8 @@ class PathfindingVisualizer extends React.Component {
                 }
             }
         }
-
         this.setState({grid: grid});
+        this.updateGridState();
     }
 
     /**
@@ -400,6 +400,7 @@ class PathfindingVisualizer extends React.Component {
                 }
             }
         }
+        this.updateGridState();
     }
 
     /**
