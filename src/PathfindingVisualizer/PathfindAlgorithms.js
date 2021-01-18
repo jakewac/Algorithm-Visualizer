@@ -2,18 +2,18 @@ import PriorityQueue from "../Utils";
 
 // Pathfinding algorithms
 export const pathfindAlgorithms = {
-    DIJKSTRA: "dijkstra",
-    ASTAR: "astar",
-    BFS: "bfs",
-    DFS: "dfs",
+    DIJKSTRA: "Dijkstra",
+    ASTAR: "A-Star",
+    BFS: "Breadth First Search",
+    DFS: "Depth First Search",
 }
 
 /**
  * Executes a Dijkstra's algorithm search.
  * 
  * @param {Array} grid grid of nodes
- * @param {Node} start start node
- * @param {Node} target target node
+ * @param {Object} start start node
+ * @param {Object} target target node
  * 
  * @returns an array of visited nodes in order
  */
@@ -27,6 +27,7 @@ export function dijkstra(grid, start, target) {
         
         if (!curNode) break;
         if (curNode.isWall) continue;
+
         if (curNode.distance === Infinity) return visitedNodes;
 
         curNode.isVisited = true;
@@ -47,8 +48,8 @@ export function dijkstra(grid, start, target) {
  * Executes an A* (A-Star) algorithm search.
  * 
  * @param {Array} grid grid of nodes
- * @param {Node} start start node
- * @param {Node} target target node
+ * @param {Object} start start node
+ * @param {Object} target target node
  * 
  * @returns an array of visited nodes in order
  */
@@ -62,6 +63,7 @@ export function aStar(grid, start, target) {
         const curNode = unvisitedNodes.dequeue().element;
 
         if (curNode.isWall) continue;
+
         if (curNode.distance === Infinity) return visitedNodes;
 
         curNode.isVisited = true;
@@ -89,8 +91,8 @@ export function aStar(grid, start, target) {
  * Executes Breadth First Search (BFS) algorithm search.
  * 
  * @param {Array} grid grid of nodes
- * @param {Node} start start node
- * @param {Node} target target node
+ * @param {Object} start start node
+ * @param {Object} target target node
  * 
  * @returns an array of visited nodes in order
  */
@@ -105,13 +107,16 @@ export function breadthFirstSearch(grid, start, target) {
         if (curNode.isVisited) continue;
 
         if (curNode.distance === Infinity) return visitedNodes;
+
+        curNode.isVisited = true;
+        visitedNodes.push(curNode);
+
         if (curNode === target) return visitedNodes; 
 
         const unvisitedNeighbors = getUnvisitedNeighbors(curNode, grid);
         for (const neighbor of unvisitedNeighbors) {
             unvisitedNodes.push(neighbor);
-            curNode.isVisited = true;
-            visitedNodes.push(curNode);
+            
 
             neighbor.distance = curNode.distance + 1;
             neighbor.previousNode = curNode;
@@ -124,8 +129,8 @@ export function breadthFirstSearch(grid, start, target) {
  * Executes a Depth First Search (DFS) algorithm search.
  * 
  * @param {Array} grid grid of nodes
- * @param {Node} start start node
- * @param {Node} target target node
+ * @param {Object} start start node
+ * @param {Object} target target node
  * 
  * @returns an array of visited nodes in order
  */
@@ -174,7 +179,7 @@ function getAllNodes(grid) {
  * Gets the shortest path of nodes from the target node to 
  * the start node.
  * 
- * @param {Node} targetNode target node
+ * @param {Object} targetNode target node
  * 
  * @returns an array of shortest path nodes in order
  */
@@ -189,9 +194,28 @@ export function getShortestPathNodes(targetNode) {
 }
 
 /**
+ * Gets the total weighted cost of the shortest path.
+ * 
+ * @param {Object} targetNode target node
+ * 
+ * @returns the total cost
+ */
+export function getShortestPathCost(targetNode) {
+    const nodesInShortestPath = [];
+    let currentNode = targetNode;
+    let totalCost = 0;
+    while (currentNode !== null) {
+        nodesInShortestPath.unshift(currentNode);
+        totalCost += currentNode.cost;
+        currentNode = currentNode.previousNode;
+    }
+    return totalCost;
+}
+
+/**
  * Gets all unvisited neighbors of a given node.
  * 
- * @param {Node} node node
+ * @param {Object} node node
  * @param {Array} grid grid of nodes
  * 
  * @returns an array containing all unvisited neighbors

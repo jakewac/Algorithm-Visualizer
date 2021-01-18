@@ -174,7 +174,7 @@ class PathfindMenu extends React.Component {
                         </Col>
                     </Row>
                 </Container>
-                <div className="visualizer-info">
+                <div className="visualizer-key">
                     <div className="key-item">
                         <div className="key-node">
                             <Node type={"start-instant"}

@@ -2,11 +2,12 @@ import React from 'react';
 
 import './PathfindingVisualizer.css';
 
-import { getShortestPathNodes, dijkstra, aStar, breadthFirstSearch, depthFirstSearch, pathfindAlgorithms
+import { getShortestPathNodes, dijkstra, aStar, breadthFirstSearch, depthFirstSearch, pathfindAlgorithms, getShortestPathCost
 } from './PathfindAlgorithms';
 import { recursiveDevision
 } from './MazeAlgorithms';
 import PathfindMenu from './PathfindMenu';
+import PathfindInfo from './PathfindInfo';
 import Node from './Node';
 
 // Number of rows in the grid
@@ -400,6 +401,7 @@ class PathfindingVisualizer extends React.Component {
                 }
             }
         }
+        this.updateAlgorithmInfo("None", 0, 0, 0);
         this.updateGridState();
     }
 
@@ -470,8 +472,11 @@ class PathfindingVisualizer extends React.Component {
             default:
                 break;
         }
-        
+
         const shortestPath = getShortestPathNodes(target);
+        const totalCost = getShortestPathCost(target);
+
+        this.updateAlgorithmInfo(algorithm, visitedNodes.length, shortestPath.length, totalCost);
 
         this.animateSearch(visitedNodes, shortestPath, isInstant);
     }
@@ -530,6 +535,21 @@ class PathfindingVisualizer extends React.Component {
                 this.setState({canDraw: true});
             }, PATH_SPEED * shortestPath.length);
         }
+    }
+
+    /**
+     * Updates the visual algorithm information.
+     * 
+     * @param {string} algorithm current algorithm
+     * @param {int} visitedNodes amount of nodes visited
+     * @param {int} pathNodes amount of nodes in path
+     * @param {int} totalCost total cost of shortest path
+     */
+    updateAlgorithmInfo (algorithm, visitedNodes, pathNodes, totalCost) {
+        document.getElementById("algorithm-info-text").innerHTML = `${algorithm}`;
+        document.getElementById("visited-info-text").innerHTML = `${visitedNodes}`;
+        document.getElementById("path-info-text").innerHTML = `${pathNodes}`;
+        document.getElementById("weighted-info-text").innerHTML = `${totalCost}`;
     }
 
     /**
@@ -722,6 +742,9 @@ class PathfindingVisualizer extends React.Component {
             <div className="pathfind-vis">
                 <div className="pathfind-menu">
                     <PathfindMenu pathfinder={this} />
+                </div>
+                <div>
+                    <PathfindInfo></PathfindInfo>
                 </div>
                 <div 
                 className="grid" 
