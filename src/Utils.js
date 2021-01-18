@@ -1,5 +1,16 @@
-// User defined class 
-// to store element and its priority 
+/**
+ * Generates a random integer between two given values.
+ * 
+ * @param {int} min minimum value
+ * @param {int} max maximum value 
+ * 
+ * @returns the generated integer
+ */
+export function random(min, max) { return Math.floor(Math.random() * (max - min + 1) + min); }
+
+/**
+ * User defined PriorityQueue helper class. Stores element and its priority.
+ */
 class QElement { 
     constructor(element, priority) 
     { 
@@ -7,18 +18,22 @@ class QElement {
         this.priority = priority; 
     } 
 } 
-
-export function random(min, max) { return Math.floor(Math.random() * (max - min + 1) + min); }
   
-// PriorityQueue class 
+/**
+ * Represents a priority queue data structure.
+ */
 class PriorityQueue { 
-  
-    // An array is used to implement priority 
-    constructor() 
-    { 
+    constructor() { 
         this.items = []; 
     } 
   
+    /**
+     * Determines if an element is in the priority queue.
+     * 
+     * @param {Object} element element to search for
+     * 
+     * @returns the index of the element, false if not found
+     */
     contains(element) {
         for (var i = 0; i < this.items.length; i++) {
             if(this.items[i].element === element) return i;
@@ -26,6 +41,12 @@ class PriorityQueue {
         return false;
     }
 
+    /**
+     * Sets an element's priority.
+     * 
+     * @param {Object} element the element
+     * @param {int} priority new priority
+     */
     setPriority(element, priority) {
         var has = this.contains(element);
         if(!has) return;
@@ -33,83 +54,79 @@ class PriorityQueue {
         this.enqueue(element, priority);
     }
 
-    // enqueue function to add element 
-    // to the queue as per priority 
+    /**
+     * Adds an element to the priority queue with a given priority.
+     * 
+     * @param {Object} element 
+     * @param {int} priority 
+     */
     enqueue(element, priority) 
     { 
-        // creating object from queue element 
         var qElement = new QElement(element, priority); 
         var contain = false; 
-    
-        // iterating through the entire 
-        // item array to add element at the 
-        // correct location of the Queue 
+
         for (var i = 0; i < this.items.length; i++) { 
             if (this.items[i].priority > qElement.priority) { 
-                // Once the correct location is found it is 
-                // enqueued 
                 this.items.splice(i, 0, qElement); 
                 contain = true; 
                 break; 
             } 
         } 
-    
-        // if the element have the highest priority 
-        // it is added at the end of the queue 
-        if (!contain) { 
-            this.items.push(qElement); 
-        } 
+
+        if (!contain) this.items.push(qElement);  
     } 
 
-    // dequeue method to remove 
-    // element from the queue 
+    /**
+     * Removes and returns the first element from the priority queue.
+     * 
+     * @returns the removed element, false if the queue is empty
+     */
     dequeue() 
     { 
-        // return the dequeued element 
-        // and remove it. 
-        // if the queue is empty 
-        // returns Underflow 
-        if (this.isEmpty()) 
-            return "Underflow"; 
+        if (this.isEmpty()) return false; 
         return this.items.shift(); 
     } 
 
 
-    // front function 
+    /**
+     * Returns the highest priority element in the queue without removing it.
+     * 
+     * @returns highest priority element, false if empty
+     */
     front() 
     { 
-        // returns the highest priority element 
-        // in the Priority queue without removing it. 
-        if (this.isEmpty()) 
-            return "No elements in Queue"; 
+        if (this.isEmpty()) return false; 
         return this.items[0]; 
     } 
 
-    // rear function 
+    /**
+     * Returns the lowest priority element in the queue without removing it.
+     * 
+     * @returns lowest priority element, false if empty
+     */
     rear() 
-    { 
-        // returns the lowest priorty 
-        // element of the queue 
-        if (this.isEmpty()) 
-            return "No elements in Queue"; 
+    {  
+        if (this.isEmpty()) return false; 
         return this.items[this.items.length - 1]; 
     } 
 
-    // isEmpty function 
-    isEmpty() 
-    { 
-        // return true if the queue is empty. 
-        return this.items.length === 0; 
-    } 
+    /**
+     * Determines if the priority queue is empty or not.
+     * 
+     * @returns if the priority queue is empty
+     */
+    isEmpty() { return this.items.length === 0; } 
 
 
-    // printQueue function 
-    // prints all the element of the queue 
+    /**
+     * Prints all elements of the priority queue.
+     * 
+     * @returns the generated print string
+     */
     printPQueue() 
     { 
         var str = ""; 
-        for (var i = 0; i < this.items.length; i++) 
-            str += this.items[i].element + " "; 
+        for (var i = 0; i < this.items.length; i++) str += this.items[i].element + " "; 
         return str; 
     } 
 } 

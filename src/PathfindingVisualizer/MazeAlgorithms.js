@@ -55,18 +55,37 @@ function buildWalls(walls, rows, cols) {
  * @returns a grid of walls
  */
 function innerWalls(walls, h, minC, maxC, minR, maxR) {
-    if (h) {
-        if (maxC - minC <= 1) { return walls; }
+    const rGap = maxR - minR;
+    const cGap = maxC - minC;
 
-        var r = Math.floor(random(minR+1, maxR-1)/2)*2;
+    if (maxR - minR <= 1) return walls; 
+    if (maxC - minC <= 1) return walls; 
+
+    var r = Math.floor(random(minR+1, maxR-1)/2)*2;
+    var c = Math.floor(random(minC+1, maxC-1)/2)*2;
+
+    // ^ xor: one or the other but not both
+    if (rGap <= 5 ^ cGap<= 5) {
+        if (rGap <= 5) {
+            walls = addVWall(walls, minR, maxR, c);
+
+            walls = innerWalls(walls, !h, minC, c-1, minR, maxR);
+            walls = innerWalls(walls, !h, c+1, maxC, minR, maxR);
+        }
+        if (cGap <= 5) {
+            walls = addHWall(walls, minC, maxC, r);
+    
+            walls = innerWalls(walls, !h, minC, maxC, minR, r-1);
+            walls = innerWalls(walls, !h, minC, maxC, r+1, maxR);
+        }
+        return walls;
+    } 
+    if (h) {
         walls = addHWall(walls, minC, maxC, r);
 
         walls = innerWalls(walls, !h, minC, maxC, minR, r-1);
         walls = innerWalls(walls, !h, minC, maxC, r+1, maxR);
     } else {
-        if (maxR - minR <= 1) { return walls; }
-
-        var c = Math.floor(random(minC+1, maxC-1)/2)*2;
         walls = addVWall(walls, minR, maxR, c);
 
         walls = innerWalls(walls, !h, minC, c-1, minR, maxR);
@@ -84,8 +103,14 @@ function innerWalls(walls, h, minC, maxC, minR, maxR) {
  * @param {int} r row
  */
 function addHWall(walls, minC, maxC, r) {
-    var hole = Math.floor(random(minC, maxC)/2)*2+1;
-    for (var i = minC; i <= maxC; i++) { if (i !== hole) walls.push([r, i]); }
+    const numHoles = random(1, (maxC - minC)/4);
+    const holes = [];
+    for (let i = 0; i < numHoles; i++) {
+        const hole = Math.floor(random(minC, maxC)/2)*2+1;
+        holes.push(hole);
+    }
+
+    for (var i = minC; i <= maxC; i++) if (!holes.includes(i)) walls.push([r, i]); 
     return walls;
 }
 
@@ -98,7 +123,13 @@ function addHWall(walls, minC, maxC, r) {
  * @param {int} c column 
  */
 function addVWall(walls, minR, maxR, c) {
-    var hole = Math.floor(random(minR, maxR)/2)*2+1;
-    for (var i = minR; i <= maxR; i++) { if (i !== hole) walls.push([i, c]); }
+    const numHoles = random(1, (maxR - minR)/4);
+    const holes = [];
+    for (let i = 0; i < numHoles; i++) {
+        const hole = Math.floor(random(minR, maxR)/2)*2+1;
+        holes.push(hole);
+    }
+
+    for (var i = minR; i <= maxR; i++) if (!holes.includes(i)) walls.push([i, c]); 
     return walls;
 }
