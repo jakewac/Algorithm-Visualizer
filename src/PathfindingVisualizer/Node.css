@@ -1,3 +1,5 @@
+/* NODE */
+
 .node {
     width: 25px;
     height: 25px;
@@ -20,8 +22,9 @@
 
 @keyframes nodeAnimation {
   0% {
-    transform: scale(0.2);
-    border-radius: 100%;
+    transform: scale(0.6);
+    outline-color: transparent;
+    border-radius: 15%;
   }
 
   50% {
@@ -30,9 +33,12 @@
 
   100% {
     transform: scale(1);
+    outline-color: rgb(150, 150, 150);
     background-color: rgb(255, 255, 255);
   }
 }
+
+/* WEIGHT NODE */
 
 .weight {
   animation-name: weightAnimation;
@@ -48,7 +54,9 @@
 @keyframes weightAnimation {
   0% {
     transform: scale(0.6);
+    outline-color: transparent;
     background-color: rgb(255, 200, 100);
+    border-radius: 15%;
   }
 
   50% {
@@ -58,6 +66,7 @@
 
   100% {
     transform: scale(1);
+    outline-color: rgb(150, 150, 150);
     background-color: rgb(255, 150, 0);
   }
 }
@@ -69,6 +78,8 @@
 .weight-preview {
   background-color: rgba(255, 150, 0, 0.5);
 }
+
+/* WALL NODE */
 
 .wall {
   animation-name: wallAnimation;
@@ -84,7 +95,9 @@
 @keyframes wallAnimation {
   0% {
     transform: scale(0.6);
+    outline-color: transparent;
     background-color: rgb(150, 150, 150);
+    border-radius: 15%;
   }
 
   50% {
@@ -94,6 +107,7 @@
 
   100% {
     transform: scale(1);
+    outline-color: rgb(150, 150, 150);
     background-color: rgb(50, 50, 50);
   }
 }
@@ -105,6 +119,8 @@
 .wall-preview {
   background-color: rgba(50, 50, 50, 0.5);
 }
+
+/* START NODE */
 
 .start {
     animation-name: startAnimation;
@@ -120,7 +136,9 @@
 @keyframes startAnimation {
     0% {
       transform: scale(0.6);
+      outline-color: transparent;
       background-color: rgb(0, 100, 0);
+      border-radius: 15%;
     }
 
     50% {
@@ -130,6 +148,7 @@
 
     100% {
       transform: scale(1);
+      outline-color: rgb(150, 150, 150);
       background-color: rgb(0, 200, 0);
     }
 }
@@ -141,6 +160,8 @@
 .start-preview {
   background-color: rgba(0, 200, 0, 0.5);
 }
+
+/* TARGET NODE */
 
 .target {
     animation-name: targetAnimation;
@@ -156,7 +177,9 @@
 @keyframes targetAnimation {
     0% {
       transform: scale(0.6);
+      outline-color: transparent;
       background-color: rgb(255, 0, 0);
+      border-radius: 15%;
     }
 
     50% {
@@ -165,6 +188,7 @@
     }
     100% {
       transform: scale(1);
+      outline-color: rgb(150, 150, 150);
       background-color: rgb(255, 100, 100);
     }
 }
@@ -177,9 +201,11 @@
   background-color: rgba(255, 100, 100, 0.5);
 }
 
+/* VISITED NODE */
+
 .visited {
     animation-name: visitedAnimation;
-    animation-duration: 1s;
+    animation-duration: 0.5s;
     animation-timing-function: ease-out;
     animation-delay: 0;
     animation-direction: alternate;
@@ -191,18 +217,20 @@
 @keyframes visitedAnimation {
     0% {
       transform: scale(0.6);
+      outline-color: transparent;
       background-color: rgb(255, 0, 255);
-      border-radius: 100%;
+      border-radius: 25%;
     }
   
     50% {
       transform: scale(1.2);
-      background-color: rgb(0, 100, 200);
+      outline-color: rgb(150, 150, 150);
+      background-color: rgb(75, 50, 255);
     }
   
     100% {
       transform: scale(1);
-      background-color: rgb(100, 200, 250);
+      background-color: rgb(100, 200, 255);
     }
 }
 
@@ -210,9 +238,11 @@
   background-color: rgb(100, 200, 250);
 }
 
+/* VISITED WEIGHT NODE */
+
 .visited-weight {
   animation-name: visitedWeightAnimation;
-  animation-duration: 1s;
+  animation-duration: 0.5s;
   animation-timing-function: ease-out;
   animation-delay: 0;
   animation-direction: alternate;
@@ -224,13 +254,15 @@
 @keyframes visitedWeightAnimation {
   0% {
     transform: scale(0.6);
+    outline-color: transparent;
     background-color: rgb(255, 0, 255);
-    border-radius: 100%;
+    border-radius: 25%;
   }
 
   50% {
     transform: scale(1.2);
-    background-color: rgb(0, 100, 200);
+    outline-color: rgb(150, 150, 150);
+    background-color: rgb(75, 50, 255);
   }
 
   100% {
@@ -242,6 +274,8 @@
 .visited-weight-instant {
     background-color: rgb(50, 150, 250);
 }
+
+/* PATH NODE */
 
 .path {
     animation-name: shortestPath;
@@ -257,7 +291,8 @@
 @keyframes shortestPath {
     0% {
       transform: scale(0.6);
-      background-color: rgb(255, 255, 0);
+      background-color: rgb(175, 200, 0);
+      border-radius: 15%;
     }
   
     50% {
@@ -275,6 +310,8 @@
   background-color: rgb(255, 255, 0);
 }
 
+/* PATH WEIGHT NODE */
+
 .path-weight {
   animation-name: shortestPathWeight;
   animation-duration: 1s;
@@ -289,7 +326,8 @@
 @keyframes shortestPathWeight {
   0% {
     transform: scale(0.6);
-    background-color: rgb(255, 255, 0);
+    background-color: rgb(175, 200, 0);
+    border-radius: 15%;
   }
 
   50% {

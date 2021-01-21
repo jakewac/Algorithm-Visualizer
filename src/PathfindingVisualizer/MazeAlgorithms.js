@@ -1,4 +1,4 @@
-import { random } from '../Utils';
+import { random } from '../utils';
 
 /**
  * Algorithm for generating a maze using recursive devision.

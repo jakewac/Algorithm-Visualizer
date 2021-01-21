@@ -1,4 +1,4 @@
-import PriorityQueue from "../Utils";
+import PriorityQueue from "../utils";
 
 // Pathfinding algorithms
 export const pathfindAlgorithms = {

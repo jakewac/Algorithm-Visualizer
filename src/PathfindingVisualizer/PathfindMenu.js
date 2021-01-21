@@ -1,6 +1,4 @@
 import React from 'react';
-import { Container, Row, Col, Button, ButtonDropdown, DropdownItem, DropdownToggle, DropdownMenu
-} from 'reactstrap';
 
 import Node from './Node';
 import { pathfindAlgorithms } from './PathfindAlgorithms';
@@ -14,99 +12,48 @@ class PathfindMenu extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
-            // Visualize button dropdown status
-            visualizeDropdownOpen: false,
-            // Edit button dropdown status
-            editDropdownOpen: false,
-            // Maze button dropdown status
-            mazeDropdownOpen: false,
-            // Clear button dropdown status
-            clearDropdownOpen: false,
+            // Currently selected pathfinding algorithm
+            curAlgorithm: null,
             // Display path instantly?
             isInstant: false,
+
+            clearDropdownHidden: true,
+
+            algorithmDropdownHidden: true,
         };
     }
 
-    /**
-     * Toggles the visualize button dropdown.
-     */
-    toggleVisualize () { this.setState({visualizeDropdownOpen: !this.state.visualizeDropdownOpen}); }
+    setCurrentAlgorithm (algorithm) { this.setState({curAlgorithm: algorithm}); }
+
+    getCurrentAlgorithmText() {
+        if (!this.state.curAlgorithm) return "None";
+        return this.state.curAlgorithm;
+    }
+
+    visualizePathfind () {
+        if (!this.state.curAlgorithm) return;
+        this.props.pathfinder.visualizePathfind(this.state.curAlgorithm, this.state.isInstant);
+    }
 
     /**
-     * Toggles the edit button dropdown.
+     * Runs the animation for the pressed node. Sets the appropriate draw mode.
+     * 
+     * @param {string} id element id
+     * @param {string} className class name to set
+     * @param {int} drawMode draw mode to set
      */
-    toggleEdit () { this.setState({editDropdownOpen: !this.state.editDropdownOpen}); }
-
-    /**
-     * Toggles the maze button dropdown.
-     */
-    toggleMaze () { this.setState({mazeDropdownOpen: !this.state.mazeDropdownOpen}); }
-
-    /**
-     * Toggles the clear button dropdown.
-     */
-    toggleClear () { this.setState({clearDropdownOpen: !this.state.clearDropdownOpen}); }
-
-    /**
-     * Toggles if the path should be displayed instantly.
-     */
-    toggleInstant () { this.setState({isInstant: !this.state.isInstant}); }
-
-    /**
-     * Get the current text of the visualize button.
-     */
-    getIsInstantText () { return this.state.isInstant ? "Instant" : "Visualize"; }
+    keyNodePressed (id, className, drawMode) {
+        document.getElementById(`node-${id}`).className = className;
+        if (drawMode || drawMode === 0) this.props.pathfinder.setDrawMode(drawMode);
+    }
 
     /**
      * Reverts the node state to the instant version.
      * 
-     * @param {string} type node key type
+     * @param {string} id node element id
+     * @param {string} className class name to set
      */
-    keyAnimationEnded (type) { document.getElementById(`node-${type}`).className = `node ${type}`; }
-
-    /**
-     * Animates the start node key and sets draw mode to start node.
-     * 
-     * @param {int} row row value of key node
-     * @param {int} col column value of key node
-     */
-    startNodeKey (row, col) {
-        document.getElementById(`node-${row}-${col}`).className = `node ${row}`;
-        this.props.pathfinder.setDrawMode(3);
-    }
-
-    /**
-     * Animates the target node key and sets draw mode to target node.
-     * 
-     * @param {int} row row value of key node
-     * @param {int} col column value of key node
-     */
-    targetNodeKey (row, col) {
-        document.getElementById(`node-${row}-${col}`).className = `node ${row}`;
-        this.props.pathfinder.setDrawMode(4);
-    }
-
-    /**
-     * Animates the weight node key and sets draw mode to weight nodes.
-     * 
-     * @param {int} row row value of key node
-     * @param {int} col column value of key node
-     */
-    weightNodeKey (row, col) {
-        document.getElementById(`node-${row}-${col}`).className = `node ${row}`;
-        this.props.pathfinder.setDrawMode(2);
-    }
-
-    /**
-     * Animates the wall node key and sets draw mode to wall nodes.
-     * 
-     * @param {int} row row value of key node
-     * @param {int} col column value of key node
-     */
-    wallNodeKey (row, col) {
-        document.getElementById(`node-${row}-${col}`).className = `node ${row}`;
-        this.props.pathfinder.setDrawMode(1);
-    }
+    keyAnimationEnded (id, className) { document.getElementById(`node-${id}`).className = `node ${className}`; }
     
     /**
      * Renders the menu component.
@@ -116,160 +63,156 @@ class PathfindMenu extends React.Component {
     render () {
         return (
             <div className="pathfind-menu">
-                <Container>
-                    <Row>
-                        <Col className="title">
-                            Pathfinding Visualizer
-                        </Col>
-                        <Col>
-                            <Container>
-                                <Row>
-                                    <Col>
-                                        <ButtonDropdown isOpen={this.state.visualizeDropdownOpen} toggle={() => this.toggleVisualize()}>
-                                            <Button color="success" onClick={() => this.toggleVisualize()}>{this.getIsInstantText()}</Button>
-                                            <DropdownToggle split color="success" />
-                                            <DropdownMenu>
-                                                <DropdownItem onClick={() => this.toggleInstant()}>Pathfind Mode</DropdownItem>
-                                                <DropdownItem divider />
-                                                <DropdownItem onClick={() => this.props.pathfinder.visualizePathfind(pathfindAlgorithms.DIJKSTRA, this.state.isInstant)}>Dijkstra</DropdownItem>
-                                                <DropdownItem onClick={() => this.props.pathfinder.visualizePathfind(pathfindAlgorithms.ASTAR, this.state.isInstant)}>A* (A-Star)</DropdownItem>
-                                                <DropdownItem onClick={() => this.props.pathfinder.visualizePathfind(pathfindAlgorithms.BFS, this.state.isInstant)}>Breadth First Search</DropdownItem>
-                                                <DropdownItem onClick={() => this.props.pathfinder.visualizePathfind(pathfindAlgorithms.DFS, this.state.isInstant)}>Depth First Search</DropdownItem>
-                                            </DropdownMenu>
-                                        </ButtonDropdown>
-                                    </Col>
-                                    <Col>
-                                        <ButtonDropdown isOpen={this.state.editDropdownOpen} toggle={() => this.toggleEdit()}>
-                                            <Button color="info" onClick={() => this.toggleEdit()}>Edit</Button>
-                                            <DropdownToggle split color="info" />
-                                            <DropdownMenu>
-                                                <DropdownItem onClick={() => this.props.pathfinder.resetStartTarget()}>Reset Start/Target Nodes</DropdownItem>
-                                            </DropdownMenu>
-                                        </ButtonDropdown>
-                                    </Col>
-                                    <Col>
-                                        <ButtonDropdown isOpen={this.state.mazeDropdownOpen} toggle={() => this.toggleMaze()}>
-                                            <Button color="warning" onClick={() => this.toggleMaze()}>Maze</Button>
-                                            <DropdownToggle split color="warning" />
-                                            <DropdownMenu>
-                                                <DropdownItem onClick={() => this.props.pathfinder.animateMaze()}>Recursive Devision</DropdownItem>
-                                            </DropdownMenu>
-                                        </ButtonDropdown>
-                                    </Col>
-                                    <Col>
-                                        <ButtonDropdown isOpen={this.state.clearDropdownOpen} toggle={() => this.toggleClear()}>
-                                            <Button color="danger" onClick={() => this.toggleClear()}>Clear</Button>
-                                            <DropdownToggle split color="danger" />
-                                            <DropdownMenu>
-                                                <DropdownItem onClick={() => this.props.pathfinder.clearGrid()}>Clear All</DropdownItem>
-                                                <DropdownItem divider />
-                                                <DropdownItem onClick={() => this.props.pathfinder.clearWeights()}>Clear Weights</DropdownItem>
-                                                <DropdownItem onClick={() => this.props.pathfinder.clearWalls()}>Clear Walls</DropdownItem>
-                                                <DropdownItem onClick={() => this.props.pathfinder.clearPaths()}>Clear Path</DropdownItem>
-                                            </DropdownMenu>
-                                        </ButtonDropdown>
-                                    </Col>
-                                </Row>
-                            </Container>
-                        </Col>
-                    </Row>
-                </Container>
-                <div className="visualizer-key">
-                    <div className="key-item">
+                <div className="pv-menu-bar">
+                    <div className="pv-title">Pathfinding Visualizer</div>
+                    <div className="pv-menu-bar-button dropdown-animate" onClick={() => this.props.pathfinder.animateMaze()}><span>Maze</span></div>
+                    <div className="clear-dropdown dropdown-animate">
+                        <div className="pv-menu-bar-button" 
+                        onClick={() => this.props.pathfinder.clearGrid()}
+                        onMouseEnter={() => this.setState({clearDropdownHidden: false})}>
+                        <span>Clear</span></div>
+                        <div className="pv-menu-dropdown-content clear-drop-content dropdown-animate"
+                        hidden={this.state.clearDropdownHidden} 
+                        onClick={() => this.setState({clearDropdownHidden: true})}>
+                            <div className="pv-menu-dropdown-content-item"
+                            onClick={() => this.props.pathfinder.clearWalls()}
+                            >Clear Walls</div>
+                            <div className="pv-menu-dropdown-content-item"
+                            onClick={() => this.props.pathfinder.clearWeights()}
+                            >Clear Weights</div>
+                            <div className="pv-menu-dropdown-content-item"
+                            onClick={() => this.props.pathfinder.clearPaths()}
+                            >Clear Path</div>
+                            <div className="pv-menu-dropdown-content-item"
+                            onClick={() => this.props.pathfinder.resetStartTarget()}
+                            >Reset Start/Target</div>
+                        </div>
+                    </div>
+                    <div className="algorithm-dropdown dropdown-animate">
+                        <div className="pv-menu-bar-button"
+                        onMouseEnter={() => this.setState({algorithmDropdownHidden: false})}>
+                        <span>Algorithm</span></div>
+                        <div className="pv-menu-dropdown-content alg-drop-content dropdown-animate"
+                        hidden={this.state.algorithmDropdownHidden} 
+                        onClick={() => this.setState({algorithmDropdownHidden: true})}>
+                            <div className="pv-menu-dropdown-content-item"
+                            onClick={() => this.setCurrentAlgorithm(pathfindAlgorithms.DIJKSTRA)}
+                            >Dijkstra</div>
+                            <div className="pv-menu-dropdown-content-item"
+                            onClick={() => this.setCurrentAlgorithm(pathfindAlgorithms.ASTAR)}
+                            >A* (A-Star)</div>
+                            <div className="pv-menu-dropdown-content-item"
+                            onClick={() => this.setCurrentAlgorithm(pathfindAlgorithms.BFS)}
+                            >Breadth First Search</div>
+                            <div className="pv-menu-dropdown-content-item"
+                            onClick={() => this.setCurrentAlgorithm(pathfindAlgorithms.DFS)}
+                            >Depth First Search</div>
+                        </div>
+                    </div>
+                    <div className="pv-menu-bar-button dropdown-animate" onClick={() => this.visualizePathfind()}><span>Pathfind</span></div>
+                </div>
+                <div className="pathfind-key">
+                    <div className="key-item" onClick={() => this.keyNodePressed("start-instant", "node start", 3)}>
                         <div className="key-node">
                             <Node type={"start-instant"}
                             row={"start"}
                             col={"instant"}
-                            mousePressed={(row, col) => this.startNodeKey(row, col)}
-                            animationEnded={(key) => this.keyAnimationEnded(key)}
-                            mouseEntered={() => null}
-                            mouseLeft={() => null}
-                            />
+                            animationEnded={(type) => this.keyAnimationEnded(type, type)}
+                            mousePressed={() => null} mouseEntered={() => null} mouseLeft={() => null}/>
                         </div>
                         <div id='start-text' className="key-text">Start Node</div>
                     </div>
-                    <div className="key-item">
+                    <div className="key-item" onClick={() => this.keyNodePressed("target-instant", "node target", 4)}>
                         <div className="key-node">
                             <Node type={"target-instant"}
                             row={"target"}
                             col={"instant"}
-                            mousePressed={(row, col) => this.targetNodeKey(row, col)}
-                            animationEnded={(key) => this.keyAnimationEnded(key)}
-                            mouseEntered={() => null}
-                            mouseLeft={() => null}
-                            />
+                            animationEnded={(type) => this.keyAnimationEnded(type, type)}
+                            mousePressed={() => null} mouseEntered={() => null} mouseLeft={() => null}/>
                         </div>
                         <div className="key-text">Target Node</div>
                     </div>
-                    <div className="key-item">
+                    <div className="key-item" onClick={() => this.keyNodePressed("weight-instant", "node weight", 2)}>
                         <div className="key-node">
                             <Node type={"weight-instant"}
                             row={"weight"}
-                            col={"instant"}
-                            mousePressed={(row, col) => this.weightNodeKey(row, col)}
-                            animationEnded={(key) => this.keyAnimationEnded(key)}
-                            mouseEntered={() => null}
-                            mouseLeft={() => null}
-                            />
+                            col={"instant"}                           
+                            animationEnded={(type) => this.keyAnimationEnded(type, type)}
+                            mousePressed={() => null} mouseEntered={() => null} mouseLeft={() => null}/>
                         </div>
                         <div className="key-text">Weighted Node</div>
                     </div>
-                    <div className="key-item">
+                    <div className="key-item" onClick={() => this.keyNodePressed("wall-instant", "node wall", 1)}>
                         <div className="key-node">
                             <Node type={"wall-instant"}
                             row={"wall"}
                             col={"instant"}
-                            mousePressed={(row, col) => this.wallNodeKey(row, col)}
-                            animationEnded={(key) => this.keyAnimationEnded(key)}
-                            mouseEntered={() => null}
-                            mouseLeft={() => null}
-                            />
+                            animationEnded={(type) => this.keyAnimationEnded(type, type)}
+                            mousePressed={() => null} mouseEntered={() => null} mouseLeft={() => null}/>
                         </div>
                         <div className="key-text">Wall Node</div>
                     </div>
-                    <div className="key-item">
+                    <div className="key-item" onClick={() => this.keyNodePressed("unvisited-instant", "node node-animated", 0)}>
                         <div className="key-node">
-                            <Node type={""}
-                            mousePressed={() => null}
-                            mouseEntered={() => null}
-                            mouseLeft={() => null}
-                            />
+                            <Node type={"unvisited-instant"}
+                            row={"unvisited"}
+                            col={"instant"}
+                            animationEnded={(type) => this.keyAnimationEnded(type, "node")}
+                            mousePressed={() => null} mouseEntered={() => null} mouseLeft={() => null}/>
                         </div>
                         <div className="key-text">Unvisited Node</div>
                     </div>
                     <div className="key-item">
-                        <div className="key-node">
+                        <div className="key-node" onClick={() => this.keyNodePressed("visited-instant", "node visited")}>
                             <Node type={"visited-instant"}
-                            mousePressed={() => null}
-                            mouseEntered={() => null}
-                            mouseLeft={() => null}
-                            />
+                            row={"visited"}
+                            col={"instant"}
+                            animationEnded={(type) => this.keyAnimationEnded(type, type)}
+                            mousePressed={() => null} mouseEntered={() => null} mouseLeft={() => null}/>
                         </div>
-                        <div className="key-node">
+                        <div className="key-node" onClick={() => this.keyNodePressed("visited-weight-instant", "node visited-weight")}>
                             <Node type={"visited-weight-instant"}
-                            mousePressed={() => null}
-                            mouseEntered={() => null}
-                            mouseLeft={() => null}
-                            />
+                            row={"visited-weight"}
+                            col={"instant"}
+                            animationEnded={(type) => this.keyAnimationEnded(type, type)}
+                            mousePressed={() => null} mouseEntered={() => null} mouseLeft={() => null}/>         
                         </div>
                         <div className="key-text">Visited Nodes</div>
                     </div>
                     <div className="key-item">
-                        <div className="key-node">
+                        <div className="key-node" onClick={() => this.keyNodePressed("path-instant", "node path")}>
                             <Node type={"path-instant"}
-                            mousePressed={() => null}
-                            mouseEntered={() => null}
-                            mouseLeft={() => null}
-                            />
+                            row={"path"}
+                            col={"instant"}
+                            animationEnded={(type) => this.keyAnimationEnded(type, type)}
+                            mousePressed={() => null} mouseEntered={() => null} mouseLeft={() => null}/>
                         </div>
-                        <div className="key-node">
+                        <div className="key-node" onClick={() => this.keyNodePressed("path-weight-instant", "node path-weight")}>
                             <Node type={"path-weight-instant"}
-                            mousePressed={() => null}
-                            mouseEntered={() => null}
-                            mouseLeft={() => null}
-                            />
+                            row={"path-weight"}
+                            col={"instant"}
+                            animationEnded={(type) => this.keyAnimationEnded(type, type)}
+                            mousePressed={() => null} mouseEntered={() => null} mouseLeft={() => null}/>
                         </div>
                         <div className="key-text">Path Nodes</div>
+                    </div>
+                </div>
+                <div className="pathfind-info">
+                    <div className="info-item">
+                        <div>Algorithm:</div>
+                        <div id="algorithm-info-text" className="info-text">{this.getCurrentAlgorithmText()}</div>
+                    </div>
+                    <div className="info-item">
+                        <div>Visited Nodes:</div>
+                        <div id="visited-info-text" className="info-text">0</div>
+                    </div>
+                    <div className="info-item">
+                        <div>Path Nodes:</div>
+                        <div id="path-info-text" className="info-text">No Path</div>
+                    </div>
+                    <div className="info-item">
+                        <div>Path Cost:</div>
+                        <div id="weighted-info-text" className="info-text">0</div>
                     </div>
                 </div>
             </div>

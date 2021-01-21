@@ -7,21 +7,20 @@ import { getShortestPathNodes, dijkstra, aStar, breadthFirstSearch, depthFirstSe
 import { recursiveDevision
 } from './MazeAlgorithms';
 import PathfindMenu from './PathfindMenu';
-import PathfindInfo from './PathfindInfo';
 import Node from './Node';
 
 // Number of rows in the grid
-const ROW_COUNT = 27;
+const ROW_COUNT = 29;
 // Number of columns in the grid
 const COL_COUNT = 71;
 // Initial cost of weighted nodes
 const INIT_COST = 15;
 // Initial coordinates of the start node [row, col]
-const INIT_START = [13, 10];
+const INIT_START = [14, 10];
 // Initial coordinates of the target noe [row, col]
-const INIT_TARGET = [13, 60];
+const INIT_TARGET = [14, 60];
 // Speed between visited node animations in miliseconds
-const VISITED_SPEED = 5;
+const VISITED_SPEED = 10;
 // Speed between shortest path node animations in miliseconds
 const PATH_SPEED = 25;
 // Speed between maze wall node animations in miliseconds
@@ -68,8 +67,8 @@ class PathfindingVisualizer extends React.Component {
             weightCost: INIT_COST,
             // Is the mouse down?
             mouseIsDown: false,
-            // Are we allowed to draw currently?
-            canDraw: true,
+            // Are we currently allowed to interact with the grid
+            interactable: true,
             // Current draw mode (0: none, 1: walls, 2: weights)
             drawMode: 0,
             // Are we erasing or drawing walls (null if neither)?
@@ -343,6 +342,8 @@ class PathfindingVisualizer extends React.Component {
      * Clears the grid of all wall nodes.
      */
     clearWalls () { 
+        if (!this.state.interactable) return;
+
         const grid = this.state.grid;
         for (const row of grid) {
             for (const node of row) {
@@ -361,8 +362,9 @@ class PathfindingVisualizer extends React.Component {
      * costs to 1.
      */
     clearWeights () {
-        const grid = this.state.grid;
+        if (!this.state.interactable) return;
 
+        const grid = this.state.grid;
         for (const row of grid) {
             for (const node of row) {
                 if (node.cost !== 1) {
@@ -380,6 +382,8 @@ class PathfindingVisualizer extends React.Component {
      * Updates the class name of each appropriate node object.
      */
     clearPaths () {
+        if (!this.state.interactable) return;
+
         for (let r = 0; r < ROW_COUNT; r++) {
             for (let c = 0; c < COL_COUNT; c++) {
                 const node = this.state.grid[r][c];
@@ -409,6 +413,8 @@ class PathfindingVisualizer extends React.Component {
      * Resets the start and target nodes to their initial locations.
      */
     resetStartTarget () {
+        this.clearPaths();
+
         const initStart = this.state.grid[INIT_START[0]][INIT_START[1]];
         const initTarget = this.state.grid[INIT_TARGET[0]][INIT_TARGET[1]];
 
@@ -448,6 +454,8 @@ class PathfindingVisualizer extends React.Component {
      * @param {boolean} isInstant true if drawing instantly
      */
     visualizePathfind (algorithm, isInstant) {
+        if (!this.state.interactable) return;
+
         this.clearPaths();
         this.softRebuildGrid();
 
@@ -497,7 +505,7 @@ class PathfindingVisualizer extends React.Component {
             }
             this.animatePath(shortestPath, isInstant);
         } else {
-            this.setState({canDraw: false});
+            this.setState({interactable: false});
 
             for (let i = 0; i < visitedNodes.length; i++) {
                 setTimeout(() => {
@@ -532,7 +540,7 @@ class PathfindingVisualizer extends React.Component {
             }
             setTimeout(() => { 
                 this.updateGridState();
-                this.setState({canDraw: true});
+                this.setState({interactable: true});
             }, PATH_SPEED * shortestPath.length);
         }
     }
@@ -546,7 +554,9 @@ class PathfindingVisualizer extends React.Component {
      * @param {int} totalCost total cost of shortest path
      */
     updateAlgorithmInfo (algorithm, visitedNodes, pathNodes, totalCost) {
-        document.getElementById("algorithm-info-text").innerHTML = `${algorithm}`;
+        if (pathNodes <= 1) pathNodes = "No Path";
+        if (totalCost <= 1) totalCost = 0;
+
         document.getElementById("visited-info-text").innerHTML = `${visitedNodes}`;
         document.getElementById("path-info-text").innerHTML = `${pathNodes}`;
         document.getElementById("weighted-info-text").innerHTML = `${totalCost}`;
@@ -556,7 +566,9 @@ class PathfindingVisualizer extends React.Component {
      * Animates a generated maze.
      */
     animateMaze () {
-        this.setState({canDraw: false});
+        if (!this.state.interactable) return;
+
+        this.setState({interactable: false});
         this.clearGrid();
         const maze = recursiveDevision(ROW_COUNT, COL_COUNT);
 
@@ -568,7 +580,7 @@ class PathfindingVisualizer extends React.Component {
         }
         setTimeout(() => {
             this.updateGridState();
-            this.setState({canDraw: true});
+            this.setState({interactable: true});
         }, MAZE_SPEED * maze.length);
     }
 
@@ -586,7 +598,7 @@ class PathfindingVisualizer extends React.Component {
      * @param {int} col column of node on grid
      */
     handleMouseDown (row, col) {
-        if (!this.state.canDraw) return;
+        if (!this.state.interactable) return;
         this.setState({mouseIsDown: true});
 
         const grid = this.state.grid;
@@ -643,7 +655,7 @@ class PathfindingVisualizer extends React.Component {
      * @param {int} col column of node on grid
      */
     handleMouseEnter (row, col) {
-        if (!this.state.canDraw) return;
+        if (!this.state.interactable) return;
 
         const grid = this.state.grid;
         const node = grid[row][col];
@@ -682,7 +694,7 @@ class PathfindingVisualizer extends React.Component {
      * @param {int} col column of node on grid
      */
     handleMouseLeft (row, col) {
-        if (this.state.mouseIsDown || this.state.drawMode === 0 || !this.state.canDraw) return;
+        if (this.state.mouseIsDown || this.state.drawMode === 0 || !this.state.interactable) return;
         
         const node = this.state.grid[row][col];
 
@@ -742,9 +754,6 @@ class PathfindingVisualizer extends React.Component {
             <div className="pathfind-vis">
                 <div className="pathfind-menu">
                     <PathfindMenu pathfinder={this} />
-                </div>
-                <div>
-                    <PathfindInfo></PathfindInfo>
                 </div>
                 <div 
                 className="grid" 

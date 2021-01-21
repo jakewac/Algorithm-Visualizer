@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardHeader, CardBody, NavItem, NavLink, Nav, TabContent, TabPane
+import { NavItem, NavLink, Nav, TabContent, TabPane
 } from 'reactstrap'
 import classnames from 'classnames';
 
@@ -31,43 +31,37 @@ class NavBar extends React.Component {
     render () {
         return (
             <div className="nav-bar">
-                <Card>
-                    <CardHeader>
-                        <Nav tabs>
-                            <NavItem>
-                                <NavLink className={classnames({active: this.state.activeTab === "home"})}
-                                onClick={() => this.setState({activeTab: "home"})}
-                                >Home
-                                </NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink className={classnames({active: this.state.activeTab === "pathfind"})}
-                                onClick={() => this.setState({activeTab: "pathfind"})}
-                                >Pathfinding Visualizer
-                                </NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink className={classnames({active: this.state.activeTab === "sort"})}
-                                onClick={() => this.setState({activeTab: "sort"})}
-                                >Sorting Visualizer
-                                </NavLink>
-                            </NavItem>
-                        </Nav>
-                    </CardHeader>
-                    <CardBody>
-                        <TabContent activeTab={this.state.activeTab}>
-                            <TabPane tabId="home">
-                                <Home />
-                            </TabPane>
-                            <TabPane tabId="pathfind">
-                                <PathfindingVisualizer />
-                            </TabPane>
-                            <TabPane tabId="sort">
-                                <SortingVisualizer />
-                            </TabPane>
-                        </TabContent>
-                    </CardBody>
-                </Card>
+                <Nav tabs>
+                    <NavItem>
+                        <NavLink className={classnames({active: this.state.activeTab === "home"})}
+                        onClick={() => this.setState({activeTab: "home"})}
+                        >Home
+                        </NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink className={classnames({active: this.state.activeTab === "pathfind"})}
+                        onClick={() => this.setState({activeTab: "pathfind"})}
+                        >Pathfinding Visualizer
+                        </NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink className={classnames({active: this.state.activeTab === "sort"})}
+                        onClick={() => this.setState({activeTab: "sort"})}
+                        >Sorting Visualizer
+                        </NavLink>
+                    </NavItem>
+                </Nav>
+                <TabContent activeTab={this.state.activeTab}>
+                    <TabPane tabId="home">
+                        <Home />
+                    </TabPane>
+                    <TabPane tabId="pathfind">
+                        <PathfindingVisualizer />
+                    </TabPane>
+                    <TabPane tabId="sort">
+                        <SortingVisualizer />
+                    </TabPane>
+                </TabContent>
             </div>
         );
     }

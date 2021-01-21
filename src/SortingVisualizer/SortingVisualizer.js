@@ -2,7 +2,7 @@ import React from 'react';
 
 import './SortingVisualizer.css';
 
-import { random } from '../Utils';
+import { random } from '../utils';
 import SortMenu from './SortMenu';
 import { selectionSort, insertionSort, mergeSort, sortAlgorithms } from './SortAlgorithms';
 
