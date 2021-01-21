@@ -14,25 +14,25 @@ class PathfindMenu extends React.Component {
         this.state = {
             // Currently selected pathfinding algorithm
             curAlgorithm: null,
-            // Display path instantly?
-            isInstant: false,
-
+            // Is the maze button dropdown open?
+            mazeDropdownHidden: true,
+            // Is the clear button dropdown open?
             clearDropdownHidden: true,
-
+            // Is the algorithm button dropdown open?
             algorithmDropdownHidden: true,
+            // Is the pathfind button dropdown open?
+            pathfindDropdownHidden: true,
         };
     }
 
-    setCurrentAlgorithm (algorithm) { this.setState({curAlgorithm: algorithm}); }
-
+    /**
+     * Gets the current algorithm for the information text as a string.
+     * 
+     * @returns the string
+     */
     getCurrentAlgorithmText() {
         if (!this.state.curAlgorithm) return "None";
         return this.state.curAlgorithm;
-    }
-
-    visualizePathfind () {
-        if (!this.state.curAlgorithm) return;
-        this.props.pathfinder.visualizePathfind(this.state.curAlgorithm, this.state.isInstant);
     }
 
     /**
@@ -65,7 +65,19 @@ class PathfindMenu extends React.Component {
             <div className="pathfind-menu">
                 <div className="pv-menu-bar">
                     <div className="pv-title">Pathfinding Visualizer</div>
-                    <div className="pv-menu-bar-button dropdown-animate" onClick={() => this.props.pathfinder.animateMaze()}><span>Maze</span></div>
+                    <div className="maze-dropdown dropdown-animate">
+                        <div className="pv-menu-bar-button" 
+                        onClick={() => this.props.pathfinder.animateMaze()}
+                        onMouseEnter={() => this.setState({mazeDropdownHidden: false})}>
+                        <span>Maze</span></div>
+                        <div className="pv-menu-dropdown-content maze-drop-content dropdown-animate"
+                        hidden={this.state.mazeDropdownHidden}
+                        onClick={() => this.setState({mazeDropdownHidden: true})}>
+                            <div className="pv-menu-dropdown-content-item"
+                            onClick={() => this.props.pathfinder.animateMaze()}
+                            >Recursive Devision</div>
+                        </div>
+                    </div>
                     <div className="clear-dropdown dropdown-animate">
                         <div className="pv-menu-bar-button" 
                         onClick={() => this.props.pathfinder.clearGrid()}
@@ -90,26 +102,51 @@ class PathfindMenu extends React.Component {
                     </div>
                     <div className="algorithm-dropdown dropdown-animate">
                         <div className="pv-menu-bar-button"
-                        onMouseEnter={() => this.setState({algorithmDropdownHidden: false})}>
+                        onMouseEnter={() => this.setState({algorithmDropdownHidden: false})}
+                        onClick={() => this.setState({curAlgorithm: null})}>
                         <span>Algorithm</span></div>
                         <div className="pv-menu-dropdown-content alg-drop-content dropdown-animate"
                         hidden={this.state.algorithmDropdownHidden} 
                         onClick={() => this.setState({algorithmDropdownHidden: true})}>
                             <div className="pv-menu-dropdown-content-item"
-                            onClick={() => this.setCurrentAlgorithm(pathfindAlgorithms.DIJKSTRA)}
+                            onClick={() => this.setState({curAlgorithm: pathfindAlgorithms.DIJKSTRA})}
                             >Dijkstra</div>
                             <div className="pv-menu-dropdown-content-item"
-                            onClick={() => this.setCurrentAlgorithm(pathfindAlgorithms.ASTAR)}
+                            onClick={() => this.setState({curAlgorithm: pathfindAlgorithms.ASTAR})}
                             >A* (A-Star)</div>
                             <div className="pv-menu-dropdown-content-item"
-                            onClick={() => this.setCurrentAlgorithm(pathfindAlgorithms.BFS)}
+                            onClick={() => this.setState({curAlgorithm: pathfindAlgorithms.BFS})}
                             >Breadth First Search</div>
                             <div className="pv-menu-dropdown-content-item"
-                            onClick={() => this.setCurrentAlgorithm(pathfindAlgorithms.DFS)}
+                            onClick={() => this.setState({curAlgorithm: pathfindAlgorithms.DFS})}
                             >Depth First Search</div>
                         </div>
                     </div>
-                    <div className="pv-menu-bar-button dropdown-animate" onClick={() => this.visualizePathfind()}><span>Pathfind</span></div>
+                    <div className="pathfind-dropdown dropdown-animate">
+                        <div className="pv-menu-bar-button" 
+                        onMouseEnter={() => this.setState({pathfindDropdownHidden: false})}
+                        onClick={() => this.props.pathfinder.visualizePathfind(this.state.curAlgorithm)}>
+                        <span>Pathfind</span></div>
+                        <div className="pv-menu-dropdown-content pathfind-drop-content dropdown-animate"
+                        hidden={this.state.pathfindDropdownHidden}
+                        onClick={() => this.setState({pathfindDropdownHidden: true})}>
+                            <div className="pv-menu-dropdown-content-item"
+                            onClick={() => this.props.pathfinder.visualizePathfind(this.state.curAlgorithm, 100)}
+                            >Very Slow</div>
+                            <div className="pv-menu-dropdown-content-item"
+                            onClick={() => this.props.pathfinder.visualizePathfind(this.state.curAlgorithm, 50)}
+                            >Slow</div>
+                            <div className="pv-menu-dropdown-content-item"
+                            onClick={() => this.props.pathfinder.visualizePathfind(this.state.curAlgorithm, 10)}
+                            >Fast</div>
+                            <div className="pv-menu-dropdown-content-item"
+                            onClick={() => this.props.pathfinder.visualizePathfind(this.state.curAlgorithm, 5)}
+                            >Very Fast</div>
+                            <div className="pv-menu-dropdown-content-item"
+                            onClick={() => this.props.pathfinder.visualizePathfind(this.state.curAlgorithm, 0)}
+                            >Instant</div>
+                        </div>
+                    </div>
                 </div>
                 <div className="pathfind-key">
                     <div className="key-item" onClick={() => this.keyNodePressed("start-instant", "node start", 3)}>

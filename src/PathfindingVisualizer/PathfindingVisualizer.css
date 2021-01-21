@@ -67,7 +67,6 @@
 
 .pv-menu-bar {
     width: 100%;
-    height: 30px;
     background-color: rgb(50, 50, 50);
     display: inline-flex;
 }
@@ -148,15 +147,26 @@
     font-weight: 600;
 }
 
+/* MAZE BUTTON DROPDOWN */
+.maze-dropdown:hover .maze-drop-content {
+    display: block;
+}
+
 /* CLEAR BUTTON DROPDOWN */
 
 .clear-dropdown:hover .clear-drop-content {
     display: block;
 }
 
-/* ALGORITHM BUTTON DROPDWON */
+/* ALGORITHM BUTTON DROPDOWN */
 
 .algorithm-dropdown:hover .alg-drop-content {
+    display: block;
+}
+
+/* PATHFIND BUTTON DROOPDOWN */
+
+.pathfind-dropdown:hover .pathfind-drop-content {
     display: block;
 }
 

@@ -413,6 +413,8 @@ class PathfindingVisualizer extends React.Component {
      * Resets the start and target nodes to their initial locations.
      */
     resetStartTarget () {
+        if (!this.state.interactable) return;
+        
         this.clearPaths();
 
         const initStart = this.state.grid[INIT_START[0]][INIT_START[1]];
@@ -451,9 +453,9 @@ class PathfindingVisualizer extends React.Component {
      * the grid of nodes.
      * 
      * @param {pathfindAlgorithms} algorithm pathfinding algorithm
-     * @param {boolean} isInstant true if drawing instantly
+     * @param {int} speed time in miliseconds between visit animations
      */
-    visualizePathfind (algorithm, isInstant) {
+    visualizePathfind (algorithm, speed) {
         if (!this.state.interactable) return;
 
         this.clearPaths();
@@ -478,7 +480,7 @@ class PathfindingVisualizer extends React.Component {
                 visitedNodes = depthFirstSearch(grid, start, target);
                 break;
             default:
-                break;
+                return;
         }
 
         const shortestPath = getShortestPathNodes(target);
@@ -486,7 +488,7 @@ class PathfindingVisualizer extends React.Component {
 
         this.updateAlgorithmInfo(algorithm, visitedNodes.length, shortestPath.length, totalCost);
 
-        this.animateSearch(visitedNodes, shortestPath, isInstant);
+        this.animateSearch(visitedNodes, shortestPath, speed);
     }
 
     /**
@@ -495,9 +497,12 @@ class PathfindingVisualizer extends React.Component {
      * 
      * @param {Array} visitedNodes array of visited nodes in order
      * @param {Array} shortestPath array of shortest path nodes in order
-     * @param {boolean} isInstant true if drawing instantly
+     * @param {int} speed time in miliseconds between visit animations
      */
-    animateSearch (visitedNodes, shortestPath, isInstant) {
+    animateSearch (visitedNodes, shortestPath, speed) {
+        const isInstant = speed === 0;
+        if (!speed) speed = VISITED_SPEED;
+
         if (isInstant) {
             for (let i = 0; i < visitedNodes.length; i++) {
                 const node = visitedNodes[i];
@@ -511,9 +516,9 @@ class PathfindingVisualizer extends React.Component {
                 setTimeout(() => {
                     const node = visitedNodes[i];
                     this.drawVisitedNode(node, isInstant);
-                }, VISITED_SPEED * i);
+                }, speed * i);
             }
-            setTimeout(() => { this.animatePath(shortestPath, isInstant); }, VISITED_SPEED * visitedNodes.length);
+            setTimeout(() => { this.animatePath(shortestPath, isInstant); }, speed * visitedNodes.length);
         }
     }
 
