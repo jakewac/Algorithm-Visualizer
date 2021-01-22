@@ -4,7 +4,7 @@ import './PathfindingVisualizer.css';
 
 import { getShortestPathNodes, dijkstra, aStar, breadthFirstSearch, depthFirstSearch, pathfindAlgorithms, getShortestPathCost
 } from './PathfindAlgorithms';
-import { recursiveDevision
+import { recursiveDevision, mazeAlgorithms, randomWallMaze, randomWeightMaze, randomWallWeightMaze
 } from './MazeAlgorithms';
 import PathfindMenu from './PathfindMenu';
 import Node from './Node';
@@ -20,7 +20,7 @@ const INIT_START = [14, 10];
 // Initial coordinates of the target noe [row, col]
 const INIT_TARGET = [14, 60];
 // Speed between visited node animations in miliseconds
-const VISITED_SPEED = 10;
+const VISITED_SPEED = 15;
 // Speed between shortest path node animations in miliseconds
 const PATH_SPEED = 25;
 // Speed between maze wall node animations in miliseconds
@@ -414,7 +414,7 @@ class PathfindingVisualizer extends React.Component {
      */
     resetStartTarget () {
         if (!this.state.interactable) return;
-        
+
         this.clearPaths();
 
         const initStart = this.state.grid[INIT_START[0]][INIT_START[1]];
@@ -569,18 +569,38 @@ class PathfindingVisualizer extends React.Component {
 
     /**
      * Animates a generated maze.
+     * 
+     * @param {mazeAlgorithms} algorithm maze algorithm to use
      */
-    animateMaze () {
-        if (!this.state.interactable) return;
+    animateMaze (algorithm) {
+        var maze = [];
 
+        switch (algorithm) {
+            case mazeAlgorithms.RECURSIVE_DEVISION:
+                maze = recursiveDevision(ROW_COUNT, COL_COUNT);
+                break;
+            case mazeAlgorithms.RANDOM_WALL:
+                maze = randomWallMaze(ROW_COUNT, COL_COUNT);
+                break;
+            case mazeAlgorithms.RANDOM_WEIGHT:
+                maze = randomWeightMaze(ROW_COUNT, COL_COUNT);
+                break;
+            case mazeAlgorithms.RANDOM_WALL_WEIGHT:
+                maze = randomWallWeightMaze(ROW_COUNT, COL_COUNT);
+                break;
+            default:
+                return;
+        }
+
+        if (!this.state.interactable) return;
         this.setState({interactable: false});
         this.clearGrid();
-        const maze = recursiveDevision(ROW_COUNT, COL_COUNT);
 
         for (let i = 0; i < maze.length; i++) {
             setTimeout(() => {
                 const node = this.state.grid[maze[i][0]][maze[i][1]];
-                this.drawWallNode(node, true);
+                if (maze[i][2]) this.drawWeightNode(node, true);
+                else this.drawWallNode(node, true);
             }, MAZE_SPEED * i);
         }
         setTimeout(() => {

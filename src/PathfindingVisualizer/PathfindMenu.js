@@ -2,6 +2,7 @@ import React from 'react';
 
 import Node from './Node';
 import { pathfindAlgorithms } from './PathfindAlgorithms';
+import { mazeAlgorithms } from './MazeAlgorithms';
 
 /**
  * Represents the top menu of the pathfinding visualizer component.
@@ -67,15 +68,23 @@ class PathfindMenu extends React.Component {
                     <div className="pv-title">Pathfinding Visualizer</div>
                     <div className="maze-dropdown dropdown-animate">
                         <div className="pv-menu-bar-button" 
-                        onClick={() => this.props.pathfinder.animateMaze()}
                         onMouseEnter={() => this.setState({mazeDropdownHidden: false})}>
                         <span>Maze</span></div>
                         <div className="pv-menu-dropdown-content maze-drop-content dropdown-animate"
                         hidden={this.state.mazeDropdownHidden}
                         onClick={() => this.setState({mazeDropdownHidden: true})}>
                             <div className="pv-menu-dropdown-content-item"
-                            onClick={() => this.props.pathfinder.animateMaze()}
+                            onClick={() => this.props.pathfinder.animateMaze(mazeAlgorithms.RECURSIVE_DEVISION)}
                             >Recursive Devision</div>
+                            <div className="pv-menu-dropdown-content-item"
+                            onClick={() => this.props.pathfinder.animateMaze(mazeAlgorithms.RANDOM_WALL)}
+                            >Random Wall</div>
+                            <div className="pv-menu-dropdown-content-item"
+                            onClick={() => this.props.pathfinder.animateMaze(mazeAlgorithms.RANDOM_WEIGHT)}
+                            >Random Weight</div>
+                            <div className="pv-menu-dropdown-content-item"
+                            onClick={() => this.props.pathfinder.animateMaze(mazeAlgorithms.RANDOM_WALL_WEIGHT)}
+                            >Random Wall/Weight</div>
                         </div>
                     </div>
                     <div className="clear-dropdown dropdown-animate">
@@ -131,13 +140,13 @@ class PathfindMenu extends React.Component {
                         hidden={this.state.pathfindDropdownHidden}
                         onClick={() => this.setState({pathfindDropdownHidden: true})}>
                             <div className="pv-menu-dropdown-content-item"
-                            onClick={() => this.props.pathfinder.visualizePathfind(this.state.curAlgorithm, 100)}
+                            onClick={() => this.props.pathfinder.visualizePathfind(this.state.curAlgorithm, 250)}
                             >Very Slow</div>
                             <div className="pv-menu-dropdown-content-item"
-                            onClick={() => this.props.pathfinder.visualizePathfind(this.state.curAlgorithm, 50)}
+                            onClick={() => this.props.pathfinder.visualizePathfind(this.state.curAlgorithm, 100)}
                             >Slow</div>
                             <div className="pv-menu-dropdown-content-item"
-                            onClick={() => this.props.pathfinder.visualizePathfind(this.state.curAlgorithm, 10)}
+                            onClick={() => this.props.pathfinder.visualizePathfind(this.state.curAlgorithm, 25)}
                             >Fast</div>
                             <div className="pv-menu-dropdown-content-item"
                             onClick={() => this.props.pathfinder.visualizePathfind(this.state.curAlgorithm, 5)}

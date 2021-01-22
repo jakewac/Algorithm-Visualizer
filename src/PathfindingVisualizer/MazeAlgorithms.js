@@ -1,5 +1,77 @@
 import { random } from '../utils';
 
+// Maze algorithms
+export const mazeAlgorithms = {
+    RECURSIVE_DEVISION: "Recursive Devision",
+    RANDOM_WALL: "Random Wall",
+    RANDOM_WEIGHT: "Random Weight",
+    RANDOM_WALL_WEIGHT: "Random Wall/Weight"
+}
+
+/**
+ * Algorithm for generating a random wall maze.
+ * 
+ * @param {int} rows number of rows
+ * @param {int} cols number of columns
+ * 
+ * @returns a grid of boolean values, true if wall node
+ */
+export function randomWallMaze(rows, cols) {
+    var walls = []
+
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+            const rNum = random(1, 10);
+            if (rNum <= 3) walls.push([r, c]);
+        }
+    }
+
+    return walls;
+}
+
+/**
+ * Algorithm for generating a random weight maze.
+ * 
+ * @param {int} rows number of rows
+ * @param {int} cols number of columns
+ * 
+ * @returns a grid of boolean values, true if wall node
+ */
+export function randomWeightMaze(rows, cols) {
+    var walls = []
+
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+            const rNum = random(1, 10);
+            if (rNum <= 3) walls.push([r, c, true]);
+        }
+    }
+
+    return walls;
+}
+
+/**
+ * Algorithm for generating a random wall/weight maze.
+ * 
+ * @param {int} rows number of rows
+ * @param {int} cols number of columns
+ * 
+ * @returns a grid of boolean values, true if wall node
+ */
+export function randomWallWeightMaze(rows, cols) {
+    var walls = []
+
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+            const rNum = random(1, 10);
+            if (rNum <= 2) walls.push([r, c]);
+            if (rNum >= 8) walls.push([r, c, true]);
+        }
+    }
+
+    return walls;
+}
+
 /**
  * Algorithm for generating a maze using recursive devision.
  * 
@@ -38,7 +110,7 @@ function buildWalls(walls, rows, cols) {
         }
     }
 
-    walls = innerWalls(walls, true, 1, cols-2, 1, rows-2);
+    walls = innerWalls(walls, random(0, 1), 1, cols-2, 1, rows-2);
     return walls;
 }
 
