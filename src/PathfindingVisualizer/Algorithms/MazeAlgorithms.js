@@ -1,4 +1,4 @@
-import { random } from '../utils';
+import { random } from '../../utils';
 
 // Maze algorithms
 export const mazeAlgorithms = {

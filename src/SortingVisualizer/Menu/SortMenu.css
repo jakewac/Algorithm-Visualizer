@@ -1,0 +1,138 @@
+/* PATHFIND MENU BAR */
+
+.sv-menu-bar {
+    width: 100%;
+    background-color: rgb(50, 50, 50);
+    display: inline-flex;
+}
+
+.sv-title {
+    color: rgb(255, 255, 255);
+    font-size: 26px;
+    font-weight: 300;
+    width: 250px;
+    height: 100%;
+    margin-right: 30px;
+    line-height: 100%;
+    opacity: 0.5;
+}
+
+.sv-title:hover {
+    opacity: 1;
+    transition: 0.5s;
+}
+
+.sv-menu-bar-button {
+    height: 100%;
+    width: 125px;
+    color: rgb(255, 255, 255);
+    text-align: left;
+    font-weight: 300;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.sv-menu-bar-button span {
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+
+.sv-menu-bar-button span:after {
+    font-weight: 600;
+    font-size: 20px;
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    left: 0px;
+    transition: 0.5s;
+}
+
+.sv-menu-bar-button:hover span {
+    padding-left: 20px;
+}
+
+.sv-menu-bar-button:hover span:after {
+    opacity: 1;
+}
+
+.sv-menu-dropdown-content {
+    background-color: rgb(50, 50, 50, 0.75);
+    border-radius: 5%;
+    width: 150px;
+    top: 100%;
+    position: absolute;
+    display: none;
+}
+
+.sv-menu-dropdown-content-item {
+    color: rgb(255, 255, 255);
+    background-color: transparent;
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 400;
+    text-align: left;
+    cursor: pointer;
+    display: block;
+    border-radius: 5%;
+}
+
+.sv-menu-dropdown-content-item:hover {
+    font-weight: 600;
+}
+
+/* RANDOMIZE BUTTON DROPDOWN */
+
+.randomize-dropdown:hover .randomize-drop-content {
+    display: block;
+}
+
+/* ALGORITHM BUTTON DROPDOWN */
+
+.algorithm-dropdown:hover .algorithm-drop-content {
+    display: block;
+}
+
+/* VISUALIZE BUTTON DROPDOWN */
+
+.visualize-dropdown:hover .visualize-drop-content {
+    display: block;
+}
+
+/* DROPDOWN ANIMATION */
+
+.dropdown-animate {
+    animation: growDown 500ms ease-in-out forwards;
+    transform-origin: top center;
+}
+
+@keyframes growDown {
+  0% {
+    transform: scaleY(0);
+  }
+  80% {
+    transform: scaleY(1.1);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}
+
+/* CURRENT ALGORITHM */
+
+.sv-curalg {
+    color: rgb(255, 255, 255);
+    font-size: 24px;
+    font-weight: 300;
+    width: 250px;
+    height: 100%;
+    margin-right: 30px;
+    line-height: 100%;
+    opacity: 0.5;
+}
+
+.sv-curalg:hover {
+    opacity: 1;
+    transition: 0.5s;
+}

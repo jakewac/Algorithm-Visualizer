@@ -3,11 +3,11 @@ import React from 'react';
 import './PathfindingVisualizer.css';
 
 import { getShortestPathNodes, dijkstra, aStar, breadthFirstSearch, depthFirstSearch, pathfindAlgorithms, getShortestPathCost
-} from './PathfindAlgorithms';
+} from './Algorithms/PathfindAlgorithms';
 import { recursiveDevision, mazeAlgorithms, randomWallMaze, randomWeightMaze, randomWallWeightMaze
-} from './MazeAlgorithms';
-import PathfindMenu from './PathfindMenu';
-import Node from './Node';
+} from './Algorithms/MazeAlgorithms';
+import PathfindMenu from './Menu/PathfindMenu';
+import Node from './Grid/Node';
 
 // Number of rows in the grid
 const ROW_COUNT = 29;
@@ -19,7 +19,7 @@ const INIT_COST = 15;
 const INIT_START = [14, 10];
 // Initial coordinates of the target noe [row, col]
 const INIT_TARGET = [14, 60];
-// Speed between visited node animations in miliseconds
+// Default speed between visited node animations in miliseconds
 const VISITED_SPEED = 15;
 // Speed between shortest path node animations in miliseconds
 const PATH_SPEED = 25;
@@ -405,7 +405,7 @@ class PathfindingVisualizer extends React.Component {
                 }
             }
         }
-        this.updateAlgorithmInfo("None", 0, 0, 0);
+        this.updateAlgorithmInfo(0, 0, 0);
         this.updateGridState();
     }
 
@@ -486,7 +486,7 @@ class PathfindingVisualizer extends React.Component {
         const shortestPath = getShortestPathNodes(target);
         const totalCost = getShortestPathCost(target);
 
-        this.updateAlgorithmInfo(algorithm, visitedNodes.length, shortestPath.length, totalCost);
+        this.updateAlgorithmInfo(visitedNodes.length, shortestPath.length, totalCost);
 
         this.animateSearch(visitedNodes, shortestPath, speed);
     }
@@ -546,25 +546,24 @@ class PathfindingVisualizer extends React.Component {
             setTimeout(() => { 
                 this.updateGridState();
                 this.setState({interactable: true});
-            }, PATH_SPEED * shortestPath.length);
+            }, (PATH_SPEED * shortestPath.length) + 1000);
         }
     }
 
     /**
-     * Updates the visual algorithm information.
+     * Updates the visual algorithm pathfind information.
      * 
-     * @param {string} algorithm current algorithm
      * @param {int} visitedNodes amount of nodes visited
      * @param {int} pathNodes amount of nodes in path
      * @param {int} totalCost total cost of shortest path
      */
-    updateAlgorithmInfo (algorithm, visitedNodes, pathNodes, totalCost) {
-        if (pathNodes <= 1) pathNodes = "No Path";
+    updateAlgorithmInfo (visitedNodes, pathNodes, totalCost) {
+        if (pathNodes <= 1) pathNodes = 0;
         if (totalCost <= 1) totalCost = 0;
 
-        document.getElementById("visited-info-text").innerHTML = `${visitedNodes}`;
-        document.getElementById("path-info-text").innerHTML = `${pathNodes}`;
-        document.getElementById("weighted-info-text").innerHTML = `${totalCost}`;
+        document.getElementById("pathfind-stats-visited").innerHTML = `${visitedNodes}`;
+        document.getElementById("pathfind-stats-path").innerHTML = `${pathNodes}`;
+        document.getElementById("pathfind-stats-weighted").innerHTML = `${totalCost}`;
     }
 
     /**

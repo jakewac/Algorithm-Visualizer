@@ -3,9 +3,9 @@ import { NavItem, NavLink, Nav, TabContent, TabPane
 } from 'reactstrap'
 import classnames from 'classnames';
 
-import Home from './Home';
-import PathfindingVisualizer from './PathfindingVisualizer/PathfindingVisualizer';
-import SortingVisualizer from './SortingVisualizer/SortingVisualizer';
+import Home from '../Home/Home';
+import PathfindingVisualizer from '../PathfindingVisualizer/PathfindingVisualizer';
+import SortingVisualizer from '../SortingVisualizer/SortingVisualizer';
 
 // Default tab to display on page load
 const DEFAULT_TAB = "home";

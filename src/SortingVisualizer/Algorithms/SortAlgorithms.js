@@ -11,9 +11,9 @@ const MIN = "purple";
 
 // Sorting algorithms
 export const sortAlgorithms = {
-    SELECTION: "selection",
-    INSERTION: "insertion",
-    MERGE: "merge",
+    SELECTION: "Selection Sort",
+    INSERTION: "Insertion Sort",
+    MERGE: "Merge Sort",
 }
 
 /**
