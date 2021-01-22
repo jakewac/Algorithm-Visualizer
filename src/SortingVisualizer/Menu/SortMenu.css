@@ -6,27 +6,11 @@
     display: inline-flex;
 }
 
-.sv-title {
-    color: rgb(255, 255, 255);
-    font-size: 26px;
-    font-weight: 300;
-    width: 250px;
-    height: 100%;
-    margin-right: 30px;
-    line-height: 100%;
-    opacity: 0.5;
-}
-
-.sv-title:hover {
-    opacity: 1;
-    transition: 0.5s;
-}
-
 .sv-menu-bar-button {
     height: 100%;
     width: 125px;
     color: rgb(255, 255, 255);
-    text-align: left;
+    text-align: center;
     font-weight: 300;
     font-size: 20px;
     cursor: pointer;

@@ -45,7 +45,6 @@ class PVisualizerSettings extends React.Component {
 
         return (
             <div className="pv-menu-bar">
-                <div className="pv-title">Pathfinding Visualizer</div>
                 <div className="maze-dropdown dropdown-animate">
                     <div className="pv-menu-bar-button" 
                     onMouseEnter={() => this.setState({mazeDropdownHidden: false})}>

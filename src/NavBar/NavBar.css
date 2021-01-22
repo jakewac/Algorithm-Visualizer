@@ -1,0 +1,64 @@
+/* NAV BAR */
+
+.navbar {
+    width: 100%;
+    height: 40px;
+    background-color: rgb(50, 50, 50);
+    display: inline-flex;
+}
+
+.navbar-title {
+    color: rgb(255, 255, 255);
+    font-size: 26px;
+    font-weight: 300;
+    width: 250px;
+    height: 100%;
+    margin-right: 30px;
+    line-height: 20px;
+    opacity: 0.5;
+}
+
+.navbar-title:hover {
+    opacity: 1;
+    transition: 0.5s;
+}
+
+.navbar-button {
+    height: 100%;
+    width: 125px;
+    color: rgb(255, 255, 255);
+    text-align: left;
+    font-weight: 300;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.navbar-button span {
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+
+.navbar-button span:after {
+    font-weight: 600;
+    font-size: 20px;
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    left: 0px;
+    transition: 0.5s;
+}
+
+.navbar-button:hover span {
+    padding-left: 20px;
+}
+
+.navbar-button:hover span:after {
+    opacity: 1;
+}
+
+/* TAB CONTENT */
+
+.tab-content {
+    display: none;
+}
