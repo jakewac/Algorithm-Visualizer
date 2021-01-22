@@ -1,9 +1,9 @@
-import PriorityQueue from "../Utils";
+import PriorityQueue from "../../utils";
 
 // Pathfinding algorithms
 export const pathfindAlgorithms = {
     DIJKSTRA: "Dijkstra",
-    ASTAR: "A-Star",
+    ASTAR: "A* (A-Star)",
     BFS: "Breadth First Search",
     DFS: "Depth First Search",
 }
