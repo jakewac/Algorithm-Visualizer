@@ -110,6 +110,7 @@ class PVisualizerSettings extends React.Component {
                         >Depth First Search</div>
                     </div>
                 </div>
+                <div className="pv-curalg dropdown-animate">{this.getCurrentAlgorithmText()}</div>
                 <div className="pathfind-dropdown dropdown-animate">
                     <div className="pv-menu-bar-button" 
                     onMouseEnter={() => this.setState({pathfindDropdownHidden: false})}
@@ -135,7 +136,6 @@ class PVisualizerSettings extends React.Component {
                         >Instant</div>
                     </div>
                 </div>
-                <div className="pv-curalg dropdown-animate">{this.getCurrentAlgorithmText()}</div>
             </div>
         );
     }

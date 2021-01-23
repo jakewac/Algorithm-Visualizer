@@ -4,6 +4,7 @@
     width: 100%;
     background-color: rgb(50, 50, 50);
     display: inline-flex;
+    justify-content: center;
 }
 
 .pv-menu-bar-button {
@@ -117,7 +118,6 @@
     font-weight: 300;
     width: 250px;
     height: 100%;
-    margin-right: 30px;
     line-height: 100%;
     opacity: 0.5;
 }

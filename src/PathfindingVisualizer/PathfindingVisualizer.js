@@ -510,7 +510,10 @@ class PathfindingVisualizer extends React.Component {
             }
             this.animatePath(shortestPath, isInstant);
         } else {
-            this.setState({interactable: false});
+            this.setState({
+                interactable: false,
+                drawMode: 0,
+            });
 
             for (let i = 0; i < visitedNodes.length; i++) {
                 setTimeout(() => {

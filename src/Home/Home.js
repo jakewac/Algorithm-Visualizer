@@ -1,8 +1,5 @@
 import React from 'react';
 
-import { Card, CardHeader, CardBody
-} from 'reactstrap';
-
 /**
  * Represents the home tab component.
  * 
@@ -22,14 +19,9 @@ class Home extends React.Component {
     render () {
         return (
             <div>
-                <Card>
-                    <CardHeader>
-                        Jake Waclawski<br></br>
-                        <a href="https://github.com/jmw3638/Pathfinder">GitHub</a>
-                    </CardHeader>
-                    <CardBody>
-                    </CardBody>
-                </Card>
+                <h1>Algorithm Visualizer</h1>
+                <h3>Jake Waclawski</h3>
+                <a href="https://github.com/jmw3638/Pathfinder">GitHub</a>
             </div>
         );
     }
