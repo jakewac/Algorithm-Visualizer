@@ -79,7 +79,6 @@ class SVisualizerSettings extends React.Component {
                         >Merge Sort</div>
                     </div>
                 </div>
-                <div className="sv-curalg dropdown-animate">{this.getCurrentAlgorithmText()}</div>
                 <div className="visualize-dropdown dropdown-animate">
                     <div className="sv-menu-bar-button" 
                     onClick={() => this.props.sorter.visualizeSort(this.state.curAlgorithm)}
@@ -102,6 +101,7 @@ class SVisualizerSettings extends React.Component {
                         >Very Fast</div>
                     </div>
                 </div>
+                <div className="sv-curalg dropdown-animate">{this.getCurrentAlgorithmText()}</div>
             </div>
         );
     }

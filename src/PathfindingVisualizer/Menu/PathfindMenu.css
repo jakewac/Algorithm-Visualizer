@@ -4,7 +4,7 @@
     width: 100%;
     background-color: rgb(50, 50, 50);
     display: inline-flex;
-    justify-content: center;
+    justify-content: left;
 }
 
 .pv-menu-bar-button {
@@ -44,7 +44,7 @@
 .pv-menu-dropdown-content {
     background-color: rgb(50, 50, 50, 0.75);
     border-radius: 5%;
-    width: 150px;
+    width: 200px;
     top: 100%;
     position: absolute;
     display: none;
@@ -120,6 +120,7 @@
     height: 100%;
     line-height: 100%;
     opacity: 0.5;
+    margin-left: 25px;
 }
 
 .pv-curalg:hover {

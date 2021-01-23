@@ -5,7 +5,6 @@ import './NavBar.css';
 import Home from '../Home/Home';
 import PathfindingVisualizer from '../PathfindingVisualizer/PathfindingVisualizer';
 import SortingVisualizer from '../SortingVisualizer/SortingVisualizer';
-import { NavItem } from 'reactstrap';
 
 // Default tab to display on page load
 const DEFAULT_TAB = "Home";
@@ -51,12 +50,12 @@ class NavBar extends React.Component {
         return (
             <div className="project">
                 <div className="navbar">
-                    <div className="navigate-dropdown dropdown-animate">
+                    <div className="navigate-dropdown navbar-dropdown-animate">
                     <div className="navbar-button" 
                     onClick={() => null}
                     onMouseEnter={() => this.setState({navigateDropdownHidden: false})}>
                     <span>{this.state.curTab}</span></div>
-                    <div className="navbar-dropdown-content navigate-drop-content dropdown-animate"
+                    <div className="navbar-dropdown-content navigate-drop-content navbar-dropdown-animate"
                     hidden={this.state.navigateDropdownHidden}
                     onClick={() => this.setState({navigateDropdownHidden: true})}>
                         <div className="navbar-dropdown-content-item"
@@ -73,7 +72,7 @@ class NavBar extends React.Component {
                 </div>
                 <div className="tab-content-holder">
                     <div id="Home" className="tab-content">
-                        <Home />
+                        <Home changeTab={(tab) => this.changeTab(tab)}/>
                     </div>
                     <div id="Pathfinding Visualizer" className="tab-content">
                         <PathfindingVisualizer />

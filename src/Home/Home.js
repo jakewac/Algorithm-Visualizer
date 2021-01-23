@@ -21,7 +21,9 @@ class Home extends React.Component {
             <div>
                 <h1>Algorithm Visualizer</h1>
                 <h3>Jake Waclawski</h3>
-                <a href="https://github.com/jmw3638/Pathfinder">GitHub</a>
+                <a href="https://github.com/jmw3638/Pathfinder">GitHub</a><br />
+                <button onClick={() => this.props.changeTab("Pathfinding Visualizer")}>Pathfinding Visualizer</button>
+                <button onClick={() => this.props.changeTab("Sorting Visualizer")}>Sorting Visualizer</button>
             </div>
         );
     }
