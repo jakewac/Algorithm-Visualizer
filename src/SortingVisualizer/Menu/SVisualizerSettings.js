@@ -83,7 +83,7 @@ class SVisualizerSettings extends React.Component {
                     <div className="sv-menu-bar-button" 
                     onClick={() => this.props.sorter.visualizeSort(this.state.curAlgorithm)}
                     onMouseEnter={() => this.setState({visualizeDropdownHidden: false})}>
-                    <span>Visualize</span></div>
+                    <span>Sort</span></div>
                     <div className="sv-menu-dropdown-content visualize-drop-content dropdown-animate"
                     hidden={this.state.visualizeDropdownHidden}
                     onClick={() => this.setState({visualizeDropdownHidden: true})}>
