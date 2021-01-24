@@ -1,8 +1,14 @@
-# Getting Started with Create React App
+# Algorithm Visualizer Project
 
+Created by Jake Waclawski.
+Inspired by Clément Mihailescu's [Pathfinding Visualizer Project](https://github.com/clementmihailescu/Pathfinding-Visualizer).
+
+The project can be accessed here: [jmw3638.github.io/Algorithm-Visualizer](https://jmw3638.github.io/Algorithm-Visualizer/)
+Google Chrome is the recommended browser for this project,
+it has not been tested on other web browsers.
+
+## React
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
 
 In the project directory, you can run:
 
@@ -14,13 +20,20 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
-## Learn More
+### `npm run build`
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-### Code Splitting
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Information
 
+### Home
+
+### Pathfinding Visualizer
+
+### Sorting Visualizer
