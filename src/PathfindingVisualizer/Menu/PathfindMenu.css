@@ -4,29 +4,14 @@
     width: 100%;
     background-color: rgb(50, 50, 50);
     display: inline-flex;
-}
-
-.pv-title {
-    color: rgb(255, 255, 255);
-    font-size: 26px;
-    font-weight: 300;
-    width: 250px;
-    height: 100%;
-    margin-right: 30px;
-    line-height: 100%;
-    opacity: 0.5;
-}
-
-.pv-title:hover {
-    opacity: 1;
-    transition: 0.5s;
+    justify-content: left;
 }
 
 .pv-menu-bar-button {
     height: 100%;
     width: 125px;
     color: rgb(255, 255, 255);
-    text-align: left;
+    text-align: center;
     font-weight: 300;
     font-size: 20px;
     cursor: pointer;
@@ -59,7 +44,7 @@
 .pv-menu-dropdown-content {
     background-color: rgb(50, 50, 50, 0.75);
     border-radius: 5%;
-    width: 150px;
+    width: 200px;
     top: 100%;
     position: absolute;
     display: none;
@@ -133,9 +118,9 @@
     font-weight: 300;
     width: 250px;
     height: 100%;
-    margin-right: 30px;
     line-height: 100%;
     opacity: 0.5;
+    margin-left: 25px;
 }
 
 .pv-curalg:hover {

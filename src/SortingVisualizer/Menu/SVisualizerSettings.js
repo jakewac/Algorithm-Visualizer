@@ -42,7 +42,6 @@ class SVisualizerSettings extends React.Component {
 
         return (
             <div className="sv-menu-bar">
-                <div className="sv-title">Sorting Visualizer</div>
                 <div className="randomize-dropdown dropdown-animate">
                     <div className="sv-menu-bar-button" 
                     onClick={() => this.props.sorter.reGenerateArray()}

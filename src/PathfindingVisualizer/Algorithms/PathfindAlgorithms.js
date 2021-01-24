@@ -1,4 +1,4 @@
-import PriorityQueue from "../../utils";
+import PriorityQueue from "../../Utils/utils";
 
 // Pathfinding algorithms
 export const pathfindAlgorithms = {
@@ -28,11 +28,10 @@ export function dijkstra(grid, start, target) {
         if (!curNode) break;
         if (curNode.isWall) continue;
 
-        if (curNode.distance === Infinity) return visitedNodes;
-
         curNode.isVisited = true;
         visitedNodes.push(curNode);
 
+        if (curNode.distance === Infinity) return visitedNodes;
         if (curNode === target) return visitedNodes;
 
         const unvisitedNeighbors = getUnvisitedNeighbors(curNode, grid);
@@ -63,12 +62,12 @@ export function aStar(grid, start, target) {
         const curNode = unvisitedNodes.dequeue().element;
 
         if (curNode.isWall) continue;
-
-        if (curNode.distance === Infinity) return visitedNodes;
+        if (curNode.isVisited) continue;
 
         curNode.isVisited = true;
         visitedNodes.push(curNode);
 
+        if (curNode.distance === Infinity) return visitedNodes;
         if (curNode === target) return visitedNodes;
 
         const unvisitedNeighbors = getUnvisitedNeighbors(curNode, grid);
@@ -106,17 +105,15 @@ export function breadthFirstSearch(grid, start, target) {
         if (curNode.isWall) continue;
         if (curNode.isVisited) continue;
 
-        if (curNode.distance === Infinity) return visitedNodes;
-
         curNode.isVisited = true;
         visitedNodes.push(curNode);
 
+        if (curNode.distance === Infinity) return visitedNodes;
         if (curNode === target) return visitedNodes; 
 
         const unvisitedNeighbors = getUnvisitedNeighbors(curNode, grid);
         for (const neighbor of unvisitedNeighbors) {
             unvisitedNodes.push(neighbor);
-            
 
             neighbor.distance = curNode.distance + 1;
             neighbor.previousNode = curNode;
@@ -144,14 +141,15 @@ export function depthFirstSearch(grid, start, target) {
         if (curNode.isWall) continue;
         if (curNode.isVisited) continue;
 
+        curNode.isVisited = true;
+        visitedNodes.push(curNode);
+
         if (curNode.distance === Infinity) return visitedNodes;
         if (curNode === target) return visitedNodes;
 
         const unvisitedNeighbors = getUnvisitedNeighbors(curNode, grid);
         for (const neighbor of unvisitedNeighbors) {
             unvisitedNodes.push(neighbor);
-            curNode.isVisited = true;
-            visitedNodes.push(curNode);
 
             neighbor.distance = curNode.distance + 1;
             neighbor.previousNode = curNode;

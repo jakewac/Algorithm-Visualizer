@@ -510,7 +510,10 @@ class PathfindingVisualizer extends React.Component {
             }
             this.animatePath(shortestPath, isInstant);
         } else {
-            this.setState({interactable: false});
+            this.setState({
+                interactable: false,
+                drawMode: 0,
+            });
 
             for (let i = 0; i < visitedNodes.length; i++) {
                 setTimeout(() => {
@@ -561,9 +564,9 @@ class PathfindingVisualizer extends React.Component {
         if (pathNodes <= 1) pathNodes = 0;
         if (totalCost <= 1) totalCost = 0;
 
-        document.getElementById("pathfind-stats-visited").innerHTML = `${visitedNodes}`;
-        document.getElementById("pathfind-stats-path").innerHTML = `${pathNodes}`;
-        document.getElementById("pathfind-stats-weighted").innerHTML = `${totalCost}`;
+        document.getElementById("pv-stats-visited").innerHTML = `${visitedNodes}`;
+        document.getElementById("pv-stats-path").innerHTML = `${pathNodes}`;
+        document.getElementById("pv-stats-weighted").innerHTML = `${totalCost}`;
     }
 
     /**

@@ -2,7 +2,7 @@ import React from 'react';
 
 import './SortingVisualizer.css';
 
-import { random } from '../utils';
+import { random } from '../Utils/utils';
 import SortMenu from './Menu/SortMenu';
 import { selectionSort, insertionSort, mergeSort, sortAlgorithms } from './Algorithms/SortAlgorithms';
 
@@ -61,10 +61,10 @@ class SortingVisualizer extends React.Component {
     reGenerateArray (size) { 
         if (!size) size = ARRAY_SIZE;
 
-        var array = this.state.array;
-        array = this.rebuildArray(size, MIN_VALUE, MAX_VALUE);
         const bars = document.getElementsByClassName("bar");
-        for (let i = 0; i < array.length; i++) { bars[i].style.backgroundColor = UNSORTED; }
+        for (let i = 0; i < this.state.array.length; i++) { bars[i].style.backgroundColor = UNSORTED; }
+
+        const array = this.rebuildArray(size, MIN_VALUE, MAX_VALUE);
         this.setState({array: array}); 
     }
 
