@@ -8,6 +8,7 @@ Google Chrome is the recommended browser for this project,
 it has not been tested on other web browsers.
 
 ## React
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 In the project directory, you can run:
@@ -34,6 +35,20 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 ### Home
 
+The home page of the project, design is a work-in-progress.
+
 ### Pathfinding Visualizer
 
+Generate a maze or draw your own by using the wall and weight node buttons.
+Click the wall or weight node buttons, then click and drag on the grid to draw or erase obstacles.
+Click the start or target node buttons to place their respective nodes in a new location.
+Select a pathfinding algorithm, click pathfind, and watch the algorithm work!
+
+Walls are not traversable by the algorithm, and must be navigated around.
+Weights are nodes that have a penalty cost for traversing through. Only weighted
+algorithms (Dijkstra, A*) will be able to recognize weight nodes.
+
 ### Sorting Visualizer
+
+Choose an array size with the randomize button,
+select a sorting algorithm, and click sort!
