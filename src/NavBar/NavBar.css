@@ -8,23 +8,12 @@
     width: 100%;
     height: 40px;
     background-color: rgb(50, 50, 50);
-    display: inline;
+    display: inline-block;
+    justify-content: left;
 }
 
-.navbar-title {
-    color: rgb(255, 255, 255);
-    font-size: 26px;
-    font-weight: 300;
-    width: 250px;
-    height: 100%;
-    margin-right: 30px;
-    line-height: 20px;
-    opacity: 0.5;
-}
-
-.navbar-title:hover {
-    opacity: 1;
-    transition: 0.5s;
+.navigate-dropdown {
+    width: auto;
 }
 
 .navbar-button {
