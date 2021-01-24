@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/Algorithm-Visualizer/static/css/main.1c325e6a.chunk.css",
-    "main.js": "/Algorithm-Visualizer/static/js/main.a3eeb9f9.chunk.js",
-    "main.js.map": "/Algorithm-Visualizer/static/js/main.a3eeb9f9.chunk.js.map",
+    "main.css": "/Algorithm-Visualizer/static/css/main.bd43c9a9.chunk.css",
+    "main.js": "/Algorithm-Visualizer/static/js/main.f2f09ef8.chunk.js",
+    "main.js.map": "/Algorithm-Visualizer/static/js/main.f2f09ef8.chunk.js.map",
     "runtime-main.js": "/Algorithm-Visualizer/static/js/runtime-main.609a9763.js",
     "runtime-main.js.map": "/Algorithm-Visualizer/static/js/runtime-main.609a9763.js.map",
     "static/css/2.ae9f1eb3.chunk.css": "/Algorithm-Visualizer/static/css/2.ae9f1eb3.chunk.css",
@@ -12,14 +12,14 @@
     "static/js/3.d5e94932.chunk.js.map": "/Algorithm-Visualizer/static/js/3.d5e94932.chunk.js.map",
     "index.html": "/Algorithm-Visualizer/index.html",
     "static/css/2.ae9f1eb3.chunk.css.map": "/Algorithm-Visualizer/static/css/2.ae9f1eb3.chunk.css.map",
-    "static/css/main.1c325e6a.chunk.css.map": "/Algorithm-Visualizer/static/css/main.1c325e6a.chunk.css.map",
+    "static/css/main.bd43c9a9.chunk.css.map": "/Algorithm-Visualizer/static/css/main.bd43c9a9.chunk.css.map",
     "static/js/2.80bd9736.chunk.js.LICENSE.txt": "/Algorithm-Visualizer/static/js/2.80bd9736.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.609a9763.js",
     "static/css/2.ae9f1eb3.chunk.css",
     "static/js/2.80bd9736.chunk.js",
-    "static/css/main.1c325e6a.chunk.css",
-    "static/js/main.a3eeb9f9.chunk.js"
+    "static/css/main.bd43c9a9.chunk.css",
+    "static/js/main.f2f09ef8.chunk.js"
   ]
 }
