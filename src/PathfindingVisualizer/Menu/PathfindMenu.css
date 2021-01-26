@@ -11,12 +11,10 @@
 
 .pv-menu-bar-button {
     width: 125px;
-    height: 100%;
 
     cursor: pointer;
 
     color: rgb(255, 255, 255);
-    text-align: center;
     font-weight: 300;
     font-size: 20px;
 }

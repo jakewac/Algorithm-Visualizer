@@ -1,45 +1,34 @@
-/* NAV BAR */
+/* TOP MENU BAR */
 
-.project {
-    display: block;
-}
-
-.navbar {
-    display: inline-block;
+.topmenu {
     width: 100%;
-    height: 40px;
+    height: fit-content;
 
-    justify-content: left;
+    padding-bottom: 5px;
 
     background-color: rgb(50, 50, 50);
 }
 
-.navigate-dropdown {
-    width: 350px;
-}
+/* CURRENT TAB */
 
-.navbar-button {
-    height: 30px;
-    width: 300px;
+.topmenu-curtab {
+    width: fit-content;
 
-    cursor: pointer;
+    padding-right: 10px;
+    padding-left: 5px;
 
-    line-height: 20px;
     color: rgb(255, 255, 255);
-    text-align: left;
     font-weight: 300;
-    font-size: 26px;
+    font-size: 24px;
 }
 
-.navbar-button span {
-    display: inline-block;
-
+.topmenu-curtab span {
     position: relative;
 
     transition: 0.5s;
 }
 
-.navbar-button span:after {
+.topmenu-curtab span:after {
     position: absolute;
 
     left: 0px;
@@ -47,65 +36,33 @@
     opacity: 0;
 
     content: '\00bb';
-    font-weight: 600;
-    font-size: 20px;
+    font-weight: 500;
+    font-size: 24px;
 
     transition: 0.5s;
 }
 
-.navbar-button:hover span {
-    padding-left: 20px;
+.topmenu-curtab:hover span {
+    padding-left: 15px;
 }
 
-.navbar-button:hover span:after {
+.topmenu-curtab:hover span:after {
     opacity: 1;
 }
 
-.navbar-dropdown-content {
-    display: none;
-    width: 700px;
-    height: 40px;
+.topmenu-curtab:hover .topmenu-tablist {
+    display: inline;
+}
 
-    margin-left: 100px;
+/* TOP MENU BAR TAB LIST */
+
+.topmenu-tablist {
+    display: none;
 
     position: absolute;
-
-    top: -10px;
 }
 
-.navbar-dropdown-content-item {
-    display: inline;
-    width: 100%;
-
-    margin-right: 25px;
-    margin-left: 25px;
-    padding: 10px;
-
-    background-color: transparent;
-    cursor: pointer;
-    opacity: 0.5;
-
-    color: rgb(255, 255, 255);
-    font-size: 26px;
-    font-weight: 300;
-    text-align: center;
-}
-
-.navbar-dropdown-content-item:hover {
-    opacity: 1;
-
-    transition: 0.5s;
-}
-
-/* NAVIGATE BUTTON DROPDOWN */
-
-.navigate-dropdown:hover .navigate-drop-content {
-    display: inline;
-}
-
-/* DROPDOWN ANIMATION */
-
-.navbar-dropdown-animate {
+.topmenu-tablist-animate {
     animation: growRight 500ms ease-in-out forwards;
     
     transform-origin: left center;
@@ -121,7 +78,31 @@
   }
 }
 
-/* TAB CONTENT */
+/* TOP MENU BAR TAB SELECTION */
+
+.topmenu-tab {
+    display: inline-flex;
+
+    margin-left: 30px;
+    padding-right: 10px;
+    padding-left: 10px;
+
+    background-color: transparent;
+    cursor: pointer;
+    opacity: 0.5;
+
+    color: rgb(255, 255, 255);
+    font-size: 24px;
+    font-weight: 300;
+}
+
+.topmenu-tab:hover {
+    opacity: 1;
+
+    transition: 0.5s;
+}
+
+/* TAB COMPONENT CONTENT */
 
 .tab-content {
     display: none;

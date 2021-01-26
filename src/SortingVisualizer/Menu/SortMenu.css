@@ -2,7 +2,6 @@
 
 .sv-menu-bar {
     display: inline-flex;
-    
     width: 100%;
 
     justify-content: left;
@@ -12,14 +11,12 @@
 
 .sv-menu-bar-button {
     width: 125px;
-    height: 100%;
 
     position: relative;
 
     cursor: pointer;
     
     color: rgb(255, 255, 255);
-    text-align: center;
     font-weight: 300;
     font-size: 20px;
 }
