@@ -1,95 +1,70 @@
-/* NAV BAR */
+/* TOP MENU BAR */
 
-.project {
-    display: block;
-}
-
-.navbar {
+.topmenu {
     width: 100%;
-    height: 40px;
+    height: fit-content;
+
+    padding-bottom: 5px;
+
     background-color: rgb(50, 50, 50);
-    display: inline-block;
-    justify-content: left;
 }
 
-.navigate-dropdown {
-    width: 350px;
-}
+/* CURRENT TAB */
 
-.navbar-button {
-    height: 30px;
-    width: 300px;
-    line-height: 20px;
+.topmenu-curtab {
+    width: fit-content;
+
+    padding-right: 10px;
+    padding-left: 5px;
+
     color: rgb(255, 255, 255);
-    text-align: left;
     font-weight: 300;
-    font-size: 26px;
-    cursor: pointer;
+    font-size: 24px;
 }
 
-.navbar-button span {
-    display: inline-block;
+.topmenu-curtab span {
     position: relative;
+
     transition: 0.5s;
 }
 
-.navbar-button span:after {
-    font-weight: 600;
-    font-size: 20px;
-    content: '\00bb';
+.topmenu-curtab span:after {
     position: absolute;
-    opacity: 0;
+
     left: 0px;
+
+    opacity: 0;
+
+    content: '\00bb';
+    font-weight: 500;
+    font-size: 24px;
+
     transition: 0.5s;
 }
 
-.navbar-button:hover span {
-    padding-left: 20px;
+.topmenu-curtab:hover span {
+    padding-left: 15px;
 }
 
-.navbar-button:hover span:after {
+.topmenu-curtab:hover span:after {
     opacity: 1;
 }
 
-.navbar-dropdown-content {
-    width: 700px;
-    height: 40px;
-    top: -10px;
-    position: absolute;
+.topmenu-curtab:hover .topmenu-tablist {
+    display: inline;
+}
+
+/* TOP MENU BAR TAB LIST */
+
+.topmenu-tablist {
     display: none;
-    margin-left: 100px;
+
+    position: absolute;
 }
 
-.navbar-dropdown-content-item {
-    color: rgb(255, 255, 255);
-    background-color: transparent;
-    width: 100%;
-    padding: 10px;
-    margin-right: 25px;
-    margin-left: 25px;
-    font-size: 26px;
-    font-weight: 300;
-    text-align: center;
-    cursor: pointer;
-    display: inline;
-    opacity: 0.5;
-}
-
-.navbar-dropdown-content-item:hover {
-    opacity: 1;
-    transition: 0.5s;
-}
-
-/* NAVIGATE BUTTON DROPDOWN */
-
-.navigate-dropdown:hover .navigate-drop-content {
-    display: inline;
-}
-
-/* DROPDOWN ANIMATION */
-
-.navbar-dropdown-animate {
+.topmenu-tablist-animate {
     animation: growRight 500ms ease-in-out forwards;
+    
     transform-origin: left center;
 }
 
@@ -103,7 +78,31 @@
   }
 }
 
-/* TAB CONTENT */
+/* TOP MENU BAR TAB SELECTION */
+
+.topmenu-tab {
+    display: inline-flex;
+
+    margin-left: 30px;
+    padding-right: 10px;
+    padding-left: 10px;
+
+    background-color: transparent;
+    cursor: pointer;
+    opacity: 0.5;
+
+    color: rgb(255, 255, 255);
+    font-size: 24px;
+    font-weight: 300;
+}
+
+.topmenu-tab:hover {
+    opacity: 1;
+
+    transition: 0.5s;
+}
+
+/* TAB COMPONENT CONTENT */
 
 .tab-content {
     display: none;

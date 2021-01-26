@@ -1,35 +1,42 @@
 /* PATHFIND MENU BAR */
 
 .pv-menu-bar {
-    width: 100%;
-    background-color: rgb(50, 50, 50);
     display: inline-flex;
+    width: 100%;
+
     justify-content: left;
+
+    background-color: rgb(50, 50, 50);
 }
 
 .pv-menu-bar-button {
-    height: 100%;
     width: 125px;
+
+    cursor: pointer;
+
     color: rgb(255, 255, 255);
-    text-align: center;
     font-weight: 300;
     font-size: 20px;
-    cursor: pointer;
 }
 
 .pv-menu-bar-button span {
     display: inline-block;
+
     position: relative;
+
     transition: 0.5s;
 }
 
 .pv-menu-bar-button span:after {
+    content: '\00bb';
     font-weight: 600;
     font-size: 20px;
-    content: '\00bb';
+    
     position: absolute;
+
     opacity: 0;
     left: 0px;
+
     transition: 0.5s;
 }
 
@@ -42,25 +49,30 @@
 }
 
 .pv-menu-dropdown-content {
+    display: none;
+    width: 200px;
+
+    position: absolute;
+
     background-color: rgb(50, 50, 50, 0.75);
     border-radius: 5%;
-    width: 200px;
     top: 100%;
-    position: absolute;
-    display: none;
 }
 
 .pv-menu-dropdown-content-item {
-    color: rgb(255, 255, 255);
-    background-color: transparent;
+    display: block;
     width: 100%;
+
     padding: 10px;
+
+    background-color: transparent;
+    cursor: pointer;
+    border-radius: 5%;
+    
+    color: rgb(255, 255, 255);
     font-size: 14px;
     font-weight: 400;
     text-align: left;
-    cursor: pointer;
-    display: block;
-    border-radius: 5%;
 }
 
 .pv-menu-dropdown-content-item:hover {
@@ -95,6 +107,7 @@
 
 .dropdown-animate {
     animation: growDown 500ms ease-in-out forwards;
+
     transform-origin: top center;
 }
 
@@ -113,32 +126,40 @@
 /* CURRENT ALGORITHM */
 
 .pv-curalg {
+    width: 250px;
+    height: 100%;
+
+    margin-left: 25px;
+
+    opacity: 0.5;
+
     color: rgb(255, 255, 255);
     font-size: 24px;
     font-weight: 300;
-    width: 250px;
-    height: 100%;
     line-height: 100%;
-    opacity: 0.5;
-    margin-left: 25px;
 }
 
 .pv-curalg:hover {
     opacity: 1;
+
     transition: 0.5s;
 }
 
 /* NODE KEY */
 
 .pv-key {
-    justify-content: center;
     display: flex;
+    
     padding-top: 5px;
+
+    justify-content: center;
 }
 
 .pv-key-item {
-    margin: 5px;
     display: flex;
+
+    margin: 5px;
+    
     border: 1px solid rgb(200, 200, 200);
     border-radius: 5px;
     background-color: rgba(150, 150, 150, 0.1);
@@ -146,12 +167,15 @@
 
 .pv-key-node {
     padding: 3px;
+
     align-self: center;
 }
 
 .pv-key-text {
     padding: 3px;
+
     align-self: center;
+
     color: rgb(50, 50, 50);
     font-size: medium;
     font-weight: 500;
@@ -159,6 +183,7 @@
 
 .pv-key-item:hover {
     border-color: rgb(50, 50, 50);
+
     transition: 0.5s;
 }
 
@@ -166,18 +191,22 @@
 
 .pv-stats {
     display: flex;
+
     justify-content: center;
 }
 
 .pv-stats-item {
     display: flex;
+
     margin-left: 20px;
     margin-right: 20px;
+
     font-weight: 600;
     font-size: medium;
 }
 
 .pv-stats-text {
     margin-left: 5px;
+    
     font-weight: 400;
 }

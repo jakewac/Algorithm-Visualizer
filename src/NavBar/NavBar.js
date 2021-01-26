@@ -48,29 +48,26 @@ class NavBar extends React.Component {
      */
     render () {
         return (
-            <div className="project">
-                <div className="navbar">
-                    <div className="navigate-dropdown navbar-dropdown-animate">
-                    <div className="navbar-button" 
-                    onClick={() => null}
+            <div>
+                <div className="topmenu">
+                    <div className="topmenu-curtab" 
                     onMouseEnter={() => this.setState({navigateDropdownHidden: false})}>
-                    <span>{this.state.curTab}</span></div>
-                    <div className="navbar-dropdown-content navigate-drop-content navbar-dropdown-animate"
-                    hidden={this.state.navigateDropdownHidden}
-                    onClick={() => this.setState({navigateDropdownHidden: true})}>
-                        <div className="navbar-dropdown-content-item"
-                        onClick={() => this.changeTab("Home")}
-                        ><span>Home</span></div>
-                        <div className="navbar-dropdown-content-item"
-                        onClick={() => this.changeTab("Pathfinding Visualizer")}
-                        ><span>Pathfinding Visualizer</span></div>
-                        <div className="navbar-dropdown-content-item"
-                        onClick={() => this.changeTab("Sorting Visualizer")}
-                        ><span>Sorting Visualizer</span></div>
+                    <span>{this.state.curTab}</span>
+                        <div className="topmenu-tablist topmenu-tablist-animate"
+                        hidden={this.state.navigateDropdownHidden}>
+                            <div className="topmenu-tab"
+                            onClick={() => this.changeTab("Home")}
+                            >Home</div>
+                            <div className="topmenu-tab"
+                            onClick={() => this.changeTab("Pathfinding Visualizer")}
+                            >Pathfinding Visualizer</div>
+                            <div className="topmenu-tab"
+                            onClick={() => this.changeTab("Sorting Visualizer")}
+                            >Sorting Visualizer</div>
                         </div>
                     </div>
                 </div>
-                <div className="tab-content-holder">
+                <div>
                     <div id="Home" className="tab-content">
                         <Home changeTab={(tab) => this.changeTab(tab)}/>
                     </div>
