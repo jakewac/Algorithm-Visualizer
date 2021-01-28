@@ -6,6 +6,12 @@ export const pathfindAlgorithms = {
     ASTAR: "A* (A-Star)",
     BFS: "Breadth First Search",
     DFS: "Depth First Search",
+    DEV: "Development Algorithm",
+}
+
+export function devAlg(grid, start, target) {
+    const visitedNodes = [];
+    return visitedNodes;
 }
 
 /**
@@ -20,26 +26,29 @@ export const pathfindAlgorithms = {
 export function dijkstra(grid, start, target) {
     const visitedNodes = [];
     const unvisitedNodes = getAllNodes(grid);
+
     start.distance = 0;
+
     while (unvisitedNodes.length !== 0) {
         unvisitedNodes.sort((a, b) => a.distance - b.distance);
         const curNode = unvisitedNodes.shift();
-        
-        if (!curNode) break;
-        if (curNode.isWall) continue;
 
-        curNode.isVisited = true;
-        visitedNodes.push(curNode);
-
-        if (curNode.distance === Infinity) return visitedNodes;
-        if (curNode === target) return visitedNodes;
+        if (curNode.isVisited || curNode.isWall) continue;
+        if (curNode === target || curNode.distance === Infinity) return visitedNodes;
 
         const unvisitedNeighbors = getUnvisitedNeighbors(curNode, grid);
         for (const neighbor of unvisitedNeighbors) {
-            neighbor.distance = curNode.distance + neighbor.cost;
-            neighbor.previousNode = curNode;
+            const tentativeDistance = curNode.distance + neighbor.cost;
+            if (neighbor.distance > tentativeDistance) {
+                neighbor.previousNode = curNode;
+                neighbor.distance = tentativeDistance;
+            }
         }
+
+        curNode.isVisited = true;
+        visitedNodes.push(curNode);
     }
+
     return visitedNodes;
 }
 
@@ -108,14 +117,11 @@ export function breadthFirstSearch(grid, start, target) {
         curNode.isVisited = true;
         visitedNodes.push(curNode);
 
-        if (curNode.distance === Infinity) return visitedNodes;
         if (curNode === target) return visitedNodes; 
 
         const unvisitedNeighbors = getUnvisitedNeighbors(curNode, grid);
         for (const neighbor of unvisitedNeighbors) {
             unvisitedNodes.push(neighbor);
-
-            neighbor.distance = curNode.distance + 1;
             neighbor.previousNode = curNode;
         }
     }
@@ -144,14 +150,11 @@ export function depthFirstSearch(grid, start, target) {
         curNode.isVisited = true;
         visitedNodes.push(curNode);
 
-        if (curNode.distance === Infinity) return visitedNodes;
         if (curNode === target) return visitedNodes;
 
         const unvisitedNeighbors = getUnvisitedNeighbors(curNode, grid);
         for (const neighbor of unvisitedNeighbors) {
             unvisitedNodes.push(neighbor);
-
-            neighbor.distance = curNode.distance + 1;
             neighbor.previousNode = curNode;
         }
     }
@@ -215,17 +218,22 @@ export function getShortestPathCost(targetNode) {
  * 
  * @param {Object} node node
  * @param {Array} grid grid of nodes
+ * @param {boolean} diagonal are we allowing diagonal neighbors
  * 
  * @returns an array containing all unvisited neighbors
  */
-function getUnvisitedNeighbors(node, grid) {
+function getUnvisitedNeighbors(node, grid, diagonal) {
     const neighbors = [];
     const {row, col} = node;
     
+    if (diagonal && row > 0 && col > 0) neighbors.push(grid[row - 1][col - 1]); // North West    
     if (col > 0) neighbors.push(grid[row][col - 1]); // West
+    if (diagonal && row < grid.length - 1 && col > 0) neighbors.push(grid[row + 1][col - 1]); // South West
     if (row < grid.length - 1) neighbors.push(grid[row + 1][col]); // South
-    if (col < grid[0].length - 1) neighbors.push(grid[row][col + 1]); // East
+    if (diagonal && row < grid.length - 1 && col < grid[row].length - 1) neighbors.push(grid[row + 1][col + 1]); // South East
+    if (col < grid[row].length - 1) neighbors.push(grid[row][col + 1]); // East
+    if (diagonal && row > 0 && col < grid[row].length - 1) neighbors.push(grid[row - 1][col + 1]); // North East
     if (row > 0) neighbors.push(grid[row - 1][col]); // North
-    
+
     return neighbors.filter(neighbor => !neighbor.isVisited);
 }

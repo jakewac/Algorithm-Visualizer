@@ -2,7 +2,7 @@ import React from 'react';
 
 import './PathfindingVisualizer.css';
 
-import { getShortestPathNodes, dijkstra, aStar, breadthFirstSearch, depthFirstSearch, pathfindAlgorithms, getShortestPathCost
+import { getShortestPathNodes, dijkstra, aStar, breadthFirstSearch, depthFirstSearch, devAlg, pathfindAlgorithms, getShortestPathCost
 } from './Algorithms/PathfindAlgorithms';
 import { recursiveDevision, mazeAlgorithms, randomWallMaze, randomWeightMaze, randomWallWeightMaze
 } from './Algorithms/MazeAlgorithms';
@@ -458,6 +458,7 @@ class PathfindingVisualizer extends React.Component {
     visualizePathfind (algorithm, speed) {
         if (!this.state.interactable) return;
 
+        this.setState({drawMode: 0});
         this.clearPaths();
         this.softRebuildGrid();
 
@@ -478,6 +479,9 @@ class PathfindingVisualizer extends React.Component {
                 break;
             case pathfindAlgorithms.DFS:
                 visitedNodes = depthFirstSearch(grid, start, target);
+                break;
+            case pathfindAlgorithms.DEV:
+                visitedNodes = devAlg(grid, start, target);
                 break;
             default:
                 return;
@@ -510,10 +514,7 @@ class PathfindingVisualizer extends React.Component {
             }
             this.animatePath(shortestPath, isInstant);
         } else {
-            this.setState({
-                interactable: false,
-                drawMode: 0,
-            });
+            this.setState({interactable: false});
 
             for (let i = 0; i < visitedNodes.length; i++) {
                 setTimeout(() => {

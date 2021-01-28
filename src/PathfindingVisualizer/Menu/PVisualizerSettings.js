@@ -108,6 +108,9 @@ class PVisualizerSettings extends React.Component {
                         <div className="pv-menu-dropdown-content-item"
                         onClick={() => this.setState({curAlgorithm: pathfindAlgorithms.DFS})}
                         >Depth First Search</div>
+                        <div className="pv-menu-dropdown-content-item"
+                        onClick={() => this.setState({curAlgorithm: pathfindAlgorithms.DEV})}
+                        >Development Algorithm</div>
                     </div>
                 </div>
                 <div className="pathfind-dropdown dropdown-animate">
