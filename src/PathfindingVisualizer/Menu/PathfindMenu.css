@@ -1,5 +1,16 @@
 /* PATHFIND MENU BAR */
 
+.bool-button {
+    opacity: 0.5;
+}
+
+.heuristic-setting {
+    width: 100px;
+    background-color: rgb(200, 200, 200);
+    caret-color: rgb(0, 0, 0);
+    cursor: pointer;
+}
+
 .pv-menu-bar {
     display: inline-flex;
     width: 100%;

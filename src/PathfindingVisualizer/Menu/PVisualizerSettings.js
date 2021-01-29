@@ -23,6 +23,8 @@ class PVisualizerSettings extends React.Component {
             algorithmDropdownHidden: true,
             // Is the pathfind button dropdown open?
             pathfindDropdownHidden: true,
+
+            diagonalNeighbors: false,
         };
     }
 
@@ -116,31 +118,40 @@ class PVisualizerSettings extends React.Component {
                 <div className="pathfind-dropdown dropdown-animate">
                     <div className="pv-menu-bar-button" 
                     onMouseEnter={() => this.setState({pathfindDropdownHidden: false})}
-                    onClick={() => this.props.pathfinder.visualizePathfind(this.state.curAlgorithm)}>
+                    onClick={() => this.props.pathfinder.visualizePathfind(this.state.curAlgorithm, this.state.diagonalNeighbors)}>
                     <span>Pathfind</span></div>
                     <div className="pv-menu-dropdown-content pathfind-drop-content dropdown-animate"
                     hidden={this.state.pathfindDropdownHidden}
                     onClick={() => this.setState({pathfindDropdownHidden: true})}>
                         <div className="pv-menu-dropdown-content-item"
-                        onClick={() => this.props.pathfinder.visualizePathfind(this.state.curAlgorithm, 250)}
+                        onClick={() => this.props.pathfinder.visualizePathfind(this.state.curAlgorithm, this.state.diagonalNeighbors, 250)}
                         >Very Slow</div>
                         <div className="pv-menu-dropdown-content-item"
-                        onClick={() => this.props.pathfinder.visualizePathfind(this.state.curAlgorithm, 50)}
+                        onClick={() => this.props.pathfinder.visualizePathfind(this.state.curAlgorithm, this.state.diagonalNeighbors, 50)}
                         >Slow</div>
                         <div className="pv-menu-dropdown-content-item"
-                        onClick={() => this.props.pathfinder.visualizePathfind(this.state.curAlgorithm, 15)}
+                        onClick={() => this.props.pathfinder.visualizePathfind(this.state.curAlgorithm, this.state.diagonalNeighbors, 15)}
                         >Fast</div>
                         <div className="pv-menu-dropdown-content-item"
-                        onClick={() => this.props.pathfinder.visualizePathfind(this.state.curAlgorithm, 5)}
+                        onClick={() => this.props.pathfinder.visualizePathfind(this.state.curAlgorithm, this.state.diagonalNeighbors, 5)}
                         >Very Fast</div>
                         <div className="pv-menu-dropdown-content-item"
-                        onClick={() => this.props.pathfinder.visualizePathfind(this.state.curAlgorithm, 0)}
+                        onClick={() => this.props.pathfinder.visualizePathfind(this.state.curAlgorithm, this.state.diagonalNeighbors, 0)}
                         >Instant</div>
                     </div>
                 </div>
                 <div className="pv-curalg dropdown-animate">{this.getCurrentAlgorithmText()}</div>
+                <div id="diag-button" className="pv-menu-bar-button bool-button" onClick={() => this.changeDiagonals()}>
+                    Diagonals
+                </div>
+                <input id="hs-dmultiplier" className="heuristic-setting" placeholder="Multiplier" type="number" />
             </div>
         );
+    }
+    changeDiagonals () { 
+        this.setState({diagonalNeighbors: !this.state.diagonalNeighbors}); 
+        const opac = !this.state.diagonalNeighbors ? 1 : 0.5;
+        document.getElementById("diag-button").style.opacity = opac;
     }
 }
 
