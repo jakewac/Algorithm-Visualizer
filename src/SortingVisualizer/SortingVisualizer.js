@@ -2,7 +2,6 @@ import React from 'react';
 
 import './SortingVisualizer.css';
 
-import { random } from '../Utils/utils';
 import SortMenu from './Menu/SortMenu';
 import { selectionSort, insertionSort, mergeSort, sortAlgorithms } from './Algorithms/SortAlgorithms';
 
@@ -51,7 +50,7 @@ class SortingVisualizer extends React.Component {
      * 
      * @returns the created bar
      */
-    createBar (min, max) { return random(min, max); }
+    createBar (min, max) { return Math.floor(Math.random() * (max - min + 1) + min); }
 
     /**
      * Rebuilds the array and regenerates the visual array bars.
