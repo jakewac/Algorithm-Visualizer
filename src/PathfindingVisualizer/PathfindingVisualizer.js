@@ -2,7 +2,7 @@ import React from 'react';
 
 import './PathfindingVisualizer.css';
 
-import { getShortestPathNodes, dijkstra, aStar, breadthFirstSearch, depthFirstSearch, pathfindAlgorithms, getShortestPathCost
+import { getShortestPathNodes, dijkstra, aStar, breadthFirstSearch, depthFirstSearch, devAlg, pathfindAlgorithms, getShortestPathCost
 } from './Algorithms/PathfindAlgorithms';
 import { recursiveDevision, mazeAlgorithms, randomWallMaze, randomWeightMaze, randomWallWeightMaze
 } from './Algorithms/MazeAlgorithms';
@@ -137,8 +137,6 @@ class PathfindingVisualizer extends React.Component {
             row: row,
             col: col,
             cost: cost,
-            distance: Infinity,
-            rootDistance: Infinity,
             isStart: row === this.state.startNode[0] && col === this.state.startNode[1],
             isTarget: row === this.state.targetNode[0] && col === this.state.targetNode[1],
             isWall: isWall,
@@ -453,11 +451,13 @@ class PathfindingVisualizer extends React.Component {
      * the grid of nodes.
      * 
      * @param {pathfindAlgorithms} algorithm pathfinding algorithm
+     * @param {boolean} diagonalNeighbors
      * @param {int} speed time in miliseconds between visit animations
      */
-    visualizePathfind (algorithm, speed) {
+    visualizePathfind (algorithm, diagonalNeighbors, speed) {
         if (!this.state.interactable) return;
 
+        this.setState({drawMode: 0});
         this.clearPaths();
         this.softRebuildGrid();
 
@@ -468,16 +468,19 @@ class PathfindingVisualizer extends React.Component {
         var visitedNodes = [];
         switch (algorithm) {
             case pathfindAlgorithms.DIJKSTRA:
-                visitedNodes = dijkstra(grid, start, target);
+                visitedNodes = dijkstra(grid, start, target, diagonalNeighbors);
                 break;
             case pathfindAlgorithms.ASTAR:
-                visitedNodes = aStar(grid, start, target);
+                visitedNodes = aStar(grid, start, target, diagonalNeighbors);
                 break;
             case pathfindAlgorithms.BFS:
-                visitedNodes = breadthFirstSearch(grid, start, target);
+                visitedNodes = breadthFirstSearch(grid, start, target, diagonalNeighbors);
                 break;
             case pathfindAlgorithms.DFS:
-                visitedNodes = depthFirstSearch(grid, start, target);
+                visitedNodes = depthFirstSearch(grid, start, target, diagonalNeighbors);
+                break;
+            case pathfindAlgorithms.DEV:
+                visitedNodes = devAlg(grid, start, target, diagonalNeighbors);
                 break;
             default:
                 return;
@@ -510,10 +513,7 @@ class PathfindingVisualizer extends React.Component {
             }
             this.animatePath(shortestPath, isInstant);
         } else {
-            this.setState({
-                interactable: false,
-                drawMode: 0,
-            });
+            this.setState({interactable: false});
 
             for (let i = 0; i < visitedNodes.length; i++) {
                 setTimeout(() => {

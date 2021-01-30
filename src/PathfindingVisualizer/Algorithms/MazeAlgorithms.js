@@ -1,5 +1,3 @@
-import { random } from '../../Utils/utils';
-
 // Maze algorithms
 export const mazeAlgorithms = {
     RECURSIVE_DEVISION: "Recursive Devision",
@@ -205,3 +203,13 @@ function addVWall(walls, minR, maxR, c) {
     for (var i = minR; i <= maxR; i++) if (!holes.includes(i)) walls.push([i, c]); 
     return walls;
 }
+
+/**
+ * Generates a random integer between two given values.
+ * 
+ * @param {int} min minimum value
+ * @param {int} max maximum value 
+ * 
+ * @returns the generated integer
+ */
+function random(min, max) { return Math.floor(Math.random() * (max - min + 1) + min); }

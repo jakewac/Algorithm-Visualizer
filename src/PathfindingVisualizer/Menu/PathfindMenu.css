@@ -1,5 +1,23 @@
 /* PATHFIND MENU BAR */
 
+.heuristic-setting {
+    width: 125px;
+    background-color: rgb(200, 200, 200);
+    caret-color: rgb(0, 0, 0);
+    cursor: pointer;
+}
+
+.bool-setting {
+    display: inline-flex;
+
+    width: 10px;
+    height: 10px;
+
+    margin-right: 5px;
+
+    background-color: rgb(255, 100, 100);   
+}
+
 .pv-menu-bar {
     display: inline-flex;
     width: 100%;
@@ -88,6 +106,12 @@
 /* CLEAR BUTTON DROPDOWN */
 
 .clear-dropdown:hover .clear-drop-content {
+    display: block;
+}
+
+/* EDIT BUTTON DROPDOWN */
+
+.edit-dropdown:hover .edit-drop-content {
     display: block;
 }
 
