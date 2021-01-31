@@ -48,7 +48,7 @@ class NodeKey extends React.Component {
                         row={"start"}
                         col={"instant"}
                         animationEnded={(type) => this.keyAnimationEnded(type, type)}
-                        mousePressed={() => null} mouseEntered={() => null} mouseLeft={() => null}/>
+                        mousePressed={() => null} mouseEntered={() => null} mouseLeft={() => null} />
                     </div>
                     <div id='start-text' className="pv-key-text">Start Node</div>
                 </div>
@@ -58,7 +58,7 @@ class NodeKey extends React.Component {
                         row={"target"}
                         col={"instant"}
                         animationEnded={(type) => this.keyAnimationEnded(type, type)}
-                        mousePressed={() => null} mouseEntered={() => null} mouseLeft={() => null}/>
+                        mousePressed={() => null} mouseEntered={() => null} mouseLeft={() => null} />
                     </div>
                     <div className="pv-key-text">Target Node</div>
                 </div>
@@ -66,9 +66,10 @@ class NodeKey extends React.Component {
                     <div className="pv-key-node">
                         <Node type={"weight-instant"}
                         row={"weight"}
-                        col={"instant"}                           
+                        col={"instant"}             
+                        cost={"C"}              
                         animationEnded={(type) => this.keyAnimationEnded(type, type)}
-                        mousePressed={() => null} mouseEntered={() => null} mouseLeft={() => null}/>
+                        mousePressed={() => null} mouseEntered={() => null} mouseLeft={() => null} />
                     </div>
                     <div className="pv-key-text">Weighted Node</div>
                 </div>
@@ -78,7 +79,7 @@ class NodeKey extends React.Component {
                         row={"wall"}
                         col={"instant"}
                         animationEnded={(type) => this.keyAnimationEnded(type, type)}
-                        mousePressed={() => null} mouseEntered={() => null} mouseLeft={() => null}/>
+                        mousePressed={() => null} mouseEntered={() => null} mouseLeft={() => null} />
                     </div>
                     <div className="pv-key-text">Wall Node</div>
                 </div>
@@ -88,7 +89,7 @@ class NodeKey extends React.Component {
                         row={"unvisited"}
                         col={"instant"}
                         animationEnded={(type) => this.keyAnimationEnded(type, "node")}
-                        mousePressed={() => null} mouseEntered={() => null} mouseLeft={() => null}/>
+                        mousePressed={() => null} mouseEntered={() => null} mouseLeft={() => null} />
                     </div>
                     <div className="pv-key-text">Unvisited Node</div>
                 </div>
@@ -98,14 +99,14 @@ class NodeKey extends React.Component {
                         row={"visited"}
                         col={"instant"}
                         animationEnded={(type) => this.keyAnimationEnded(type, type)}
-                        mousePressed={() => null} mouseEntered={() => null} mouseLeft={() => null}/>
+                        mousePressed={() => null} mouseEntered={() => null} mouseLeft={() => null} />
                     </div>
                     <div className="pv-key-node" onClick={() => this.keyNodePressed("visited-weight-instant", "node visited-weight")}>
                         <Node type={"visited-weight-instant"}
                         row={"visited-weight"}
                         col={"instant"}
                         animationEnded={(type) => this.keyAnimationEnded(type, type)}
-                        mousePressed={() => null} mouseEntered={() => null} mouseLeft={() => null}/>         
+                        mousePressed={() => null} mouseEntered={() => null} mouseLeft={() => null} />         
                     </div>
                     <div className="pv-key-text">Visited Nodes</div>
                 </div>
@@ -115,14 +116,14 @@ class NodeKey extends React.Component {
                         row={"path"}
                         col={"instant"}
                         animationEnded={(type) => this.keyAnimationEnded(type, type)}
-                        mousePressed={() => null} mouseEntered={() => null} mouseLeft={() => null}/>
+                        mousePressed={() => null} mouseEntered={() => null} mouseLeft={() => null} />
                     </div>
                     <div className="pv-key-node" onClick={() => this.keyNodePressed("path-weight-instant", "node path-weight")}>
                         <Node type={"path-weight-instant"}
                         row={"path-weight"}
                         col={"instant"}
                         animationEnded={(type) => this.keyAnimationEnded(type, type)}
-                        mousePressed={() => null} mouseEntered={() => null} mouseLeft={() => null}/>
+                        mousePressed={() => null} mouseEntered={() => null} mouseLeft={() => null} />
                     </div>
                     <div className="pv-key-text">Path Nodes</div>
                 </div>

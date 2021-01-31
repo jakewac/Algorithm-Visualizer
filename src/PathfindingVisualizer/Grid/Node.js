@@ -25,6 +25,8 @@ class Node extends React.Component {
         this.props.isTarget ? 'target' : 
         '';
 
+        const costText = this.props.cost === 1 ? '' : this.props.cost;
+
         return (
             <div 
             id={`node-${this.props.row}-${this.props.col}`} 
@@ -33,7 +35,7 @@ class Node extends React.Component {
             onMouseEnter={() => this.props.mouseEntered(this.props.row, this.props.col)}
             onMouseLeave={() => this.props.mouseLeft(this.props.row, this.props.col)}
             onAnimationEnd={() => this.props.animationEnded(nodeType)}
-            /> 
+            >{costText}</div> 
         );
     }
 }

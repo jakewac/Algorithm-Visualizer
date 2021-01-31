@@ -46,6 +46,13 @@ class PVisualizerSettings extends React.Component {
         this.setState({diagonalNeighbors: !this.state.diagonalNeighbors});
     }
 
+    changeWeightCost () {
+        let cost = parseInt(document.getElementById("ns-weightcost").value);
+        if (!cost) cost = 15;
+
+        this.props.pathfinder.setNewWeight(cost);
+    }
+
     /**
      * Renders the settings bar component.
      * 
@@ -109,7 +116,10 @@ class PVisualizerSettings extends React.Component {
                             <div id="diagmove-bool" className="bool-setting" />
                             Diagonal Movement</div>
                         <div className="pv-menu-dropdown-content-item">
-                            <input id="hs-dmultiplier" className="heuristic-setting" placeholder="A* Multiplier" type="number" />
+                            <input id="ns-dmultiplier" className="number-setting" placeholder="A* Multiplier" type="number" />
+                        </div>
+                        <div className="pv-menu-dropdown-content-item">
+                            <input id="ns-weightcost" className="number-setting" onChange={() => this.changeWeightCost()} placeholder="Weight Cost" type="number" />
                         </div>
                     </div>
                 </div>

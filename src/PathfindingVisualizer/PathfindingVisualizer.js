@@ -14,7 +14,7 @@ const ROW_COUNT = 29;
 // Number of columns in the grid
 const COL_COUNT = 71;
 // Initial cost of weighted nodes
-const INIT_COST = 15;
+const INIT_COST = 5;
 // Initial coordinates of the start node [row, col]
 const INIT_START = [14, 10];
 // Initial coordinates of the target noe [row, col]
@@ -793,11 +793,12 @@ class PathfindingVisualizer extends React.Component {
                         return (
                             <div key={rowIdx} className="grid-row">
                                 {Array.from(row).map((node, nodeIdx) => {
-                                    const {row, col, isStart, isTarget} = node;
+                                    const {row, col, cost, isStart, isTarget} = node;
                                     return (
                                         <Node key={nodeIdx}
                                         row={row}
                                         col={col}
+                                        cost={cost}
                                         isStart={isStart}
                                         isTarget={isTarget}
                                         mousePressed={(row, col) => this.handleMouseDown(row, col)}

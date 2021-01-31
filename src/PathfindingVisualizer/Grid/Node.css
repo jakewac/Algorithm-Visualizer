@@ -5,10 +5,14 @@
     width: 25px;
     height: 25px;
 
+    justify-content: center;
+
     margin: 0.5px;
 
     outline: 1px solid rgb(150, 150, 150);
     background-color: rgb(255, 255, 255);
+
+    font-weight: 100;
 }
 
 .node-animated {

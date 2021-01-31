@@ -8,7 +8,7 @@ export const pathfindAlgorithms = {
 }
 
 function heuristic(cur, start, target, diagonalNeighbors) {
-    let dMultiplier = document.getElementById("hs-dmultiplier").value;
+    let dMultiplier = parseInt(document.getElementById("ns-dmultiplier").value);
     
     const diagCost = Math.sqrt(2);
     if (!dMultiplier) dMultiplier = 1;
@@ -63,13 +63,13 @@ export function dijkstra(grid, start, target, diagonalNeighbors) {
 
         const unvisitedNeighbors = getUnvisitedNeighbors(curNode, grid, diagonalNeighbors);
         for (const neighbor of unvisitedNeighbors) {
-            var neighborCost = neighbor.cost
+            var neighborCost = neighbor.cost;
+
             const diagCost = Math.sqrt(2) - 1;
             if (neighbor.isDiagonal) neighborCost += diagCost;
             neighbor.isDiagonal = false;
 
             const tentativeDistance = curNode.distance + neighborCost;
-
             if (neighbor.distance > tentativeDistance) {
                 neighbor.previousNode = curNode;
                 neighbor.distance = tentativeDistance;
