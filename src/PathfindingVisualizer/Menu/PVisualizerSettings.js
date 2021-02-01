@@ -48,7 +48,7 @@ class PVisualizerSettings extends React.Component {
 
     changeWeightCost () {
         let cost = parseInt(document.getElementById("ns-weightcost").value);
-        if (!cost) cost = 15;
+        if (!cost && cost !== 0) cost = 15;
 
         this.props.pathfinder.setNewWeight(cost);
     }
@@ -120,6 +120,9 @@ class PVisualizerSettings extends React.Component {
                         </div>
                         <div className="pv-menu-dropdown-content-item">
                             <input id="ns-weightcost" className="number-setting" onChange={() => this.changeWeightCost()} placeholder="Weight Cost" type="number" />
+                        </div>
+                        <div className="pv-menu-dropdown-content-item">
+                            <input id="ns-holeamount" className="number-setting" placeholder="Hole Multiplier" type="number" />
                         </div>
                     </div>
                 </div>

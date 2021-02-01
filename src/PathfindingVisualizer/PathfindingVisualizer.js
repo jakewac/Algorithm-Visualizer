@@ -160,24 +160,26 @@ class PathfindingVisualizer extends React.Component {
                 node.isStart = false;
                 node.isTarget = false;
                 node.isWall = false;
-                node.cost = 1;
                 
                 switch (type) {
                     case nodeTypes.START: 
                     case nodeTypes.START_INSTANT:
                         node.curVisual = nodeTypes.START_INSTANT;
+                        node.cost = 1;
                         node.isStart = true;
                         this.setState({startNode: [node.row, node.col]});
                         break;
                     case nodeTypes.TARGET: 
                     case nodeTypes.TARGET_INSTANT:
                         node.curVisual = nodeTypes.TARGET_INSTANT;
+                        node.cost = 1;
                         node.isTarget = true;
                         this.setState({targetNode: [node.row, node.col]});
                         break;
                     case nodeTypes.WALL: 
                     case nodeTypes.WALL_INSTANT:
                         node.curVisual = nodeTypes.WALL_INSTANT;
+                        node.cost = 1;
                         node.isWall = true;
                         break;
                     case nodeTypes.WEIGHT:
@@ -187,7 +189,7 @@ class PathfindingVisualizer extends React.Component {
                     case nodeTypes.PATH_WEIGHT:
                     case nodeTypes.PATH_WEIGHT_INSTANT:
                         node.curVisual = nodeTypes.WEIGHT_INSTANT;
-                        node.cost = this.state.weightCost;
+                        if (node.cost === 1) node.cost = this.state.weightCost;
                         break;
                     case nodeTypes.VISITED:
                     case nodeTypes.VISITED_INSTANT:
@@ -198,6 +200,7 @@ class PathfindingVisualizer extends React.Component {
                         node.curVisual = nodeTypes.PATH_INSTANT;
                         break;
                     default:
+                        node.cost = 1;
                         break;
                 }
             }

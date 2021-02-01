@@ -173,7 +173,10 @@ function innerWalls(walls, h, minC, maxC, minR, maxR) {
  * @param {int} r row
  */
 function addHWall(walls, minC, maxC, r) {
-    const numHoles = random(1, (maxC - minC)/4);
+    let holeMultiplier = parseInt(document.getElementById("ns-holeamount").value);
+    if (!holeMultiplier) holeMultiplier = 8;
+
+    const numHoles = random(1, (maxC - minC) / holeMultiplier);
     const holes = [];
     for (let i = 0; i < numHoles; i++) {
         const hole = Math.floor(random(minC, maxC)/2)*2+1;
@@ -193,7 +196,10 @@ function addHWall(walls, minC, maxC, r) {
  * @param {int} c column 
  */
 function addVWall(walls, minR, maxR, c) {
-    const numHoles = random(1, (maxR - minR)/4);
+    let holeMultiplier = parseInt(document.getElementById("ns-holeamount").value);
+    if (!holeMultiplier) holeMultiplier = 8;
+
+    const numHoles = random(1, (maxR - minR) / holeMultiplier);
     const holes = [];
     for (let i = 0; i < numHoles; i++) {
         const hole = Math.floor(random(minR, maxR)/2)*2+1;
