@@ -2,7 +2,7 @@ import React from 'react';
 
 import './PathfindingVisualizer.css';
 
-import { getShortestPathNodes, dijkstra, aStar, breadthFirstSearch, depthFirstSearch, devAlg, pathfindAlgorithms, getShortestPathCost
+import { getShortestPathNodes, dijkstra, aStar, breadthFirstSearch, depthFirstSearch, pathfindAlgorithms, getShortestPathCost
 } from './Algorithms/PathfindAlgorithms';
 import { recursiveDevision, mazeAlgorithms, randomWallMaze, randomWeightMaze, randomWallWeightMaze
 } from './Algorithms/MazeAlgorithms';
@@ -263,7 +263,7 @@ class PathfindingVisualizer extends React.Component {
      * @param {boolean} isWall are we drawing (true) or erasing (false)
      */
     drawWallNode (node, isWall) {
-        if (node.cost !== 1 || node.isStart || node.isTarget) return;
+        if (node.isStart || node.isTarget) return;
 
         if (!isWall) {
             if (this.getNodeVisual(node) === nodeTypes.NODE) return; 
@@ -481,9 +481,6 @@ class PathfindingVisualizer extends React.Component {
                 break;
             case pathfindAlgorithms.DFS:
                 visitedNodes = depthFirstSearch(grid, start, target, diagonalNeighbors);
-                break;
-            case pathfindAlgorithms.DEV:
-                visitedNodes = devAlg(grid, start, target, diagonalNeighbors);
                 break;
             default:
                 return;

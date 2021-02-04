@@ -15,6 +15,10 @@ class PVisualizerSettings extends React.Component {
         this.state = {
             // Currently selected pathfinding algorithm
             curAlgorithm: null,
+            // Are we allowing diagonal neighbor nodes?
+            diagonalNeighbors: false,
+            // Current path animation speed
+            curSpeed: 15,
             // Is the maze button dropdown open?
             mazeDropdownHidden: true,
             // Is the clear button dropdown open?
@@ -25,8 +29,6 @@ class PVisualizerSettings extends React.Component {
             algorithmDropdownHidden: true,
             // Is the pathfind button dropdown open?
             pathfindDropdownHidden: true,
-
-            diagonalNeighbors: false,
         };
     }
 
@@ -40,17 +42,40 @@ class PVisualizerSettings extends React.Component {
         return this.state.curAlgorithm;
     }
 
+    /**
+     * Changes the current diagonal node neighbor setting.
+     */
     changeDiagonalMovement () {
         document.getElementById("diagmove-bool").style.backgroundColor = !this.state.diagonalNeighbors ? "rgb(100, 255, 100)" : "rgb(255, 100, 100)";
-
         this.setState({diagonalNeighbors: !this.state.diagonalNeighbors});
     }
 
+    /**
+     * Updates the pathfinder with the current diagonal node neighbor setting.
+     */
     changeWeightCost () {
-        let cost = parseInt(document.getElementById("ns-weightcost").value);
-        if (!cost && cost !== 0) cost = 15;
+        let cost = document.getElementById("ns-weightcost").value;
+        if (!cost && cost !== 0) cost = 5;
 
-        this.props.pathfinder.setNewWeight(cost);
+        this.props.pathfinder.setNewWeight(parseInt(cost));
+    }
+
+    /**
+     * Updates the currently selected animation speed option.
+     * 
+     * @param {string} id element id
+     * @param {int} speed new speed
+     */
+    changeVisualizeSpeed (id, speed) {
+        this.setState({curSpeed: speed});
+
+        document.getElementById("vslow-bool").style.backgroundColor = "rgb(255, 100, 100)";
+        document.getElementById("slow-bool").style.backgroundColor = "rgb(255, 100, 100)";
+        document.getElementById("fast-bool").style.backgroundColor = "rgb(255, 100, 100)";
+        document.getElementById("vfast-bool").style.backgroundColor = "rgb(255, 100, 100)";
+        document.getElementById("instant-bool").style.backgroundColor = "rgb(255, 100, 100)";
+        
+        document.getElementById(id).style.backgroundColor = "rgb(100, 255, 100)";
     }
 
     /**
@@ -114,12 +139,12 @@ class PVisualizerSettings extends React.Component {
                         <div className="pv-menu-dropdown-content-item"
                         onClick={() => this.changeDiagonalMovement()}>
                             <div id="diagmove-bool" className="bool-setting" />
-                            Diagonal Movement</div>
+                        Diagonal Movement</div>
                         <div className="pv-menu-dropdown-content-item">
                             <input id="ns-dmultiplier" className="number-setting" placeholder="A* Multiplier" type="number" />
                         </div>
                         <div className="pv-menu-dropdown-content-item">
-                            <input id="ns-weightcost" className="number-setting" onChange={() => this.changeWeightCost()} placeholder="Weight Cost" type="number" />
+                            <input id="ns-weightcost" className="number-setting" onChange={() => this.changeWeightCost()} placeholder="Weight Cost" type="number" min="0" max="999" />
                         </div>
                         <div className="pv-menu-dropdown-content-item">
                             <input id="ns-holeamount" className="number-setting" placeholder="Hole Multiplier" type="number" />
@@ -145,34 +170,36 @@ class PVisualizerSettings extends React.Component {
                         <div className="pv-menu-dropdown-content-item"
                         onClick={() => this.setState({curAlgorithm: pathfindAlgorithms.DFS})}
                         >Depth First Search</div>
-                        {/* <div className="pv-menu-dropdown-content-item"
-                        onClick={() => this.setState({curAlgorithm: pathfindAlgorithms.DEV})}
-                        >Development Algorithm</div> */}
                     </div>
                 </div>
                 <div className="pathfind-dropdown dropdown-animate">
                     <div className="pv-menu-bar-button" 
                     onMouseEnter={() => this.setState({pathfindDropdownHidden: false})}
-                    onClick={() => this.props.pathfinder.visualizePathfind(this.state.curAlgorithm, this.state.diagonalNeighbors)}>
+                    onClick={() => this.props.pathfinder.visualizePathfind(this.state.curAlgorithm, this.state.diagonalNeighbors, this.state.curSpeed)}
+                    onMouseUp={() => this.setState({pathfindDropdownHidden: true})}>
                     <span>Pathfind</span></div>
                     <div className="pv-menu-dropdown-content pathfind-drop-content dropdown-animate"
-                    hidden={this.state.pathfindDropdownHidden}
-                    onClick={() => this.setState({pathfindDropdownHidden: true})}>
+                    hidden={this.state.pathfindDropdownHidden}>
                         <div className="pv-menu-dropdown-content-item"
-                        onClick={() => this.props.pathfinder.visualizePathfind(this.state.curAlgorithm, this.state.diagonalNeighbors, 250)}
-                        >Very Slow</div>
+                        onClick={() => this.changeVisualizeSpeed("vslow-bool", 250)}>
+                            <div id="vslow-bool" className="bool-setting" />
+                        Very Slow</div>
                         <div className="pv-menu-dropdown-content-item"
-                        onClick={() => this.props.pathfinder.visualizePathfind(this.state.curAlgorithm, this.state.diagonalNeighbors, 50)}
-                        >Slow</div>
+                        onClick={() => this.changeVisualizeSpeed("slow-bool", 50)}>
+                            <div id="slow-bool" className="bool-setting" />
+                        Slow</div>
                         <div className="pv-menu-dropdown-content-item"
-                        onClick={() => this.props.pathfinder.visualizePathfind(this.state.curAlgorithm, this.state.diagonalNeighbors, 15)}
-                        >Fast</div>
+                        onClick={() => this.changeVisualizeSpeed("fast-bool", 15)}>
+                            <div id="fast-bool" className="bool-setting" />
+                        Fast</div>
                         <div className="pv-menu-dropdown-content-item"
-                        onClick={() => this.props.pathfinder.visualizePathfind(this.state.curAlgorithm, this.state.diagonalNeighbors, 5)}
-                        >Very Fast</div>
+                        onClick={() => this.changeVisualizeSpeed("vfast-bool", 5)}>
+                            <div id="vfast-bool" className="bool-setting" />
+                        Very Fast</div>                    
                         <div className="pv-menu-dropdown-content-item"
-                        onClick={() => this.props.pathfinder.visualizePathfind(this.state.curAlgorithm, this.state.diagonalNeighbors, 0)}
-                        >Instant</div>
+                        onClick={() => this.changeVisualizeSpeed("instant-bool", 0)}>
+                            <div id="instant-bool" className="bool-setting" />
+                        Instant</div>
                     </div>
                 </div>
                 <div className="pv-curalg dropdown-animate">{this.getCurrentAlgorithmText()}</div>

@@ -4,39 +4,14 @@ export const pathfindAlgorithms = {
     ASTAR: "A* (A-Star)",
     BFS: "Breadth First Search",
     DFS: "Depth First Search",
-    DEV: "Development Algorithm",
-}
+};
 
-function heuristic(cur, start, target, diagonalNeighbors) {
-    let dMultiplier = parseInt(document.getElementById("ns-dmultiplier").value);
-    
-    const diagCost = Math.sqrt(2);
-    if (!dMultiplier) dMultiplier = 1;
-
-    const rowDistance = Math.abs(target.row - cur.row);
-    const colDistance = Math.abs(target.col - cur.col);
-
-    const startRowDistance = Math.abs(target.row - start.row);
-    const startColDistance = Math.abs(target.col - start.col);
-
-    const cross = Math.abs(colDistance * startRowDistance - startColDistance * rowDistance);
-
-    const manhattanD = dMultiplier * (rowDistance + colDistance);
-
-    const diagonalD = dMultiplier * (rowDistance + colDistance) + (diagCost - 2 * dMultiplier) * Math.min(rowDistance, colDistance);
-
-    const directRoute = Math.sqrt(rowDistance**2 + colDistance**2);
-
-    let heuristic = diagonalNeighbors ? diagonalD : manhattanD;
-
-    heuristic += (cross * 0.001);
-
-    return heuristic;
-}
-
-export function devAlg(grid, start, target, diagonalNeighbors) {
-    
-}
+// Heuristic types
+export const heuristicTypes = {
+    MANHATTAND: "Manhattan Distance",
+    DIAGONALD: "Diagonal Distance",
+    DIRECT: "Direct Distance", 
+};
 
 /**
  * Executes a Dijkstra's algorithm search.
@@ -44,6 +19,7 @@ export function devAlg(grid, start, target, diagonalNeighbors) {
  * @param {Array} grid grid of nodes
  * @param {Object} start start node
  * @param {Object} target target node
+ * @param {boolean} diagonalNeighbors are we allowing diagonal neighbors
  * 
  * @returns an array of visited nodes in order
  */
@@ -89,10 +65,12 @@ export function dijkstra(grid, start, target, diagonalNeighbors) {
  * @param {Array} grid grid of nodes
  * @param {Object} start start node
  * @param {Object} target target node
+ * @param {boolean} diagonalNeighbors are we allowing diagonal neighbors
  * 
  * @returns an array of visited nodes in order
  */
 export function aStar(grid, start, target, diagonalNeighbors) {
+    const heuristicType = diagonalNeighbors ? heuristicTypes.DIAGONALD : heuristicTypes.MANHATTAND;
     const visitedNodes = [];
     const unvisitedNodes = [];
 
@@ -101,7 +79,7 @@ export function aStar(grid, start, target, diagonalNeighbors) {
         node.finalCost = Infinity;
     }
     start.startCost = 0;
-    start.finalCost = heuristic(start, start, target, diagonalNeighbors);
+    start.finalCost = getHeuristic(start, start, target, heuristicType);
     unvisitedNodes.push(start);
 
     while (unvisitedNodes.length !== 0) {
@@ -124,7 +102,7 @@ export function aStar(grid, start, target, diagonalNeighbors) {
                 neighbor.previousNode = curNode;
 
                 neighbor.startCost = tentativeStartCost;
-                neighbor.finalCost = neighbor.startCost + heuristic(neighbor, start, target, diagonalNeighbors);
+                neighbor.finalCost = neighbor.startCost + getHeuristic(neighbor, start, target, heuristicType);
 
                 if (!unvisitedNodes.includes(neighbor)) unvisitedNodes.push(neighbor);
             }
@@ -143,6 +121,7 @@ export function aStar(grid, start, target, diagonalNeighbors) {
  * @param {Array} grid grid of nodes
  * @param {Object} start start node
  * @param {Object} target target node
+ * @param {boolean} diagonalNeighbors are we allowing diagonal neighbors
  * 
  * @returns an array of visited nodes in order
  */
@@ -176,6 +155,7 @@ export function breadthFirstSearch(grid, start, target, diagonalNeighbors) {
  * @param {Array} grid grid of nodes
  * @param {Object} start start node
  * @param {Object} target target node
+ * @param {boolean} diagonalNeighbors are we allowing diagonal neighbors
  * 
  * @returns an array of visited nodes in order
  */
@@ -199,6 +179,50 @@ export function depthFirstSearch(grid, start, target, diagonalNeighbors) {
         visitedNodes.push(curNode);
     }
     return visitedNodes;
+}
+
+/**
+ * Gets the estimated move cost between the current node and the target node.
+ * 
+ * @param {Object} cur current node
+ * @param {Object} start start node
+ * @param {Object} target target node
+ * @param {int} heuristicType heuristic to use
+ */
+function getHeuristic(cur, start, target, heuristicType) {
+    let dMultiplier = parseInt(document.getElementById("ns-dmultiplier").value);
+    if (!dMultiplier) dMultiplier = 1;
+
+    const diagCost = Math.sqrt(2);
+
+    const rowDistance = Math.abs(target.row - cur.row);
+    const colDistance = Math.abs(target.col - cur.col);
+
+    const startRowDistance = Math.abs(target.row - start.row);
+    const startColDistance = Math.abs(target.col - start.col);
+
+    let heuristic = 0;
+
+    switch (heuristicType) {
+        case heuristicTypes.MANHATTAND:
+            heuristic = dMultiplier * (rowDistance + colDistance);
+            break;
+        case heuristicTypes.DIAGONALD:
+            heuristic = dMultiplier * (rowDistance + colDistance) + (diagCost - 2 * dMultiplier) * Math.min(rowDistance, colDistance);
+            break;
+        case heuristicTypes.DIRECT:
+            heuristic = Math.sqrt(rowDistance**2 + colDistance**2);
+            break;
+        default:
+            return;
+    }
+
+    // In the case of multiple shortest paths, prioritizes nodes closer to the
+    // direct, 'as the crow flies', path between the start node and the target node.
+    const cross = Math.abs(colDistance * startRowDistance - startColDistance * rowDistance);
+    heuristic += (cross * 0.001);
+
+    return heuristic;
 }
 
 /**
@@ -258,36 +282,36 @@ export function getShortestPathCost(targetNode) {
  * 
  * @param {Object} node node
  * @param {Array} grid grid of nodes
- * @param {boolean} diagonals are we allowing diagonal neighbors
+ * @param {boolean} diagonalNeighbors are we allowing diagonal neighbors
  * 
  * @returns an array containing all unvisited neighbors
  */
-function getUnvisitedNeighbors(node, grid, diagonals) {
+function getUnvisitedNeighbors(node, grid, diagonalNeighbors) {
     const neighbors = [];
     const {row, col} = node;
     
-    if (diagonals && row > 0 && col > 0) {
+    if (diagonalNeighbors && row > 0 && col > 0) {
         neighbors.push(grid[row - 1][col - 1]); // North West    
         grid[row - 1][col - 1].isDiagonal = true;;
     }
 
     if (col > 0) neighbors.push(grid[row][col - 1]); // West
 
-    if (diagonals && row < grid.length - 1 && col > 0) {
+    if (diagonalNeighbors && row < grid.length - 1 && col > 0) {
         neighbors.push(grid[row + 1][col - 1]); // South West
         grid[row + 1][col - 1].isDiagonal = true;;
     }
 
     if (row < grid.length - 1) neighbors.push(grid[row + 1][col]); // South
 
-    if (diagonals && row < grid.length - 1 && col < grid[row].length - 1) {
+    if (diagonalNeighbors && row < grid.length - 1 && col < grid[row].length - 1) {
         neighbors.push(grid[row + 1][col + 1]); // South East
         grid[row + 1][col + 1].isDiagonal = true;;
     }
 
     if (col < grid[row].length - 1) neighbors.push(grid[row][col + 1]); // East
 
-    if (diagonals && row > 0 && col < grid[row].length - 1) {
+    if (diagonalNeighbors && row > 0 && col < grid[row].length - 1) {
         neighbors.push(grid[row - 1][col + 1]); // North East
         grid[row - 1][col + 1].isDiagonal = true;;
     }

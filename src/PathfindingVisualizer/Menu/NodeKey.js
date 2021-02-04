@@ -14,6 +14,17 @@ class NodeKey extends React.Component {
     }
 
     /**
+     * Gets the current weigth cost.
+     * 
+     * @returns the weight cost
+     */
+    getWeightCostText () {
+        let element = document.getElementById("ns-weightcost");
+        if (element === null || (!element.value && element.value !== 0)) return "5";
+        return element.value;
+    }
+
+    /**
      * Runs the animation for the pressed node. Sets the appropriate draw mode.
      * 
      * @param {string} id element id
@@ -67,7 +78,7 @@ class NodeKey extends React.Component {
                         <Node type={"weight-instant"}
                         row={"weight"}
                         col={"instant"}             
-                        cost={"C"}              
+                        cost={this.getWeightCostText()}              
                         animationEnded={(type) => this.keyAnimationEnded(type, type)}
                         mousePressed={() => null} mouseEntered={() => null} mouseLeft={() => null} />
                     </div>

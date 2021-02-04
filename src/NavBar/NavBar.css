@@ -1,3 +1,5 @@
+/* TRANSPARENT TEXT SELECTION */
+
 ::selection {
     background: transparent;
   }

@@ -19,8 +19,10 @@ class NavBar extends React.Component {
     constructor (props) {
         super(props);
         this.state = { 
-            navigateDropdownHidden: true,
+            // Currently displayed tab
             curTab: DEFAULT_TAB,
+            // Is the expanded navigation bar expanded?
+            navigateExpandHidden: true,
         };
     }
 
@@ -51,10 +53,10 @@ class NavBar extends React.Component {
             <div>
                 <div className="topmenu">
                     <div className="topmenu-curtab" 
-                    onMouseEnter={() => this.setState({navigateDropdownHidden: false})}>
+                    onMouseEnter={() => this.setState({navigateExpandHidden: false})}>
                     <span>{this.state.curTab}</span>
                         <div className="topmenu-tablist topmenu-tablist-animate"
-                        hidden={this.state.navigateDropdownHidden}>
+                        hidden={this.state.navigateExpandHidden}>
                             <div className="topmenu-tab"
                             onClick={() => this.changeTab("Home")}
                             >Home</div>
