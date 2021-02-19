@@ -1,4 +1,5 @@
 import React from 'react';
+import MenuButton from '../../NavBar/MenuButton';
 
 import { sortAlgorithms } from '../Algorithms/SortAlgorithms';
 
@@ -14,12 +15,6 @@ class SVisualizerSettings extends React.Component {
         this.state = {
             // Currently selected sorting algorithm
             curAlgorithm: null,
-            // Is the randomize button dropdown open?
-            randomizeDropdownHidden: true,
-            // Is the algorithm button dropdown open?
-            algorithmDropdownHidden: true,
-            // Is the visualize button dropdown open?
-            visualizeDropdownHidden: true,
         };
     }
 
@@ -42,65 +37,48 @@ class SVisualizerSettings extends React.Component {
 
         return (
             <div className="sv-menu-bar">
-                <div className="randomize-dropdown dropdown-animate">
-                    <div className="sv-menu-bar-button" 
-                    onClick={() => this.props.sorter.reGenerateArray()}
-                    onMouseEnter={() => this.setState({randomizeDropdownHidden: false})}>
-                    <span>Randomize</span></div>
-                    <div className="sv-menu-dropdown-content randomize-drop-content dropdown-animate"
-                    hidden={this.state.randomizeDropdownHidden}
-                    onClick={() => this.setState({randomizeDropdownHidden: true})}>
-                        <div className="sv-menu-dropdown-content-item"
-                        onClick={() => this.props.sorter.reGenerateArray(10)}
-                        >Small Array</div>
-                        <div className="sv-menu-dropdown-content-item"
-                        onClick={() => this.props.sorter.reGenerateArray(50)}
-                        >Medium Array</div>
-                        <div className="sv-menu-dropdown-content-item"
-                        onClick={() => this.props.sorter.reGenerateArray(100)}
-                        >Large Array</div>
-                    </div>
-                </div>
-                <div className="algorithm-dropdown dropdown-animate">
-                    <div className="sv-menu-bar-button" 
-                    onMouseEnter={() => this.setState({algorithmDropdownHidden: false})}>
-                    <span>Algorithm</span></div>
-                    <div className="sv-menu-dropdown-content algorithm-drop-content dropdown-animate"
-                    hidden={this.state.algorithmDropdownHidden}
-                    onClick={() => this.setState({algorithmDropdownHidden: true})}>
-                        <div className="sv-menu-dropdown-content-item"
-                        onClick={() => this.setState({curAlgorithm: sortAlgorithms.SELECTION})}
-                        >Selection Sort</div>
-                        <div className="sv-menu-dropdown-content-item"
-                        onClick={() => this.setState({curAlgorithm: sortAlgorithms.INSERTION})}
-                        >Insertion Sort</div>
-                        <div className="sv-menu-dropdown-content-item"
-                        onClick={() => this.setState({curAlgorithm: sortAlgorithms.MERGE})}
-                        >Merge Sort</div>
-                    </div>
-                </div>
-                <div className="visualize-dropdown dropdown-animate">
-                    <div className="sv-menu-bar-button" 
-                    onClick={() => this.props.sorter.visualizeSort(this.state.curAlgorithm)}
-                    onMouseEnter={() => this.setState({visualizeDropdownHidden: false})}>
-                    <span>Sort</span></div>
-                    <div className="sv-menu-dropdown-content visualize-drop-content dropdown-animate"
-                    hidden={this.state.visualizeDropdownHidden}
-                    onClick={() => this.setState({visualizeDropdownHidden: true})}>
-                        <div className="sv-menu-dropdown-content-item"
-                        onClick={() => this.props.sorter.visualizeSort(this.state.curAlgorithm, 500)}
-                        >Very Slow</div>
-                        <div className="sv-menu-dropdown-content-item"
-                        onClick={() => this.props.sorter.visualizeSort(this.state.curAlgorithm, 100)}
-                        >Slow</div>
-                        <div className="sv-menu-dropdown-content-item"
-                        onClick={() => this.props.sorter.visualizeSort(this.state.curAlgorithm, 50)}
-                        >Fast</div>
-                        <div className="sv-menu-dropdown-content-item"
-                        onClick={() => this.props.sorter.visualizeSort(this.state.curAlgorithm, 10)}
-                        >Very Fast</div>
-                    </div>
-                </div>
+                <MenuButton
+                buttonText="Randomize"
+                clickFunction={() => this.props.sorter.reGenerateArray()}>
+                    <div className="sv-menu-dropdown-content-item"
+                    onClick={() => this.props.sorter.reGenerateArray(10)}
+                    >Small Array</div>
+                    <div className="sv-menu-dropdown-content-item"
+                    onClick={() => this.props.sorter.reGenerateArray(50)}
+                    >Medium Array</div>
+                    <div className="sv-menu-dropdown-content-item"
+                    onClick={() => this.props.sorter.reGenerateArray(100)}
+                    >Large Array</div>
+                </MenuButton>
+                <MenuButton
+                buttonText="Algorithm"
+                clickFunction={() => null}>
+                    <div className="sv-menu-dropdown-content-item"
+                    onClick={() => this.setState({curAlgorithm: sortAlgorithms.SELECTION})}
+                    >Selection Sort</div>
+                    <div className="sv-menu-dropdown-content-item"
+                    onClick={() => this.setState({curAlgorithm: sortAlgorithms.INSERTION})}
+                    >Insertion Sort</div>
+                    <div className="sv-menu-dropdown-content-item"
+                    onClick={() => this.setState({curAlgorithm: sortAlgorithms.MERGE})}
+                    >Merge Sort</div>
+                </MenuButton>
+                <MenuButton
+                buttonText="Sort"
+                clickFunction={() => this.props.sorter.visualizeSort(this.state.curAlgorithm)}>
+                    <div className="sv-menu-dropdown-content-item"
+                    onClick={() => this.props.sorter.visualizeSort(this.state.curAlgorithm, 500)}
+                    >Very Slow</div>
+                    <div className="sv-menu-dropdown-content-item"
+                    onClick={() => this.props.sorter.visualizeSort(this.state.curAlgorithm, 100)}
+                    >Slow</div>
+                    <div className="sv-menu-dropdown-content-item"
+                    onClick={() => this.props.sorter.visualizeSort(this.state.curAlgorithm, 50)}
+                    >Fast</div>
+                    <div className="sv-menu-dropdown-content-item"
+                    onClick={() => this.props.sorter.visualizeSort(this.state.curAlgorithm, 10)}
+                    >Very Fast</div>
+                </MenuButton>
                 <div className="sv-curalg dropdown-animate">{this.getCurrentAlgorithmText()}</div>
             </div>
         );

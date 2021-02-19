@@ -9,58 +9,6 @@
     background-color: rgb(50, 50, 50);
 }
 
-.sv-menu-bar-button {
-    width: 125px;
-
-    position: relative;
-
-    cursor: pointer;
-    
-    color: rgb(255, 255, 255);
-    font-weight: 300;
-    font-size: 20px;
-}
-
-.sv-menu-bar-button span {
-    display: inline-block;
-
-    position: relative;
-
-    transition: 0.5s;
-}
-
-.sv-menu-bar-button span:after {
-    position: absolute;
-
-    opacity: 0;
-    left: 0px;
-    
-    content: '\00bb';
-    font-weight: 600;
-    font-size: 20px;
-
-    transition: 0.5s;
-}
-
-.sv-menu-bar-button:hover span {
-    padding-left: 20px;
-}
-
-.sv-menu-bar-button:hover span:after {
-    opacity: 1;
-}
-
-.sv-menu-dropdown-content {
-    display: none;
-    width: 150px;
-
-    position: absolute;
-
-    background-color: rgb(50, 50, 50, 0.75);
-    border-radius: 5%;
-    top: 100%;
-}
-
 .sv-menu-dropdown-content-item {
     display: block;
     width: 100%;
@@ -79,24 +27,6 @@
 
 .sv-menu-dropdown-content-item:hover {
     font-weight: 600;
-}
-
-/* RANDOMIZE BUTTON DROPDOWN */
-
-.randomize-dropdown:hover .randomize-drop-content {
-    display: block;
-}
-
-/* ALGORITHM BUTTON DROPDOWN */
-
-.algorithm-dropdown:hover .algorithm-drop-content {
-    display: block;
-}
-
-/* VISUALIZE BUTTON DROPDOWN */
-
-.visualize-dropdown:hover .visualize-drop-content {
-    display: block;
 }
 
 /* DROPDOWN ANIMATION */

@@ -27,55 +27,7 @@
     background-color: rgb(50, 50, 50);
 }
 
-.pv-menu-bar-button {
-    width: 125px;
-
-    cursor: pointer;
-
-    color: rgb(255, 255, 255);
-    font-weight: 300;
-    font-size: 20px;
-}
-
-.pv-menu-bar-button span {
-    display: inline-block;
-
-    position: relative;
-
-    transition: 0.5s;
-}
-
-.pv-menu-bar-button span:after {
-    content: '\00bb';
-    font-weight: 600;
-    font-size: 20px;
-    
-    position: absolute;
-
-    opacity: 0;
-    left: 0px;
-
-    transition: 0.5s;
-}
-
-.pv-menu-bar-button:hover span {
-    padding-left: 20px;
-}
-
-.pv-menu-bar-button:hover span:after {
-    opacity: 1;
-}
-
-.pv-menu-dropdown-content {
-    display: none;
-    width: 200px;
-
-    position: absolute;
-
-    background-color: rgb(50, 50, 50, 0.75);
-    border-radius: 5%;
-    top: 100%;
-}
+/* DROPDOWN MENU OPTION */
 
 .pv-menu-dropdown-content-item {
     display: block;
@@ -97,56 +49,6 @@
     font-weight: 600;
 }
 
-/* MAZE BUTTON DROPDOWN */
-
-.maze-dropdown:hover .maze-drop-content {
-    display: block;
-}
-
-/* CLEAR BUTTON DROPDOWN */
-
-.clear-dropdown:hover .clear-drop-content {
-    display: block;
-}
-
-/* EDIT BUTTON DROPDOWN */
-
-.edit-dropdown:hover .edit-drop-content {
-    display: block;
-}
-
-/* ALGORITHM BUTTON DROPDOWN */
-
-.algorithm-dropdown:hover .alg-drop-content {
-    display: block;
-}
-
-/* PATHFIND BUTTON DROOPDOWN */
-
-.pathfind-dropdown:hover .pathfind-drop-content {
-    display: block;
-}
-
-/* DROPDOWN ANIMATION */
-
-.dropdown-animate {
-    animation: growDown 500ms ease-in-out forwards;
-
-    transform-origin: top center;
-}
-
-@keyframes growDown {
-  0% {
-    transform: scaleY(0);
-  }
-  80% {
-    transform: scaleY(1.1);
-  }
-  100% {
-    transform: scaleY(1);
-  }
-}
-
 /* CURRENT ALGORITHM */
 
 .pv-curalg {
@@ -156,6 +58,7 @@
     margin-left: 25px;
 
     opacity: 0.5;
+    cursor: pointer;
 
     color: rgb(255, 255, 255);
     font-size: 24px;
@@ -167,6 +70,11 @@
     opacity: 1;
 
     transition: 0.5s;
+}
+
+.pv-curalg-modal {
+    caret-color: transparent;
+    cursor: default;
 }
 
 /* NODE KEY */

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Node from '../Grid/Node';
+import Node from '../Node/Node';
 
 /**
  * Represents the node key in the menu.

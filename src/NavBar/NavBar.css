@@ -1,3 +1,75 @@
+.menu-button {
+    width: 125px;
+
+    cursor: pointer;
+
+    color: rgb(255, 255, 255);
+    font-weight: 300;
+    font-size: 20px;
+}
+
+.menu-button span {
+    display: inline-block;
+
+    position: relative;
+
+    transition: 0.5s;
+}
+
+.menu-button span:after {
+    content: '\00bb';
+    font-weight: 600;
+    font-size: 20px;
+    
+    position: absolute;
+
+    opacity: 0;
+    left: 0px;
+
+    transition: 0.5s;
+}
+
+.menu-button:hover span {
+    padding-left: 20px;
+}
+
+.menu-button:hover span:after {
+    opacity: 1;
+}
+
+.dropdown-content {
+    display: none;
+    width: 200px;
+
+    position: absolute;
+
+    background-color: rgb(50, 50, 50, 0.75);
+    border-radius: 5%;
+    top: 100%;
+}
+
+.dropdown:hover .drop-content {
+    display: block;
+}
+
+.dropdown-animate {
+    animation: growDown 500ms ease-in-out forwards;
+
+    transform-origin: top center;
+}
+
+@keyframes growDown {
+  0% {
+    transform: scaleY(0);
+  }
+  80% {
+    transform: scaleY(1.1);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}
+
 /* TRANSPARENT TEXT SELECTION */
 
 ::selection {

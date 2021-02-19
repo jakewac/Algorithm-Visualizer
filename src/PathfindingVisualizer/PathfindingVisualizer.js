@@ -7,7 +7,7 @@ import { getShortestPathNodes, dijkstra, aStar, breadthFirstSearch, depthFirstSe
 import { recursiveDevision, mazeAlgorithms, randomWallMaze, randomWeightMaze, randomWallWeightMaze
 } from './Algorithms/MazeAlgorithms';
 import PathfindMenu from './Menu/PathfindMenu';
-import Node from './Grid/Node';
+import Node from './Node/Node';
 
 // Number of rows in the grid
 const ROW_COUNT = 29;
